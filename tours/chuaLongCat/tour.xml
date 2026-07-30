@@ -1,0 +1,410 @@
+﻿<krpano version="1.19" title="Virtual Tour">
+
+	<include url="skin/vtourskin.xml" />
+
+	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
+	<skin_settings maps="true"
+	               maps_type="google"
+	               maps_bing_api_key=""
+	               maps_google_api_key=""
+	               maps_zoombuttons="false"
+	               gyro="true"
+	               webvr="true"
+	               webvr_gyro_keeplookingdirection="false"
+	               webvr_prev_next_hotspots="true"
+	               littleplanetintro="false"
+	               title="true"
+	               thumbs="true"
+	               thumbs_width="120" thumbs_height="80" thumbs_padding="10" thumbs_crop="0|40|240|160"
+	               thumbs_opened="false"
+	               thumbs_text="false"
+	               thumbs_dragging="true"
+	               thumbs_onhoverscrolling="false"
+	               thumbs_scrollbuttons="false"
+	               thumbs_scrollindicator="false"
+	               thumbs_loop="false"
+	               tooltips_buttons="false"
+	               tooltips_thumbs="false"
+	               tooltips_hotspots="false"
+	               tooltips_mapspots="false"
+	               deeplinking="false"
+	               loadscene_flags="MERGE"
+	               loadscene_blend="OPENBLEND(0.5, 0.0, 0.75, 0.05, linear)"
+	               loadscene_blend_prev="SLIDEBLEND(0.5, 180, 0.75, linear)"
+	               loadscene_blend_next="SLIDEBLEND(0.5,   0, 0.75, linear)"
+	               loadingtext="loading..."
+	               layout_width="100%"
+	               layout_maxwidth="814"
+	               controlbar_width="-24"
+	               controlbar_height="40"
+	               controlbar_offset="20"
+	               controlbar_offset_closed="-40"
+	               controlbar_overlap.no-fractionalscaling="10"
+	               controlbar_overlap.fractionalscaling="0"
+	               design_skin_images="vtourskin.png"
+	               design_bgcolor="0x2D3E50"
+	               design_bgalpha="0.8"
+	               design_bgborder="0"
+	               design_bgroundedge="1"
+	               design_bgshadow="0 4 10 0x000000 0.3"
+	               design_thumbborder_bgborder="3 0xFFFFFF 1.0"
+	               design_thumbborder_padding="2"
+	               design_thumbborder_bgroundedge="0"
+	               design_text_css="color:#FFFFFF; font-family:Arial;"
+	               design_text_shadow="1"
+	               />
+
+	<!--
+	    For an alternative skin design either change the <skin_settings> values 
+	    from above or optionally include one of the predefined designs from below.
+	-->
+	<!-- <include url="skin/vtourskin_design_flat_light.xml"  /> -->
+	<!-- <include url="skin/vtourskin_design_glass.xml"       /> -->
+	<!-- <include url="skin/vtourskin_design_ultra_light.xml" /> -->
+	<!-- <include url="skin/vtourskin_design_117.xml"         /> -->
+	<!-- <include url="skin/vtourskin_design_117round.xml"    /> -->
+	<!-- <include url="skin/vtourskin_design_black.xml"       /> -->
+
+
+	<!-- startup action - load the first scene -->
+	<action name="startup" autorun="onstart">
+		if(startscene === null OR !scene[get(startscene)], copy(startscene,scene[0].name); );
+		loadscene(get(startscene), null, MERGE);
+		if(startactions !== null, startactions() );
+	</action>
+
+
+	
+	<scene name="scene_1-cong_chinh" title="1-cong_chinh" onstart="" thumburl="panos/1-cong_chinh.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/1-cong_chinh.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864">
+				<cube url="panos/1-cong_chinh.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="2560" tiledimageheight="2560">
+				<cube url="panos/1-cong_chinh.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1280" tiledimageheight="1280">
+				<cube url="panos/1-cong_chinh.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="640" tiledimageheight="640">
+				<cube url="panos/1-cong_chinh.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" />
+			</level>
+		</image>
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="-90.770" atv="18.512" linkedscene="scene_2-san_truoc" />
+
+	</scene>
+
+	<scene name="scene_10-hoavien2" title="10-hoavien2" onstart="" thumburl="panos/10-hoavien2.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/10-hoavien2.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864">
+				<cube url="panos/10-hoavien2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="2560" tiledimageheight="2560">
+				<cube url="panos/10-hoavien2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1280" tiledimageheight="1280">
+				<cube url="panos/10-hoavien2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="640" tiledimageheight="640">
+				<cube url="panos/10-hoavien2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" />
+			</level>
+		</image>
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="-34.900" atv="41.005" linkedscene="scene_9-hoavien1" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="-93.575" atv="17.347" linkedscene="scene_8-santrai2" />
+
+	</scene>
+
+	<scene name="scene_11-sanhgiua" title="11-sanhgiua" onstart="" thumburl="panos/11-sanhgiua.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/11-sanhgiua.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864">
+				<cube url="panos/11-sanhgiua.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="2560" tiledimageheight="2560">
+				<cube url="panos/11-sanhgiua.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1280" tiledimageheight="1280">
+				<cube url="panos/11-sanhgiua.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="640" tiledimageheight="640">
+				<cube url="panos/11-sanhgiua.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" />
+			</level>
+		</image>
+
+	</scene>
+
+	<scene name="scene_12-sanphai1" title="12-sanphai1" onstart="" thumburl="panos/12-sanphai1.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/12-sanphai1.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864">
+				<cube url="panos/12-sanphai1.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="2560" tiledimageheight="2560">
+				<cube url="panos/12-sanphai1.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1280" tiledimageheight="1280">
+				<cube url="panos/12-sanphai1.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="640" tiledimageheight="640">
+				<cube url="panos/12-sanphai1.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" />
+			</level>
+		</image>
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="88.745" atv="11.494" linkedscene="scene_13-sanphai2" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="127.809" atv="21.902" linkedscene="scene_3-san_truoc_2" />
+		<hotspot name="spot3" style="skin_hotspotstyle" ath="-107.412" atv="30.251" linkedscene="scene_13-sanphai2" />
+		<hotspot name="spot4" style="skin_hotspotstyle" ath="-145.455" atv="29.715" linkedscene="scene_11-sanhgiua" />
+
+	</scene>
+
+	<scene name="scene_13-sanphai2" title="13-sanphai2" onstart="" thumburl="panos/13-sanphai2.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/13-sanphai2.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864">
+				<cube url="panos/13-sanphai2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="2560" tiledimageheight="2560">
+				<cube url="panos/13-sanphai2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1280" tiledimageheight="1280">
+				<cube url="panos/13-sanphai2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="640" tiledimageheight="640">
+				<cube url="panos/13-sanphai2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" />
+			</level>
+		</image>
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="63.429" atv="10.318" linkedscene="scene_12-sanphai1" />
+
+	</scene>
+
+	<scene name="scene_2-san_truoc" title="2-san_truoc" onstart="" thumburl="panos/2-san_truoc.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/2-san_truoc.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864">
+				<cube url="panos/2-san_truoc.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="2560" tiledimageheight="2560">
+				<cube url="panos/2-san_truoc.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1280" tiledimageheight="1280">
+				<cube url="panos/2-san_truoc.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="640" tiledimageheight="640">
+				<cube url="panos/2-san_truoc.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" />
+			</level>
+		</image>
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="92.224" atv="23.102" linkedscene="scene_1-cong_chinh" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="-87.593" atv="17.391" linkedscene="scene_3-san_truoc_2" />
+		<hotspot name="spot3" style="skin_hotspotstyle" ath="-124.742" atv="13.462" linkedscene="scene_7-santrai1" />
+		<hotspot name="spot4" style="skin_hotspotstyle" ath="-54.836" atv="12.038" linkedscene="scene_12-sanphai1" />
+
+	</scene>
+
+	<scene name="scene_3-san_truoc_2" title="3-san_truoc_2" onstart="" thumburl="panos/3-san_truoc_2.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/3-san_truoc_2.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864">
+				<cube url="panos/3-san_truoc_2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="2560" tiledimageheight="2560">
+				<cube url="panos/3-san_truoc_2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1280" tiledimageheight="1280">
+				<cube url="panos/3-san_truoc_2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="640" tiledimageheight="640">
+				<cube url="panos/3-san_truoc_2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" />
+			</level>
+		</image>
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="171.274" atv="18.089" linkedscene="scene_7-santrai1" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="-13.321" atv="17.322" linkedscene="scene_12-sanphai1" />
+		<hotspot name="spot3" style="skin_hotspotstyle" ath="76.813" atv="21.286" linkedscene="scene_2-san_truoc" />
+		<hotspot name="spot4" style="skin_hotspotstyle" ath="-101.681" atv="17.228" linkedscene="scene_4-sanh_chinh" />
+
+	</scene>
+
+	<scene name="scene_4-sanh_chinh" title="4-sanh_chinh" onstart="" thumburl="panos/4-sanh_chinh.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4-sanh_chinh.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864">
+				<cube url="panos/4-sanh_chinh.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="2560" tiledimageheight="2560">
+				<cube url="panos/4-sanh_chinh.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1280" tiledimageheight="1280">
+				<cube url="panos/4-sanh_chinh.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="640" tiledimageheight="640">
+				<cube url="panos/4-sanh_chinh.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" />
+			</level>
+		</image>
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="175.619" atv="22.053" linkedscene="scene_5-sanh_chinh_trai" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="-16.302" atv="28.076" linkedscene="scene_6-sanh_chinh_phai" />
+		<hotspot name="spot3" style="skin_hotspotstyle" ath="81.843" atv="45.087" linkedscene="scene_3-san_truoc_2" />
+		<hotspot name="spot4" style="skin_hotspotstyle" ath="82.283" atv="11.822" linkedscene="scene_2-san_truoc" />
+
+	</scene>
+
+	<scene name="scene_5-sanh_chinh_trai" title="5-sanh_chinh_trai" onstart="" thumburl="panos/5-sanh_chinh_trai.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/5-sanh_chinh_trai.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864">
+				<cube url="panos/5-sanh_chinh_trai.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="2560" tiledimageheight="2560">
+				<cube url="panos/5-sanh_chinh_trai.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1280" tiledimageheight="1280">
+				<cube url="panos/5-sanh_chinh_trai.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="640" tiledimageheight="640">
+				<cube url="panos/5-sanh_chinh_trai.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" />
+			</level>
+		</image>
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="-11.660" atv="35.105" linkedscene="scene_4-sanh_chinh" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="34.213" atv="30.630" linkedscene="scene_3-san_truoc_2" />
+
+	</scene>
+
+	<scene name="scene_6-sanh_chinh_phai" title="6-sanh_chinh_phai" onstart="" thumburl="panos/6-sanh_chinh_phai.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/6-sanh_chinh_phai.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864">
+				<cube url="panos/6-sanh_chinh_phai.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="2560" tiledimageheight="2560">
+				<cube url="panos/6-sanh_chinh_phai.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1280" tiledimageheight="1280">
+				<cube url="panos/6-sanh_chinh_phai.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="640" tiledimageheight="640">
+				<cube url="panos/6-sanh_chinh_phai.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" />
+			</level>
+		</image>
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="-175.888" atv="31.430" linkedscene="scene_4-sanh_chinh" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="141.349" atv="45.107" linkedscene="scene_3-san_truoc_2" />
+
+	</scene>
+
+	<scene name="scene_7-santrai1" title="7-santrai1" onstart="" thumburl="panos/7-santrai1.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/7-santrai1.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864">
+				<cube url="panos/7-santrai1.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="2560" tiledimageheight="2560">
+				<cube url="panos/7-santrai1.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1280" tiledimageheight="1280">
+				<cube url="panos/7-santrai1.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="640" tiledimageheight="640">
+				<cube url="panos/7-santrai1.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" />
+			</level>
+		</image>
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="50.400" atv="9.254" linkedscene="scene_2-san_truoc" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="16.926" atv="17.460" linkedscene="scene_3-san_truoc_2" />
+		<hotspot name="spot3" style="skin_hotspotstyle" ath="-100.834" atv="28.033" linkedscene="scene_8-santrai2" />
+
+	</scene>
+
+	<scene name="scene_8-santrai2" title="8-santrai2" onstart="" thumburl="panos/8-santrai2.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/8-santrai2.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864">
+				<cube url="panos/8-santrai2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="2560" tiledimageheight="2560">
+				<cube url="panos/8-santrai2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1280" tiledimageheight="1280">
+				<cube url="panos/8-santrai2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="640" tiledimageheight="640">
+				<cube url="panos/8-santrai2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" />
+			</level>
+		</image>
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="-8.987" atv="35.769" linkedscene="scene_11-sanhgiua" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="165.721" atv="39.697" linkedscene="scene_9-hoavien1" />
+		<hotspot name="spot3" style="skin_hotspotstyle" ath="72.869" atv="10.813" linkedscene="scene_7-santrai1" />
+
+	</scene>
+
+	<scene name="scene_9-hoavien1" title="9-hoavien1" onstart="" thumburl="panos/9-hoavien1.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/9-hoavien1.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864">
+				<cube url="panos/9-hoavien1.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="2560" tiledimageheight="2560">
+				<cube url="panos/9-hoavien1.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1280" tiledimageheight="1280">
+				<cube url="panos/9-hoavien1.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" />
+			</level>
+			<level tiledimagewidth="640" tiledimageheight="640">
+				<cube url="panos/9-hoavien1.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" />
+			</level>
+		</image>
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="45.967" atv="15.274" linkedscene="scene_8-santrai2" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="-116.072" atv="26.872" linkedscene="scene_10-hoavien2" />
+
+	</scene>
+
+
+</krpano>

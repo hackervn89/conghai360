@@ -1,0 +1,186 @@
+<krpano>
+
+	<scene name="scene_1-cong_chinh" title="Cổng chính" onstart="" thumburl="panos/1-cong_chinh.tiles/thumb.jpg" lat="11.77747222" lng="109.07920394" heading="0.0">
+		<view hlookat="-91.165" vlookat="-7.235" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/1-cong_chinh.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/1-cong_chinh.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/1-cong_chinh.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/1-cong_chinh.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/1-cong_chinh.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-90.770" atv="18.512" linkedscene="scene_2-san_truoc" />
+		<hotspot name="spot2" style="tructhang" ath="-4.212" atv="-19.404" linkedscene="scene_toancanhconghai" custom_title="Toàn cảnh xã Công Hải" custom_thumb="tours/toanCanh/panos/toancanhconghai.tiles/thumb.jpg" />
+	</scene>
+
+	<scene name="scene_2-san_truoc" title="Sân trước" onstart="" thumburl="panos/2-san_truoc.tiles/thumb.jpg" lat="11.77747222" lng="109.07920394" heading="0.0">
+		<view hlookat="-88.490" vlookat="4.506" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/2-san_truoc.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/2-san_truoc.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/2-san_truoc.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/2-san_truoc.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/2-san_truoc.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="92.224" atv="23.102" linkedscene="scene_1-cong_chinh" />
+		<hotspot name="spot2" style="muiten" ath="-87.593" atv="17.391" linkedscene="scene_3-san_truoc_2" />
+		<hotspot name="spot3" style="muiten" ath="-124.742" atv="13.462" linkedscene="scene_7-santrai1" />
+		<hotspot name="spot4" style="muiten" ath="-54.836" atv="12.038" linkedscene="scene_12-sanphai1" />
+		<hotspot name="info_chualongcat" style="thongtin" ath="-89.564" atv="-3.312" infoid="info_chualongcat" custom_title="Thông tin Chùa Long Cát" />
+		<hotspot name="spot5" style="tructhang" ath="19.465" atv="-15.163" linkedscene="scene_toancanhconghai" custom_title="Toàn cảnh xã Công Hải" custom_thumb="tours/toanCanh/panos/toancanhconghai.tiles/thumb.jpg" />
+	</scene>
+
+	<scene name="scene_3-san_truoc_2" title="Sân trước 2" onstart="" thumburl="panos/3-san_truoc_2.tiles/thumb.jpg" lat="11.77747222" lng="109.07920394" heading="0.0">
+		<view hlookat="-102.355" vlookat="-2.356" fovtype="MFOV" fov="100" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/3-san_truoc_2.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/3-san_truoc_2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/3-san_truoc_2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/3-san_truoc_2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/3-san_truoc_2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="171.274" atv="18.089" linkedscene="scene_7-santrai1" />
+		<hotspot name="spot2" style="muiten" ath="-13.321" atv="17.322" linkedscene="scene_12-sanphai1" />
+		<hotspot name="spot3" style="muiten" ath="76.813" atv="21.286" linkedscene="scene_2-san_truoc" />
+		<hotspot name="spot4" style="muiten" ath="-101.681" atv="17.228" linkedscene="scene_4-sanh_chinh" />
+		<hotspot name="info_chualongcat" style="thongtin" ath="-102.703" atv="-7.407" infoid="info_chualongcat" custom_title="Thông tin Chùa Long Cát" />
+		<hotspot name="toancanhconghai" style="tructhang" ath="37.234" atv="-26.148" linkedscene="scene_toancanhconghai" custom_title="Toàn cảnh xã Công Hải" custom_thumb="tours/toanCanh/panos/toancanhconghai.tiles/thumb.jpg" />
+
+	</scene>
+
+	<scene name="scene_4-sanh_chinh" title="Sảnh chính" onstart="" thumburl="panos/4-sanh_chinh.tiles/thumb.jpg" lat="11.77747222" lng="109.07920394" heading="0.0">
+		<view hlookat="-459.655" vlookat="-1.121" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/4-sanh_chinh.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/4-sanh_chinh.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/4-sanh_chinh.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/4-sanh_chinh.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/4-sanh_chinh.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="175.619" atv="22.053" linkedscene="scene_5-sanh_chinh_trai" />
+		<hotspot name="spot2" style="muiten" ath="-16.302" atv="28.076" linkedscene="scene_6-sanh_chinh_phai" />
+		<hotspot name="spot3" style="muiten" ath="81.843" atv="45.087" linkedscene="scene_3-san_truoc_2" />
+		<hotspot name="toancanhconghai" style="tructhang" ath="49.766" atv="-20.810" linkedscene="scene_toancanhconghai" custom_title="Toàn cảnh xã Công Hải" custom_thumb="tours/toanCanh/panos/toancanhconghai.tiles/thumb.jpg" />
+	</scene>
+
+	<scene name="scene_5-sanh_chinh_trai" title="Sảnh chính trái" onstart="" thumburl="panos/5-sanh_chinh_trai.tiles/thumb.jpg" lat="11.77747222" lng="109.07920394" heading="0.0">
+		<view hlookat="-100.343" vlookat="1.443" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/5-sanh_chinh_trai.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/5-sanh_chinh_trai.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/5-sanh_chinh_trai.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/5-sanh_chinh_trai.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/5-sanh_chinh_trai.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-11.660" atv="35.105" linkedscene="scene_4-sanh_chinh" />
+		<hotspot name="spot2" style="muiten" ath="34.213" atv="30.630" linkedscene="scene_3-san_truoc_2" />
+	</scene>
+
+	<scene name="scene_6-sanh_chinh_phai" title="Sảnh chính phải" onstart="" thumburl="panos/6-sanh_chinh_phai.tiles/thumb.jpg" lat="11.77747222" lng="109.07920394" heading="0.0">
+		<view hlookat="-89.471" vlookat="5.137" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/6-sanh_chinh_phai.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/6-sanh_chinh_phai.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/6-sanh_chinh_phai.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/6-sanh_chinh_phai.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/6-sanh_chinh_phai.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-175.888" atv="31.430" linkedscene="scene_4-sanh_chinh" />
+		<hotspot name="spot2" style="muiten" ath="141.349" atv="45.107" linkedscene="scene_3-san_truoc_2" />
+	</scene>
+
+	<scene name="scene_7-santrai1" title="Sân trái 1" onstart="" thumburl="panos/7-santrai1.tiles/thumb.jpg" lat="11.77747222" lng="109.07920394" heading="0.0">
+		<view hlookat="-96.841" vlookat="13.152" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/7-santrai1.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/7-santrai1.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/7-santrai1.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/7-santrai1.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/7-santrai1.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="50.400" atv="9.254" linkedscene="scene_2-san_truoc" />
+		<hotspot name="spot2" style="muiten" ath="16.926" atv="17.460" linkedscene="scene_3-san_truoc_2" />
+		<hotspot name="spot3" style="muiten" ath="-100.834" atv="28.033" linkedscene="scene_8-santrai2" />
+	</scene>
+
+	<scene name="scene_8-santrai2" title="Sân trái 2" onstart="" thumburl="panos/8-santrai2.tiles/thumb.jpg" lat="11.77747222" lng="109.07920394" heading="0.0">
+		<view hlookat="-151.459" vlookat="20.495" fovtype="MFOV" fov="100" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/8-santrai2.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/8-santrai2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/8-santrai2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/8-santrai2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/8-santrai2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-1.675" atv="23.222" linkedscene="scene_11-sanhgiua" />
+		<hotspot name="spot2" style="muiten" ath="165.721" atv="39.697" linkedscene="scene_9-hoavien1" />
+		<hotspot name="spot3" style="muiten" ath="72.869" atv="10.813" linkedscene="scene_7-santrai1" />
+	</scene>
+
+	<scene name="scene_9-hoavien1" title="Hoa viên 1" onstart="" thumburl="panos/9-hoavien1.tiles/thumb.jpg" lat="11.77747222" lng="109.07920394" heading="0.0">
+		<view hlookat="-98.508" vlookat="11.894" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/9-hoavien1.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/9-hoavien1.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/9-hoavien1.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/9-hoavien1.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/9-hoavien1.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="45.967" atv="15.274" linkedscene="scene_8-santrai2" />
+		<hotspot name="spot2" style="muiten" ath="-116.072" atv="26.872" linkedscene="scene_10-hoavien2" />
+	</scene>
+
+	<scene name="scene_10-hoavien2" title="Hoa viên 2" onstart="" thumburl="panos/10-hoavien2.tiles/thumb.jpg" lat="11.77747222" lng="109.07920394" heading="0.0">
+		<view hlookat="232.706" vlookat="6.340" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/10-hoavien2.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/10-hoavien2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/10-hoavien2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/10-hoavien2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/10-hoavien2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-34.900" atv="41.005" linkedscene="scene_9-hoavien1" />
+		<hotspot name="spot2" style="muiten" ath="-93.575" atv="17.347" linkedscene="scene_8-santrai2" />
+	</scene>
+
+	<scene name="scene_11-sanhgiua" title="Sảnh giữa" onstart="" thumburl="panos/11-sanhgiua.tiles/thumb.jpg" lat="11.77747222" lng="109.07920394" heading="0.0">
+		<view hlookat="69.432" vlookat="7.026" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/11-sanhgiua.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/11-sanhgiua.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/11-sanhgiua.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/11-sanhgiua.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/11-sanhgiua.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot3" style="muiten" ath="-112.170" atv="15.742" linkedscene="scene_13-sanphai2" />
+		<hotspot name="spot2" style="muiten" ath="62.359" atv="13.034" linkedscene="scene_8-santrai2" />
+	</scene>
+
+	<scene name="scene_12-sanphai1" title="Sân phải 1" onstart="" thumburl="panos/12-sanphai1.tiles/thumb.jpg" lat="11.77747222" lng="109.07920394" heading="0.0">
+		<view hlookat="237.212" vlookat="16.741" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/12-sanphai1.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/12-sanphai1.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/12-sanphai1.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/12-sanphai1.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/12-sanphai1.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="88.745" atv="11.494" linkedscene="scene_2-san_truoc" />
+		<hotspot name="spot2" style="muiten" ath="127.809" atv="21.902" linkedscene="scene_3-san_truoc_2" />
+		<hotspot name="spot3" style="muiten" ath="-107.412" atv="30.251" linkedscene="scene_13-sanphai2" />
+		<hotspot name="spot4" style="muiten" ath="-145.455" atv="29.715" linkedscene="scene_11-sanhgiua" />
+	</scene>
+
+	<scene name="scene_13-sanphai2" title="Sân phải 2" onstart="" thumburl="panos/13-sanphai2.tiles/thumb.jpg" lat="11.77747222" lng="109.07920394" heading="0.0">
+		<view hlookat="-119.438" vlookat="5.160" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/13-sanphai2.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/13-sanphai2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/13-sanphai2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/13-sanphai2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/13-sanphai2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="63.429" atv="10.318" linkedscene="scene_12-sanphai1" />
+	</scene>
+
+</krpano>

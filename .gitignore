@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Raw heavy assets & 3D models (files >100MB / non-web assets)
+Source Gốc/
+Mô hình/
+*.rar
+*.zip
+*.7z
+*.blend
+*.blend1
+*.skp
+
+# Tool & AI caches
+.understand-anything/
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# System files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Environment & Logs
+.env
+.env.local
+*.log

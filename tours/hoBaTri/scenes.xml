@@ -1,0 +1,99 @@
+<krpano>
+
+	<scene name="scene_DaptranhoBaTri" title="DaptranhoBaTri" onstart="" thumburl="panos/DaptranhoBaTri.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+		<view hlookat="-147.116" vlookat="4.720" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/DaptranhoBaTri.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/DaptranhoBaTri.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/DaptranhoBaTri.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/DaptranhoBaTri.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/DaptranhoBaTri.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="95.663" atv="16.897" linkedscene="scene_HoBaTri3" />
+		<hotspot name="spot2" style="tructhang" ath="64.940" atv="-3.814" linkedscene="scene_toancanhtrusoDanguy" custom_title="Trụ sở Đảng uỷ xã" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg	" />
+	</scene>
+
+	<scene name="scene_HoBaTri1" title="HoBaTri1" onstart="" thumburl="panos/HoBaTri1.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+		<view hlookat="-212.184" vlookat="9.730" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/HoBaTri1.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/HoBaTri1.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/HoBaTri1.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/HoBaTri1.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/HoBaTri1.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-153.074" atv="16.960" linkedscene="scene_HoBaTri2" />
+		<hotspot name="spot2" style="vitri" ath="91.393" atv="16.033" linkedscene="scene_LonghoBaTri1" />
+		<hotspot name="spot3" style="tructhang" ath="-49.606" atv="-11.562" linkedscene="scene_toancanhtrusoDanguy" custom_title="Trụ sở Đảng uỷ xã" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg	" />
+	</scene>
+
+	<scene name="scene_HoBaTri2" title="HoBaTri2" onstart="" thumburl="panos/HoBaTri2.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+		<view hlookat="-149.006" vlookat="3.802" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/HoBaTri2.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/HoBaTri2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/HoBaTri2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/HoBaTri2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/HoBaTri2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-89.843" atv="17.723" linkedscene="scene_HoBaTri3" />
+		<hotspot name="spot2" style="muiten" ath="91.009" atv="13.651" linkedscene="scene_HoBaTri1" />
+		<hotspot name="spot3" style="vitri" ath="109.705" atv="2.785" linkedscene="scene_LonghoBaTri1" />
+		<hotspot name="spot4" style="tructhang" ath="-0.407" atv="-9.655" linkedscene="scene_toancanhtrusoDanguy" custom_title="Trụ sở Đảng uỷ xã" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg	" />
+	</scene>
+
+	<scene name="scene_HoBaTri3" title="HoBaTri3" onstart="" thumburl="panos/HoBaTri3.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+		<view hlookat="99.675" vlookat="-0.933" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/HoBaTri3.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/HoBaTri3.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/HoBaTri3.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/HoBaTri3.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/HoBaTri3.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="vitri" ath="-126.771" atv="-1.045" linkedscene="scene_DaptranhoBaTri" />
+		<hotspot name="spot2" style="muiten" ath="48.324" atv="20.737" linkedscene="scene_HoBaTri2" />
+		<hotspot name="spot3" style="tructhang" ath="-22.123" atv="-5.169" linkedscene="scene_toancanhtrusoDanguy" custom_title="Trụ sở Đảng uỷ xã" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg	" />
+	</scene>
+
+	<scene name="scene_LonghoBaTri1" title="LonghoBaTri1" onstart="" thumburl="panos/LonghoBaTri1.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/LonghoBaTri1.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/LonghoBaTri1.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/LonghoBaTri1.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/LonghoBaTri1.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/LonghoBaTri1.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="157.112" atv="16.250" linkedscene="scene_LonghoBaTri3" />
+		<hotspot name="spot2" style="muiten" ath="46.956" atv="0.557" linkedscene="scene_HoBaTri1" />
+		<hotspot name="spot3" style="tructhang" ath="46.061" atv="-18.533" linkedscene="scene_toancanhtrusoDanguy" custom_title="Trụ sở Đảng uỷ xã" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg	" />
+	</scene>
+
+	<scene name="scene_LonghoBaTri2" title="LonghoBaTri2" onstart="" thumburl="panos/LonghoBaTri2.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/LonghoBaTri2.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/LonghoBaTri2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/LonghoBaTri2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/LonghoBaTri2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/LonghoBaTri2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="31.849" atv="10.725" linkedscene="scene_LonghoBaTri3" />
+		<hotspot name="spot3" style="tructhang" ath="102.782" atv="-19.997" linkedscene="scene_toancanhtrusoDanguy" custom_title="Trụ sở Đảng uỷ xã" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg	" />		
+	</scene>
+
+	<scene name="scene_LonghoBaTri3" title="LonghoBaTri3" onstart="" thumburl="panos/LonghoBaTri3.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/LonghoBaTri3.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/LonghoBaTri3.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/LonghoBaTri3.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/LonghoBaTri3.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/LonghoBaTri3.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="141.945" atv="10.336" linkedscene="scene_LonghoBaTri2" />
+		<hotspot name="spot2" style="muiten" ath="-41.896" atv="13.272" linkedscene="scene_LonghoBaTri1" />
+	</scene>
+
+</krpano>

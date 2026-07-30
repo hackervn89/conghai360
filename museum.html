@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <title>Bảo Tàng Số - Công Hải 360</title>
+  <meta name="description"
+    content="Bảo tàng số 3D tương tác - Không gian triển lãm văn hóa Raglai và sản phẩm OCOP xã Công Hải">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="icon" href="core/assets/favicon-32.png">
+
+  <style>
+    /* === Design System — đồng bộ Tour Chính === */
+    :root {
+      --primary: #d35656;
+      --primary-glow: rgba(211, 86, 86, 0.3);
+      --glass-bg: rgba(255, 255, 255, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.5);
+      --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      --radius: 16px;
+      --radius-pill: 30px;
+      --font: Verdana, Arial, Helvetica, sans-serif;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      overflow: hidden;
+      background: #0a0f1e;
+      font-family: var(--font);
+    }
+
+    #canvas-3d {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* --- Fade Overlay --- */
+    #fade-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: #0a0f1e;
+      transition: opacity 0.8s ease;
+    }
+
+    #fade-overlay.gone {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* --- Loading Screen --- */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0a0f1e 0%, #1a1020 50%, #0f0a1e 100%);
+      color: #fff;
+    }
+
+    #loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+
+    .loading-title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+
+    .loading-bar-bg {
+      width: min(320px, 80vw);
+      height: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .loading-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #ff8866);
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+
+    .loading-text {
+      margin-top: 14px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* --- UI Layer --- */
+    #ui-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      pointer-events: none;
+      font-family: var(--font);
+    }
+
+    /* --- Nút Quay Lại --- */
+    #back-btn {
+      position: absolute;
+      top: calc(16px + var(--safe-top));
+      left: calc(16px + var(--safe-left));
+      padding: 10px 20px;
+      background: var(--glass-bg);
+      color: #333;
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-pill);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--glass-shadow);
+      transition: all 0.3s;
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    #back-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 20px var(--primary-glow);
+      transform: translateY(-2px);
+    }
+
+    /* --- Room Badge --- */
+    #room-badge {
+      position: absolute;
+      top: calc(16px + var(--safe-top));
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 8px 22px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: bold;
+      color: #333;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--glass-shadow);
+      white-space: nowrap;
+      transition: all 0.4s ease;
+    }
+
+    /* --- Tutorial --- */
+    #tutorial {
+      position: absolute;
+      bottom: calc(28px + var(--safe-bottom));
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 14px 24px;
+      font-size: 13px;
+      color: #333;
+      text-align: center;
+      line-height: 1.7;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--glass-shadow);
+      max-width: min(92vw, 480px);
+      animation: tutFade 9s forwards;
+    }
+
+    @keyframes tutFade {
+
+      0%,
+      70% {
+        opacity: 1
+      }
+
+      100% {
+        opacity: 0;
+        pointer-events: none
+      }
+    }
+
+    /* --- Debug Grid HUD --- */
+    #debug-hud {
+      position: absolute;
+      top: calc(56px + var(--safe-top));
+      left: calc(16px + var(--safe-left));
+      padding: 10px 16px;
+      background: rgba(0, 0, 0, 0.75);
+      color: #0f0;
+      border-radius: 10px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.8;
+      pointer-events: auto;
+      user-select: text;
+      min-width: 220px;
+      backdrop-filter: blur(8px);
+    }
+
+    #debug-hud .label {
+      color: #888;
+    }
+
+    #debug-hud .val {
+      color: #0f0;
+      font-weight: bold;
+    }
+
+    #debug-hud .hint {
+      color: #ff0;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    /* --- Crosshair --- */
+    #crosshair {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.55);
+      border: 1.5px solid rgba(0, 0, 0, 0.25);
+      pointer-events: none;
+    }
+
+    /* --- Room Nav --- */
+    #room-nav {
+      position: absolute;
+      bottom: calc(28px + var(--safe-bottom));
+      right: calc(16px + var(--safe-right));
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      pointer-events: auto;
+    }
+
+    .room-btn {
+      padding: 9px 16px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-pill);
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: bold;
+      color: #444;
+      cursor: pointer;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--glass-shadow);
+      transition: all 0.3s;
+      text-align: left;
+    }
+
+    .room-btn:hover {
+      background: rgba(255, 255, 255, 0.9);
+      transform: translateX(-3px);
+    }
+
+    .room-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 16px var(--primary-glow);
+    }
+
+    /* === Info Modal === */
+    #info-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10, 15, 30, 0.5);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    #info-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #modal-box {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      box-shadow: var(--glass-shadow);
+      padding: 32px 36px;
+      max-width: min(520px, 92vw);
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      font-family: var(--font);
+    }
+
+    #modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 22px;
+      color: #888;
+      line-height: 1;
+    }
+
+    #modal-close:hover {
+      color: var(--primary);
+    }
+
+    #modal-title {
+      font-size: 19px;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 12px;
+      padding-right: 28px;
+    }
+
+    #modal-content {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #333;
+    }
+
+    #modal-content ul {
+      margin: 10px 0 0 20px;
+    }
+
+    #modal-content a {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 18px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: bold;
+      transition: opacity 0.2s;
+    }
+
+    #modal-content a:hover {
+      opacity: 0.85;
+    }
+
+    #modal-content a.btn-green {
+      background: #22aa55;
+    }
+
+    #modal-content a.btn-orange {
+      background: #f57224;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Fade Overlay -->
+  <div id="fade-overlay"></div>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loading-title">🏛 BẢO TÀNG SỐ CÔNG HẢI</div>
+    <div class="loading-bar-bg">
+      <div class="loading-bar-fill" id="load-bar"></div>
+    </div>
+    <div class="loading-text" id="load-text">Đang tải mô hình 3D...</div>
+  </div>
+
+  <!-- 3D Canvas -->
+  <canvas id="canvas-3d"></canvas>
+
+  <!-- UI Layer -->
+  <div id="ui-layer">
+    <button id="back-btn">⬅ Quay lại Tour</button>
+    <div id="room-badge">🏛 Phòng Triển Lãm</div>
+    <div id="crosshair"></div>
+
+    <div id="debug-hud">
+      <div>📍 <span class="label">X:</span> <span class="val" id="pos-x">0.00</span>
+        <span class="label">Y:</span> <span class="val" id="pos-y">0.00</span>
+        <span class="label">Z:</span> <span class="val" id="pos-z">0.00</span>
+      </div>
+      <div><span class="label">Hướng:</span> <span class="val" id="cam-rot">0°</span></div>
+      <div class="hint">⌨ Nhấn <b>G</b> bật/tắt lưới · <b>H</b> ẩn/hiện HUD</div>
+    </div>
+
+    <div id="tutorial">
+      <strong>🏛 BẢO TÀNG SỐ CÔNG HẢI</strong><br>
+      💻 <b>PC:</b> W A S D để đi · Kéo chuột để nhìn · Click vào hiện vật để xem<br>
+      📱 <b>Mobile:</b> Kéo để xoay · Chạm vào sàn để di chuyển
+    </div>
+
+    <div id="room-nav">
+      <button class="room-btn active" onclick="teleportTo(0)">🏺 Sảnh Lịch Sử</button>
+      <button class="room-btn" onclick="teleportTo(1)">📜 Phòng Truyền Thống</button>
+      <button class="room-btn" onclick="teleportTo(2)">🌿 Phòng Sản phẩm OCOP</button>
+    </div>
+  </div>
+
+  <!-- Info Modal -->
+  <div id="info-modal">
+    <div id="modal-box">
+      <button id="modal-close" onclick="closeModal()">✕</button>
+      <div id="modal-title"></div>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Three.js + Draco Loader -->
+  <script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    // ====== CONFIG ======
+    const MODEL_PATH = 'core/data/phongtrungbay.gltf?v=' + Date.now();
+    const MOVE_SPEED = 0.08;
+    const PLAYER_HEIGHT = 1.65;
+    const MOUSE_SENSITIVITY = 0.002;
+
+    // ====== THÔNG TIN HIỆN VẬT ======
+    const INFO = {
+      raglay_statue: {
+        title: '🗿 Tượng Người Raglai',
+        html: `<p>Người <strong>Raglai</strong> là dân tộc thiểu số thuộc ngữ hệ Mã Lai – Đa Đảo, sinh sống chủ yếu tại vùng núi tỉnh <strong>Khánh Hòa</strong>, Ninh Thuận và Bình Thuận.</p>
+      <ul><li><strong>Dân số:</strong> Khoảng 130.000 người (2019)</li>
+      <li><strong>Trang phục:</strong> Váy thổ cẩm nhiều màu, vòng cổ và khuyên tai đồng</li>
+      <li><strong>Tại Công Hải:</strong> Cộng đồng Raglai gắn bó lâu đời với vùng đất Thuận Bắc</li>
+      <li><strong>Di sản:</strong> Nhạc cụ Chapi, Mã La, lễ hội Bỏ mả đặc sắc</li></ul>`
+      },
+      sogv: {
+        title: '📖 Sổ Vàng Truyền Thống',
+        html: `<p>Phòng Truyền Thống lưu giữ toàn bộ hành trình xây dựng và phát triển của <strong>xã Công Hải</strong> qua các thời kỳ.</p>
+      <ul><li><strong>Nội dung:</strong> Ảnh chân dung lãnh đạo xã qua từng nhiệm kỳ</li>
+      <li><strong>Thành tích:</strong> Các danh hiệu thi đua, bằng khen cấp tỉnh và trung ương</li></ul>
+      <p style="margin-top:12px;color:#888;font-style:italic">📌 Nội dung sẽ được cập nhật sau khi bàn giao tài liệu</p>`
+      },
+      ocop_nho: {
+        title: '🍇 Nho Xanh Công Hải — OCOP 4 Sao',
+        html: `<p><strong>Nho xanh Công Hải</strong> là sản phẩm đặc trưng nổi tiếng, được trồng theo tiêu chuẩn <strong>VietGAP</strong>, đạt chứng nhận <strong>OCOP 4 sao</strong>.</p>
+      <ul><li><strong>Đặc điểm:</strong> Vị ngọt thanh tự nhiên, hạt nhỏ, giàu vitamin C</li>
+      <li><strong>Mùa thu hoạch:</strong> Tháng 3–5 và tháng 8–10 hàng năm</li></ul>
+      <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+        <a href="#" class="btn-green">🛒 Mua trên Shopee</a>
+        <a href="#" class="btn-orange">📦 Mua trên Lazada</a>
+      </div>`
+      }
+    };
+
+    // ====== SCENE SETUP ======
+    const canvas = document.getElementById('canvas-3d');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = false;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.0;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x1a1a1a);  // Nền tối phù hợp nội thất bảo tàng
+    scene.fog = new THREE.Fog(0x1a1a1a, 60, 120);  // Fog xa hơn để thấy rộng
+
+    // Camera (FOV 50° tạo cảm giác không gian rộng lớn hơn)
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 300);
+    camera.position.set(0, PLAYER_HEIGHT, 12);
+    
+    // Đèn headlight gắn trên camera giúp chiếu sáng các vị trí người chơi nhìn trực diện
+    const headlight = new THREE.PointLight(0xffffff, 1.8, 18, 1.0);
+    camera.add(headlight);
+    scene.add(camera);
+
+    // ====== LIGHTING ======
+    // Ambient light (giúp căn phòng sáng sủa toàn diện)
+    const ambient = new THREE.AmbientLight(0xffffff, 0.85);
+    scene.add(ambient);
+
+    // Hemisphere light (ánh sáng vòm trời giả lập nảy bật)
+    const hemi = new THREE.HemisphereLight(0xFFF2E6, 0x33221b, 0.7);
+    scene.add(hemi);
+
+    // Sun (Ánh sáng mặt trời chiếu sáng bổ sung)
+    const sun = new THREE.DirectionalLight(0xFFF6E5, 0.8);
+    sun.position.set(-10, 20, 5);
+    scene.add(sun);
+
+    // Danh sách đèn thiết kế trong Blender (đã chuyển hệ toạ độ sang Three.js: X, Z, -Y)
+    const BLENDER_LIGHTS = [
+      { name: "Area", type: "POINT", color: [1.0, 1.0, 1.0], energy: 15.2, position: [12.00, 6.40, -5.04] },
+      { name: "Den_Khu1_SanhDon", type: "POINT", color: [1.0, 0.92, 0.80], energy: 400.0, position: [12.5, 5.0, -2.5] },
+      { name: "Den_Khu2_HanhLang", type: "POINT", color: [1.0, 0.90, 0.75], energy: 200.0, position: [12.5, 5.0, -10.0] },
+      { name: "Den_Khu2_Phai", type: "POINT", color: [1.0, 0.95, 0.85], energy: 300.0, position: [20.0, 5.0, -10.0] },
+      { name: "Den_Khu2_Trai", type: "POINT", color: [1.0, 0.95, 0.85], energy: 300.0, position: [5.0, 5.0, -10.0] },
+      { name: "Den_Khu3_SuThi", type: "POINT", color: [1.0, 0.90, 0.75], energy: 350.0, position: [12.39, 7.72, -20.10] },
+      { name: "Den_Khu5_LuuNiem", type: "POINT", color: [1.0, 0.95, 0.88], energy: 250.0, position: [20.0, 5.0, -37.5] },
+      { name: "Den_Khu5_TrienLamAnh", type: "POINT", color: [1.0, 0.97, 0.95], energy: 350.0, position: [7.5, 5.0, -37.5] },
+      { name: "DenNen_Khu4_TamLinh", type: "POINT", color: [0.60, 0.55, 0.80], energy: 80.0, position: [12.5, 5.0, -30.0] },
+      
+      { name: "DenSpot_CotNhaMo_1", type: "SPOT", color: [1.0, 0.88, 0.70], energy: 450.0, position: [10.5, 5.0, -28.0], target: [10.5, 1.0, -28.0], angle: 0.436, penumbra: 0.3 },
+      { name: "DenSpot_CotNhaMo_2", type: "SPOT", color: [1.0, 0.88, 0.70], energy: 450.0, position: [14.5, 5.0, -28.0], target: [14.5, 1.0, -28.0], angle: 0.436, penumbra: 0.3 },
+      { name: "DenSpot_CotNhaMo_3", type: "SPOT", color: [1.0, 0.88, 0.70], energy: 450.0, position: [10.5, 5.0, -32.0], target: [10.5, 1.0, -32.0], angle: 0.436, penumbra: 0.3 },
+      { name: "DenSpot_CotNhaMo_4", type: "SPOT", color: [1.0, 0.88, 0.70], energy: 450.0, position: [14.5, 5.0, -32.0], target: [14.5, 1.0, -32.0], angle: 0.436, penumbra: 0.3 },
+      { name: "DenSpot_ThuyenKagor", type: "SPOT", color: [1.0, 0.90, 0.65], energy: 550.0, position: [12.5, 6.0, -30.0], target: [12.5, 1.0, -30.0], angle: 0.698, penumbra: 0.2 }
+    ];
+
+    BLENDER_LIGHTS.forEach(data => {
+      const color = new THREE.Color(data.color[0], data.color[1], data.color[2]);
+      if (data.type === "POINT") {
+        const intensity = data.energy * 2.0; 
+        const light = new THREE.PointLight(color, intensity, 40, 1.2);
+        light.position.set(data.position[0], data.position[1], data.position[2]);
+        scene.add(light);
+      } else if (data.type === "SPOT") {
+        const intensity = data.energy * 2.5;
+        const light = new THREE.SpotLight(color, intensity, 50, data.angle, data.penumbra, 1.2);
+        light.position.set(data.position[0], data.position[1], data.position[2]);
+        
+        const targetObj = new THREE.Object3D();
+        targetObj.position.set(data.target[0], data.target[1], data.target[2]);
+        scene.add(targetObj);
+        light.target = targetObj;
+        
+        scene.add(light);
+      }
+    });
+
+
+    // ====== LOAD MODEL ======
+    const loadingBar = document.getElementById('load-bar');
+    const loadingText = document.getElementById('load-text');
+
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/libs/draco/');
+
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.setDRACOLoader(dracoLoader);
+
+    // ====== DEBUG GRID ======
+    let gridGroup = new THREE.Group();
+    let gridVisible = true;
+
+    function createDebugGrid(bbox) {
+      const center = new THREE.Vector3();
+      bbox.getCenter(center);
+      const size = new THREE.Vector3();
+      bbox.getSize(size);
+      const gridSize = Math.ceil(Math.max(size.x, size.z) / 2) * 2 + 10;
+
+      // Floor grid
+      const grid = new THREE.GridHelper(gridSize, gridSize, 0x444444, 0x222222);
+      grid.position.set(center.x, bbox.min.y + 0.01, center.z);
+      gridGroup.add(grid);
+
+      // Axes helper at center
+      const axes = new THREE.AxesHelper(5);
+      axes.position.set(center.x, bbox.min.y + 0.02, center.z);
+      gridGroup.add(axes);
+
+      // Axis labels every 5m
+      const labelMat = new THREE.LineBasicMaterial({ color: 0xff4444, transparent: true, opacity: 0.6 });
+      for (let i = -gridSize / 2; i <= gridSize / 2; i += 5) {
+        if (i === 0) continue;
+        // X-axis markers
+        const ptsX = [new THREE.Vector3(center.x + i, bbox.min.y + 0.02, center.z - 0.3),
+        new THREE.Vector3(center.x + i, bbox.min.y + 0.02, center.z + 0.3)];
+        gridGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(ptsX), labelMat));
+        // Z-axis markers
+        const ptsZ = [new THREE.Vector3(center.x - 0.3, bbox.min.y + 0.02, center.z + i),
+        new THREE.Vector3(center.x + 0.3, bbox.min.y + 0.02, center.z + i)];
+        gridGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(ptsZ), labelMat));
+      }
+
+      scene.add(gridGroup);
+      console.log(`📐 Grid created. Model center: (${center.x.toFixed(1)}, ${center.y.toFixed(1)}, ${center.z.toFixed(1)}), Size: ${size.x.toFixed(1)}×${size.y.toFixed(1)}×${size.z.toFixed(1)}`);
+    }
+
+    gltfLoader.load(
+      MODEL_PATH,
+      (gltf) => {
+        const model = gltf.scene;
+        model.traverse((child) => {
+          if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+            if (child.material) {
+              const mats = Array.isArray(child.material) ? child.material : [child.material];
+              mats.forEach(mat => {
+                console.log(`Mesh: "${child.name}", Material: "${mat.name}", Color: #${mat.color ? mat.color.getHexString() : 'N/A'}, Metalness: ${mat.metalness}, Roughness: ${mat.roughness}, Map: ${mat.map ? 'Yes' : 'No'}`);
+              });
+            }
+          }
+          if (child.isLight) {
+            child.castShadow = true;
+            child.shadow.bias = -0.001;
+            child.shadow.mapSize.width = 1024;
+            child.shadow.mapSize.height = 1024;
+            child.intensity *= 0.005; // Scale down Blender light intensities to prevent overexposure
+          }
+        });
+        scene.add(model);
+        window.scene = scene;
+        window.model = model;
+
+        // Tính bounding box và đặt camera vào giữa phòng
+        const bbox = new THREE.Box3().setFromObject(model);
+        const center = new THREE.Vector3();
+        bbox.getCenter(center);
+        const size = new THREE.Vector3();
+        bbox.getSize(size);
+
+        // Spawn camera ở vị trí cố định — lùi ra xa để thấy toàn bộ sảnh lễ tân
+        camera.position.set(12.5, bbox.min.y + PLAYER_HEIGHT, -2.0);
+        euler.y = 0; // Hướng 0° (nhìn thẳng vào sảnh)
+        console.log(`🏛 Model loaded. BBox min:(${bbox.min.x.toFixed(1)},${bbox.min.y.toFixed(1)},${bbox.min.z.toFixed(1)}) max:(${bbox.max.x.toFixed(1)},${bbox.max.y.toFixed(1)},${bbox.max.z.toFixed(1)})`);
+        console.log("=== LIGHTS IN SCENE ===");
+        scene.traverse(node => {
+          if (node.isLight) {
+            console.log(`Light: "${node.name || node.type}", Type: ${node.type}, Intensity: ${node.intensity}, Color: #${node.color.getHexString()}`);
+          }
+        });
+        console.log(`📍 Camera spawn: (${camera.position.x.toFixed(1)}, ${camera.position.y.toFixed(1)}, ${camera.position.z.toFixed(1)})`);
+
+        // Cập nhật PLAYER_HEIGHT dựa trên sàn thực tế
+        window._floorY = bbox.min.y;
+
+        // Tạo lưới debug
+        createDebugGrid(bbox);
+
+        // Cập nhật teleport positions dựa trên model
+        ROOM_POS[0] = { x: center.x, z: center.z + size.z * 0.3, ry: 0 };  // Sảnh (gần cửa)
+        ROOM_POS[1] = { x: center.x + 3.0, z: center.z + 4.0, ry: 0.64 };                   // Giữa phòng (lệch phải để tránh cột cái che tượng)
+        ROOM_POS[2] = { x: center.x, z: center.z - size.z * 0.3, ry: 0 };  // Cuối phòng
+
+        // ====== LOAD TƯỢNG RAGLAI ======
+        const PEDESTAL_HEIGHT = 0.8; // Bục trưng bày cao 0.8m
+        gltfLoader.load('core/data/model/Tuongraglai.glb', (statueGltf) => {
+          const statue = statueGltf.scene;
+
+          // Tính kích thước tượng
+          const statueBBox = new THREE.Box3().setFromObject(statue);
+          const statueSize = new THREE.Vector3();
+          statueBBox.getSize(statueSize);
+          const statueCenter = new THREE.Vector3();
+          statueBBox.getCenter(statueCenter);
+
+          // Auto-scale: nếu tượng quá lớn/nhỏ, scale cho cao ~1.5m
+          const targetHeight = 1.5;
+          const scaleFactor = targetHeight / statueSize.y;
+          statue.scale.setScalar(scaleFactor);
+
+          // Đặt tượng ở trước cột cái (Z = -18.5) để không bị lấp bên trong cột
+          statue.position.set(
+            center.x - statueCenter.x * scaleFactor,
+            bbox.min.y + PEDESTAL_HEIGHT - statueBBox.min.y * scaleFactor,
+            -18.5 - statueCenter.z * scaleFactor
+          );
+
+          statue.traverse((child) => {
+            if (child.isMesh) {
+              child.castShadow = true;
+              child.receiveShadow = true;
+            }
+          });
+          statue.name = 'raglay_statue';
+          scene.add(statue);
+
+          // Đèn chiếu rọi tượng (PointLight toả sáng ấm rực rỡ)
+          const statueLight = new THREE.PointLight(0xfff5ea, 180, 15, 1);
+          statueLight.position.set(
+            statue.position.x,
+            statue.position.y + 2.2,  // Phía trên đầu tượng
+            statue.position.z + 0.5   // Hơi nhô ra phía trước một chút
+          );
+          scene.add(statueLight);
+
+          console.log(`🗿 Tượng Raglai loaded. Positioned at Z = -18.5. Scale: ${scaleFactor.toFixed(3)}`);
+        });
+
+        // Hide loading, show scene
+        document.getElementById('loading-screen').classList.add('hidden');
+        setTimeout(() => {
+          document.getElementById('fade-overlay').classList.add('gone');
+        }, 300);
+
+        // Lock pointer on click
+        canvas.addEventListener('click', () => {
+          if (!modalOpen) canvas.requestPointerLock();
+        });
+      },
+      (progress) => {
+        if (progress.total > 0) {
+          const pct = Math.round(progress.loaded / progress.total * 100);
+          loadingBar.style.width = pct + '%';
+          loadingText.textContent = `Đang tải... ${pct}% (${(progress.loaded / 1048576).toFixed(1)} MB)`;
+        }
+      },
+      (error) => {
+        console.error('Error loading model:', error);
+        loadingText.textContent = '❌ Lỗi tải mô hình. Vui lòng làm mới trang.';
+      }
+    );
+
+    // ====== FPS CONTROLS ======
+    const euler = new THREE.Euler(0, 0, 0, 'YXZ');
+    const velocity = new THREE.Vector3();
+    const direction = new THREE.Vector3();
+    const keys = {};
+    let isLocked = false;
+
+    document.addEventListener('pointerlockchange', () => {
+      isLocked = document.pointerLockElement === canvas;
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isLocked) return;
+      euler.y -= e.movementX * MOUSE_SENSITIVITY;
+      euler.x -= e.movementY * MOUSE_SENSITIVITY;
+      euler.x = Math.max(-Math.PI / 2.2, Math.min(Math.PI / 2.2, euler.x));
+      camera.quaternion.setFromEuler(euler);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      keys[e.code] = true;
+      // Toggle grid with G key
+      if (e.code === 'KeyG' && !e.repeat) {
+        gridVisible = !gridVisible;
+        gridGroup.visible = gridVisible;
+      }
+      // Toggle HUD with H key
+      if (e.code === 'KeyH' && !e.repeat) {
+        const hud = document.getElementById('debug-hud');
+        hud.style.display = hud.style.display === 'none' ? '' : 'none';
+      }
+    });
+    document.addEventListener('keyup', (e) => { keys[e.code] = false; });
+
+    // Touch controls for mobile
+    let touchStartX = 0, touchStartY = 0;
+    let touchMoveX = 0, touchMoveY = 0;
+    let isTouching = false;
+
+    canvas.addEventListener('touchstart', (e) => {
+      isTouching = true;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (!isTouching) return;
+      touchMoveX = (e.touches[0].clientX - touchStartX) * 0.003;
+      touchMoveY = (e.touches[0].clientY - touchStartY) * 0.003;
+      euler.y -= touchMoveX;
+      euler.x -= touchMoveY;
+      euler.x = Math.max(-Math.PI / 2.2, Math.min(Math.PI / 2.2, euler.x));
+      camera.quaternion.setFromEuler(euler);
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    canvas.addEventListener('touchend', () => { isTouching = false; });
+
+    // ====== MOVEMENT ======
+    function updateMovement(delta) {
+      const moveDir = new THREE.Vector3();
+
+      if (keys['KeyW'] || keys['ArrowUp']) moveDir.z -= 1;
+      if (keys['KeyS'] || keys['ArrowDown']) moveDir.z += 1;
+      if (keys['KeyA'] || keys['ArrowLeft']) moveDir.x -= 1;
+      if (keys['KeyD'] || keys['ArrowRight']) moveDir.x += 1;
+
+      if (moveDir.length() > 0) {
+        moveDir.normalize();
+        moveDir.applyQuaternion(camera.quaternion);
+        moveDir.y = 0; // Keep on ground plane
+        moveDir.normalize();
+        camera.position.addScaledVector(moveDir, MOVE_SPEED);
+      }
+
+      // Keep at player height (sử dụng sàn thực tế nếu có)
+      const floorY = window._floorY || 0;
+      camera.position.y = floorY + PLAYER_HEIGHT;
+    }
+
+    // ====== MODAL ======
+    let modalOpen = false;
+
+    window.openModal = function (key) {
+      const d = INFO[key];
+      if (!d) return;
+      document.getElementById('modal-title').textContent = d.title;
+      document.getElementById('modal-content').innerHTML = d.html;
+      document.getElementById('info-modal').classList.add('open');
+      modalOpen = true;
+      document.exitPointerLock();
+    };
+
+    window.closeModal = function () {
+      document.getElementById('info-modal').classList.remove('open');
+      modalOpen = false;
+    };
+
+    document.getElementById('info-modal').addEventListener('click', function (e) {
+      if (e.target === this) closeModal();
+    });
+
+    // ====== TELEPORT ======
+    const ROOM_POS = [
+      { x: 0, z: 12 },     // Sảnh chính
+      { x: 0, z: 0 },      // Phòng Truyền Thống
+      { x: 0, z: -12 },    // Phòng OCOP
+    ];
+
+    window.teleportTo = function (idx) {
+      const pos = ROOM_POS[idx];
+      camera.position.set(pos.x, PLAYER_HEIGHT, pos.z);
+      if (pos.ry !== undefined) {
+        euler.y = pos.ry;
+        camera.quaternion.setFromEuler(euler);
+      }
+
+      // Update room buttons
+      document.querySelectorAll('.room-btn').forEach((btn, i) => {
+        btn.classList.toggle('active', i === idx);
+      });
+    };
+
+    // ====== BACK BUTTON ======
+    document.getElementById('back-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.exitPointerLock();
+      const overlay = document.getElementById('fade-overlay');
+      overlay.style.opacity = '1';
+      overlay.style.pointerEvents = 'auto';
+      overlay.classList.remove('gone');
+      setTimeout(() => {
+        window.location.href = 'index.html?startscene=scene_toancanhtrusoUBND';
+      }, 650);
+    });
+
+    // ====== RESIZE ======
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // ====== ANIMATION LOOP ======
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const delta = clock.getDelta();
+
+      if (!modalOpen) {
+        updateMovement(delta);
+      }
+
+      // Update debug HUD
+      const posX = document.getElementById('pos-x');
+      if (posX) {
+        document.getElementById('pos-x').textContent = camera.position.x.toFixed(2);
+        document.getElementById('pos-y').textContent = camera.position.y.toFixed(2);
+        document.getElementById('pos-z').textContent = camera.position.z.toFixed(2);
+        const deg = THREE.MathUtils.radToDeg(euler.y).toFixed(0);
+        document.getElementById('cam-rot').textContent = deg + '°';
+      }
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // ====== FADE IN ======
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('fade-overlay').classList.add('gone');
+      }, 400);
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,200 @@
+<krpano>
+
+	<scene name="scene_HoSongTrau1" title="Hồ Sông Trâu 1" onstart="" thumburl="panos/HoSongTrau1.tiles/thumb.jpg" lat="11.803151" lng="109.067367" heading="0.0">
+		<view hlookat="-91.707" vlookat="5.751" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/HoSongTrau1.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/HoSongTrau1.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/HoSongTrau1.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/HoSongTrau1.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/HoSongTrau1.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+
+		<hotspot name="spot1" style="muiten" ath="-75.359" atv="18.476" linkedscene="scene_HoSongTrau2" />
+		<hotspot name="spot2" style="tructhang" ath="80.835" atv="-18.665" linkedscene="scene_toancanhSongTrau1" />
+		<hotspot name="spot3" style="tructhang" ath="15.692" atv="-30.010" linkedscene="scene_toancanhSongTrau2" />
+		<hotspot name="spot4" style="tructhang" ath="-120.618" atv="-4.323" linkedscene="scene_toancanhtrusoDanguy" custom_title="Toàn cảnh trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+	</scene>
+
+	<scene name="scene_HoSongTrau2" title="Hồ Sông Trâu 2" onstart="" thumburl="panos/HoSongTrau2.tiles/thumb.jpg" lat="11.803151" lng="109.067367" heading="0.0">
+		<view hlookat="-96.858" vlookat="7.127" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/HoSongTrau2.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/HoSongTrau2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/HoSongTrau2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/HoSongTrau2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/HoSongTrau2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+
+		<hotspot name="spot1" style="muiten" ath="102.029" atv="16.236" linkedscene="scene_HoSongTrau1" />
+		<hotspot name="spot2" style="tructhang" ath="82.204" atv="-17.509" linkedscene="scene_toancanhSongTrau1" />
+		<hotspot name="spot3" style="tructhang" ath="41.459" atv="-25.997" linkedscene="scene_toancanhSongTrau2" />
+		<hotspot name="spot4" style="tructhang" ath="-120.618" atv="-4.323" linkedscene="scene_toancanhtrusoDanguy" custom_title="Toàn cảnh trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+	</scene>
+
+	<scene name="scene_toancanhSongTrau1" title="Toàn cảnh Hồ Sông Trâu 1" onstart="" thumburl="panos/toancanhSongTrau1.tiles/thumb.jpg" lat="11.802333" lng="109.067580" heading="0.0">
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="105" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/toancanhSongTrau1.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="6144" tiledimageheight="6144"><cube url="panos/toancanhSongTrau1.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="3072" tiledimageheight="3072"><cube url="panos/toancanhSongTrau1.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1536" tiledimageheight="1536"><cube url="panos/toancanhSongTrau1.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="768" tiledimageheight="768"><cube url="panos/toancanhSongTrau1.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot0" style="vitri" ath="-46.772" atv="3.858" linkedscene="scene_longhoSongTrau6" custom_title="Lòng hồ" custom_thumb="tours/hoSongTrau/panos/longhoSongTrau6.tiles/thumb.jpg"/>
+		<hotspot name="spot1" style="vitri" ath="-7.919" atv="21.599" linkedscene="scene_HoSongTrau1" />
+		<hotspot name="spot2" style="tructhang" ath="57.910" atv="-4.217" linkedscene="scene_toancanhSongTrau2" />
+		<hotspot name="spot4" style="tructhang" ath="-169.364" atv="5.060" linkedscene="scene_toancanhconghai" custom_title="Toàn cảnh xã Công Hải" custom_thumb="tours/toanCanh/panos/toancanhCongHai.tiles/thumb.jpg"/>
+		<hotspot name="spot3" style="tructhang" ath="-16.515" atv="-1.943" linkedscene="scene_toancanhtrusoDanguy" custom_title="Toàn cảnh trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+		<hotspot name="info_hosongtrau" style="thongtin" ath="-2.252" atv="8.205" infoid="info_hosongtrau" custom_title="Khám phá Hồ Sông Trâu" />
+	</scene>
+
+	<scene name="scene_toancanhSongTrau2" title="Toàn cảnh Hồ Sông Trâu 2" onstart="" thumburl="panos/toancanhSongTrau2.tiles/thumb.jpg" lat="11.803806" lng="109.069399" heading="0.0">
+		<view hlookat="-25.092" vlookat="7.544" fovtype="MFOV" fov="105" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/toancanhSongTrau2.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="6144" tiledimageheight="6144"><cube url="panos/toancanhSongTrau2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="3072" tiledimageheight="3072"><cube url="panos/toancanhSongTrau2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1536" tiledimageheight="1536"><cube url="panos/toancanhSongTrau2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="768" tiledimageheight="768"><cube url="panos/toancanhSongTrau2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>			
+		</image>
+		<hotspot name="info_hosongtrau" style="thongtin" ath="-2.252" atv="8.205" infoid="info_hosongtrau" custom_title="Khám phá Hồ Sông Trâu" />
+		<hotspot name="spot1" style="vitri" ath="-49.306" atv="23.393" linkedscene="scene_HoSongTrau1" />
+		<hotspot name="spot2" style="tructhang" ath="-111.405" atv="17.069" linkedscene="scene_toancanhSongTrau1" />
+		<hotspot name="spot3" style="tructhang" ath="-158.011" atv="2.871" linkedscene="scene_toancanhconghai" custom_title="Toàn cảnh xã Công Hải" custom_thumb="tours/toanCanh/panos/toancanhCongHai.tiles/thumb.jpg"/>
+		<hotspot name="spot4" style="tructhang" ath="-6.580" atv="-1.606" linkedscene="scene_toancanhtrusoDanguy" custom_title="Toàn cảnh trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+		<hotspot name="spot5" style="vitri" ath="-48.109" atv="4.504" linkedscene="scene_longhoSongTrau6" custom_title="Lòng hồ" custom_thumb="tours/hoSongTrau/panos/longhoSongTrau6.tiles/thumb.jpg"/>
+	</scene>
+
+
+	<scene name="scene_longhoSongTrau2" title="Lòng hồ" onstart="" thumburl="panos/longhoSongTrau2.tiles/thumb.jpg" lat="11.803305314467947" lng="109.05795134393111" heading="0.0">
+
+		<view hlookat="239.970" vlookat="1.274" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/longhoSongTrau2.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/longhoSongTrau2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/longhoSongTrau2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/longhoSongTrau2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/longhoSongTrau2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-123.154" atv="14.566" linkedscene="scene_longhoSongTrau3" />
+		<hotspot name="spot2" style="tructhang" ath="-76.390" atv="-5.140" linkedscene="scene_toancanhSongTrau2" custom_title="Toàn cảnh Hồ Sông Trâu" custom_thumb="tours/hoSongTrau/panos/toancanhSongTrau2.tiles/thumb.jpg"/>
+		<hotspot name="spot3" style="tructhang" ath="-173.021" atv="-2.658" linkedscene="scene_toancanhtrusoDanguy" custom_title="Toàn cảnh trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+	</scene>
+
+	<scene name="scene_longhoSongTrau3" title="Lòng hồ" onstart="" thumburl="panos/longhoSongTrau3.tiles/thumb.jpg" lat="11.803305314467947" lng="109.05795134393111" heading="0.0">
+
+		<view hlookat="-155.218" vlookat="5.301" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/longhoSongTrau3.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/longhoSongTrau3.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/longhoSongTrau3.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/longhoSongTrau3.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/longhoSongTrau3.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="15.099" atv="8.270" linkedscene="scene_longhoSongTrau2" />
+		<hotspot name="spot2" style="muiten" ath="-145.917" atv="13.598" linkedscene="scene_longhoSongTrau4" />
+		<hotspot name="spot3" style="tructhang" ath="-105.326" atv="-6.049" linkedscene="scene_toancanhSongTrau2" custom_title="Toàn cảnh Hồ Sông Trâu" custom_thumb="tours/hoSongTrau/panos/toancanhSongTrau2.tiles/thumb.jpg"/>
+		<hotspot name="spot4" style="tructhang" ath="149.496" atv="-2.967" linkedscene="scene_toancanhtrusoDanguy" custom_title="Toàn cảnh trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+
+	</scene>
+
+	<scene name="scene_longhoSongTrau4" title="Lòng hồ" onstart="" thumburl="panos/longhoSongTrau4.tiles/thumb.jpg" lat="11.803305314467947" lng="109.05795134393111" heading="0.0">
+
+		<view hlookat="-122.742" vlookat="1.791" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/longhoSongTrau4.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/longhoSongTrau4.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/longhoSongTrau4.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/longhoSongTrau4.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/longhoSongTrau4.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="20.985" atv="10.155" linkedscene="scene_longhoSongTrau3" />
+		<hotspot name="spot2" style="muiten" ath="-124.282" atv="14.872" linkedscene="scene_longhoSongTrau5" />
+		<hotspot name="spot3" style="tructhang" ath="-100.466" atv="-6.518" linkedscene="scene_toancanhSongTrau2" custom_title="Toàn cảnh Hồ Sông Trâu" custom_thumb="tours/hoSongTrau/panos/toancanhSongTrau2.tiles/thumb.jpg"/>
+		<hotspot name="spot4" style="tructhang" ath="154.666" atv="-4.865" linkedscene="scene_toancanhtrusoDanguy" custom_title="Toàn cảnh trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+
+
+	</scene>
+
+	<scene name="scene_longhoSongTrau5" title="Lòng hồ" onstart="" thumburl="panos/longhoSongTrau5.tiles/thumb.jpg" lat="11.803305314467947" lng="109.05795134393111" heading="0.0">
+
+		<view hlookat="-36.809" vlookat="-2.614" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/longhoSongTrau5.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/longhoSongTrau5.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/longhoSongTrau5.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/longhoSongTrau5.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/longhoSongTrau5.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-78.633" atv="8.836" linkedscene="scene_longhoSongTrau6" />
+		<hotspot name="spot2" style="muiten" ath="122.859" atv="11.884" linkedscene="scene_longhoSongTrau4" />
+		<hotspot name="spot3" style="tructhang" ath="-15.263" atv="-7.539" linkedscene="scene_toancanhSongTrau2" custom_title="Toàn cảnh Hồ Sông Trâu" custom_thumb="tours/hoSongTrau/panos/toancanhSongTrau2.tiles/thumb.jpg"/>
+		<hotspot name="spot4" style="tructhang" ath="-123.485" atv="-3.477" linkedscene="scene_toancanhtrusoDanguy" custom_title="Toàn cảnh trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+
+	</scene>
+
+	<scene name="scene_longhoSongTrau6" title="Lòng hồ" onstart="" thumburl="panos/longhoSongTrau6.tiles/thumb.jpg" lat="11.803305314467947" lng="109.05795134393111" heading="0.0">
+
+		<view hlookat="-200.526" vlookat="-4.332" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/longhoSongTrau6.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/longhoSongTrau6.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/longhoSongTrau6.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/longhoSongTrau6.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/longhoSongTrau6.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="156.234" atv="9.477" linkedscene="scene_longhoSongTrau7" />
+		<hotspot name="spot2" style="muiten" ath="-20.440" atv="3.204" linkedscene="scene_longhoSongTrau5" />
+		<hotspot name="spot3" style="tructhang" ath="-131.322" atv="-3.685" linkedscene="scene_toancanhSongTrau2" custom_title="Toàn cảnh Hồ Sông Trâu" custom_thumb="tours/hoSongTrau/panos/toancanhSongTrau2.tiles/thumb.jpg"/>
+		<hotspot name="spot4" style="tructhang" ath="120.818" atv="-0.389" linkedscene="scene_toancanhtrusoDanguy" custom_title="Toàn cảnh trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+		<hotspot name="spot5" style="muiten" ath="6.662" atv="-1.246" linkedscene="scene_longhoSongTrau2" />
+
+	</scene>
+
+	<scene name="scene_longhoSongTrau7" title="Lòng hồ" onstart="" thumburl="panos/longhoSongTrau7.tiles/thumb.jpg" lat="11.803305314467947" lng="109.05795134393111" heading="0.0">
+
+		<view hlookat="-144.809" vlookat="3.944" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/longhoSongTrau7.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/longhoSongTrau7.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/longhoSongTrau7.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/longhoSongTrau7.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/longhoSongTrau7.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-38.139" atv="13.055" linkedscene="scene_longhoSongTrau6" />
+		<hotspot name="spot2" style="muiten" ath="-17.685" atv="1.105" linkedscene="scene_longhoSongTrau2" />
+		<hotspot name="spot3" style="tructhang" ath="-149.512" atv="-3.903" linkedscene="scene_toancanhSongTrau2" custom_title="Toàn cảnh Hồ Sông Trâu" custom_thumb="tours/toanCanh/panos/toancanhSongTrau2.tiles/thumb.jpg"/>
+		<hotspot name="spot4" style="tructhang" ath="102.767" atv="-2.782" linkedscene="scene_toancanhtrusoDanguy" custom_title="Toàn cảnh trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+
+	</scene>
+
+	<scene name="scene_venho" title="venho" onstart="" thumburl="panos/venho.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+
+		<view hlookat="-130.535" vlookat="1.985" fovtype="MFOV" fov="90" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/venho.tiles/preview.jpg" />
+
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/venho.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/venho.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/venho.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/venho.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="longho6" style="vitri" ath="-130.535" atv="1.985" linkedscene="scene_longhoSongTrau6" custom_title="Lòng hồ" custom_thumb="tours/hoSongTrau/panos/longhoSongTrau6.tiles/thumb.jpg"/>
+		<hotspot name="spot3" style="tructhang" ath="-164.054" atv="-5.057" linkedscene="scene_toancanhSongTrau2" custom_title="Toàn cảnh Hồ Sông Trâu" custom_thumb="tours/toanCanh/panos/toancanhSongTrau2.tiles/thumb.jpg"/>
+	</scene>
+		
+</krpano>

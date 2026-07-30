@@ -1,0 +1,191 @@
+<krpano>
+	<scene name="scene_CauSongTrau1" title="Cầu tràn Đầu Suối B 1" thumburl="panos/CauSongTrau1.tiles/thumb.jpg" lat="11.837734417517492" lng="109.05617612363693" heading="0.0">
+		<view hlookat="-130.682" vlookat="10.117" fovtype="MFOV" fov="120.000" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/CauSongTrau1.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/CauSongTrau1.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/CauSongTrau1.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/CauSongTrau1.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/CauSongTrau1.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="166.428" atv="14.335" linkedscene="scene_causongtrau2" />
+		<hotspot name="spot2" style="tructhang" ath="-32.062" atv="-16.942" linkedscene="scene_toancanhtrusoDanguy" custom_title="Trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+		<hotspot name="spot3" style="tructhang" ath="-109.881" atv="-9.407" linkedscene="scene_toancanhSongTrau2" custom_title="Toàn cảnh Hồ Sông Trâu" custom_thumb="tours/hoSongTrau/panos/toancanhSongTrau2.tiles/thumb.jpg"/>
+	</scene>
+
+	<scene name="scene_CauSongTrau2" title="Cầu tràn Đầu Suối B 2" thumburl="panos/CauSongTrau2.tiles/thumb.jpg" lat="11.837734417517492" lng="109.05617612363693" heading="0.0">
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/CauSongTrau2.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/CauSongTrau2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/CauSongTrau2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/CauSongTrau2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/CauSongTrau2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="tructhang" ath="-120.946" atv="-12.521" linkedscene="scene_toancanhSongTrau2" custom_title="Toàn cảnh Hồ Sông Trâu" custom_thumb="tours/hoSongTrau/panos/toancanhSongTrau2.tiles/thumb.jpg"/>
+		<hotspot name="spot2" style="muiten" ath="-30.504" atv="9.413" linkedscene="scene_causongtrau1" />
+		<hotspot name="spot3" style="muiten" ath="149.406" atv="7.288" linkedscene="scene_homatrai1" custom_title="Hướng đi Ma Trai"/>
+	</scene>
+
+		<scene name="scene_HoMaTrai1" title="Hồ Ma Trai 1" thumburl="panos/HoMaTrai1.tiles/thumb.jpg" lat="11.829505954795422" lng="109.07490619314298" heading="0.0">
+		<view hlookat="-92.000" vlookat="8.610" fovtype="MFOV" fov="124.838" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/HoMaTrai1.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/HoMaTrai1.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/HoMaTrai1.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/HoMaTrai1.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/HoMaTrai1.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="vitri" ath="-175.636" atv="1.499" linkedscene="scene_longhomatrai1" custom_title="Lòng hồ Ma Trai" custom_thumb="tours/hoMaTrai/panos/longhomatrai1.tiles/thumb.jpg" />/>
+		<hotspot name="spot2" style="muiten" ath="-28.923" atv="17.064" linkedscene="scene_homatrai2" />
+		<hotspot name="spot3" style="tructhang" ath="126.636" atv="-12.216" linkedscene="scene_toancanhtrusoDanguy" custom_title="Trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+		<hotspot name="spot4" style="vitri" ath="-31.442" atv="-0.458" linkedscene="scene_homatrai3" />
+	</scene>
+
+	<scene name="scene_HoMaTrai2" title="Hồ Ma Trai 2" thumburl="panos/HoMaTrai2.tiles/thumb.jpg" lat="11.829679799093975" lng="109.07601629672608" heading="0.0">
+		<view hlookat="112.006" vlookat="8.449" fovtype="MFOV" fov="120.000" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/HoMaTrai2.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/HoMaTrai2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/HoMaTrai2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/HoMaTrai2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/HoMaTrai2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-15.561" atv="12.597" linkedscene="scene_homatrai1" />
+		<hotspot name="spot2" style="muiten" ath="165.429" atv="15.012" linkedscene="scene_homatrai3" />
+		<hotspot name="spot3" style="tructhang" ath="-35.292" atv="-9.373" linkedscene="scene_toancanhtrusoDanguy" custom_title="Trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+		<hotspot name="spot4" style="vitri" ath="16.278" atv="0.954" linkedscene="scene_longhomatrai1" custom_title="Lòng hồ Ma Trai" custom_thumb="tours/hoMaTrai/panos/longhomatrai1.tiles/thumb.jpg" />
+	</scene>
+
+	<scene name="scene_HoMaTrai3" title="Hồ Ma Trai 3" thumburl="panos/HoMaTrai3.tiles/thumb.jpg" lat="11.829871027694782" lng="109.07798784068966" heading="0.0">
+		<view hlookat="-130.833" vlookat="8.360" fovtype="MFOV" fov="109.723" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/HoMaTrai3.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/HoMaTrai3.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/HoMaTrai3.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/HoMaTrai3.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/HoMaTrai3.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-92.462" atv="26.892" linkedscene="scene_daptranmatrai1" custom_title="Đập tràn Ma Trai" custom_thumb="tours/hoMaTrai/panos/daptranmatrai1.tiles/thumb.jpg" />
+		<hotspot name="spot2" style="muiten" ath="170.915" atv="17.859" linkedscene="scene_homatrai2" />
+		<hotspot name="spot3" style="tructhang" ath="158.128" atv="-6.747" linkedscene="scene_toancanhtrusoDanguy" custom_title="Trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+	</scene>
+
+	<scene name="scene_DaptranMaTrai1" title="Đập tràn Ma Trai 1" thumburl="panos/DaptranMaTrai1.tiles/thumb.jpg" lat="11.830175254738723" lng="109.07793455571766" heading="0.0">
+		<view hlookat="229.106" vlookat="1.179" fovtype="MFOV" fov="109.671" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/DaptranMaTrai1.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/DaptranMaTrai1.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/DaptranMaTrai1.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/DaptranMaTrai1.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/DaptranMaTrai1.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-129.770" atv="24.408" linkedscene="scene_daptranmatrai2" />
+		<hotspot name="spot2" style="muiten" ath="72.666" atv="16.011" linkedscene="scene_homatrai1" />
+		<hotspot name="spot3" style="vitri" ath="171.229" atv="-1.065" custom_title="Lòng hồ Ma Trai" custom_thumb="tours/hoMaTrai/panos/longhomatrai1.tiles/thumb.jpg" />
+	</scene>
+
+	<scene name="scene_DaptranMatrai2" title="Đập tràn Ma Trai 2" thumburl="panos/DaptranMatrai2.tiles/thumb.jpg" lat="11.830175254738723" lng="109.07793455571766" heading="0.0">
+		<view hlookat="-159.431" vlookat="0.268" fovtype="MFOV" fov="114.919" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/DaptranMatrai2.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/DaptranMatrai2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/DaptranMatrai2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/DaptranMatrai2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/DaptranMatrai2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-126.525" atv="18.976" linkedscene="scene_daptranmatrai3" />
+		<hotspot name="spot2" style="muiten" ath="54.981" atv="30.151" linkedscene="scene_daptranmatrai1" />
+		<hotspot name="spot3" style="vitri" ath="62.588" atv="-2.070" linkedscene="scene_homatrai3" />
+		<hotspot name="spot4" style="tructhang" ath="144.597" atv="-10.881" linkedscene="scene_toancanhtrusoDanguy" custom_title="Trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+	</scene>
+
+	<scene name="scene_DaptranMaTrai3" title="Đập tràn Ma Trai 3" thumburl="panos/DaptranMaTrai3.tiles/thumb.jpg" lat="11.830175254738723" lng="109.07793455571766" heading="0.0">
+		<view hlookat="-71.421" vlookat="4.545" fovtype="MFOV" fov="120.000" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/DaptranMaTrai3.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/DaptranMaTrai3.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/DaptranMaTrai3.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/DaptranMaTrai3.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/DaptranMaTrai3.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="vitri" ath="-144.129" atv="-0.665" linkedscene="scene_longhomatrai1" custom_title="Lòng hồ Ma Trai" custom_thumb="tours/hoMaTrai/panos/longhomatrai1.tiles/thumb.jpg" />
+		<hotspot name="spot2" style="tructhang" ath="-176.856" atv="-11.698" linkedscene="scene_toancanhtrusoDanguy" custom_title="Trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+		<hotspot name="spot3" style="muiten" ath="90.663" atv="26.694" linkedscene="scene_daptranmatrai2" />
+		<hotspot name="spot4" style="vitri" ath="62.588" atv="-2.070" linkedscene="scene_homatrai3" />
+	</scene>
+
+	<scene name="scene_LonghoMaTrai1" title="Lòng hồ Ma Trai 1" thumburl="panos/LonghoMaTrai1.tiles/thumb.jpg" lat="11.830227407912291" lng="109.0744976750244" heading="0.0">
+		<view hlookat="-158.204" vlookat="14.145" fovtype="MFOV" fov="98.634" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/LonghoMaTrai1.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/LonghoMaTrai1.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/LonghoMaTrai1.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/LonghoMaTrai1.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/LonghoMaTrai1.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="vitri" ath="-53.887" atv="0.838" linkedscene="scene_homatrai1" />
+		<hotspot name="spot2" style="vitri" ath="-98.222" atv="-0.305" linkedscene="scene_homatrai3" />
+		<hotspot name="spot3" style="muiten" ath="131.630" atv="13.060" linkedscene="scene_longhomatrai2" />
+	</scene>
+
+	<scene name="scene_LonghoMaTrai2" title="Lòng hồ Ma Trai 2" thumburl="panos/LonghoMaTrai2.tiles/thumb.jpg" lat="11.83080109216516" lng="109.0746042449684" heading="0.0">
+		<view hlookat="-132.370" vlookat="1.391" fovtype="MFOV" fov="109.669" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/LonghoMaTrai2.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/LonghoMaTrai2.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/LonghoMaTrai2.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/LonghoMaTrai2.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/LonghoMaTrai2.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="7.562" atv="6.081" linkedscene="scene_longhomatrai1" />
+		<hotspot name="spot2" style="muiten" ath="-176.722" atv="14.881" linkedscene="scene_longhomatrai3" />
+		<hotspot name="spot3" style="vitri" ath="-75.949" atv="-0.206" linkedscene="scene_daptranmatrai1" custom_title="Đập tràn Ma Trai" custom_thumb="tours/hoMaTrai/panos/DaptranMatrai1.tiles/thumb.jpg"/>
+		<hotspot name="spot4" style="tructhang" ath="36.340" atv="-19.908" linkedscene="scene_toancanhtrusoDanguy" custom_title="Trụ sở Đảng uỷ" custom_thumb="tours/toanCanh/panos/toancanhtrusoDanguy.tiles/thumb.jpg" />
+		<hotspot name="spot4" style="vitri" ath="-74.320" atv="-0.262" linkedscene="scene_daptranmatrai1" custom_title="Đập tràn Ma Trai" custom_thumb="tours/hoMaTrai/panos/DaptranMatrai1.tiles/thumb.jpg"/>
+		<hotspot name="spot5" style="vitri" ath="-37.046" atv="0.162" linkedscene="scene_homatrai2" custom_title="Hồ Ma Trai" custom_thumb="tours/hoMaTrai/panos/HoMaTrai2.tiles/thumb.jpg"/>
+	</scene>
+
+	<scene name="scene_LonghoMaTrai3" title="Lòng hồ Ma Trai 3" thumburl="panos/LonghoMaTrai3.tiles/thumb.jpg" lat="11.831070549505013" lng="109.07461312579704" heading="0.0">
+		<view hlookat="-147.359" vlookat="-1.901" fovtype="MFOV" fov="120.000" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/LonghoMaTrai3.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/LonghoMaTrai3.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/LonghoMaTrai3.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/LonghoMaTrai3.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/LonghoMaTrai3.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-11.759" atv="16.791" linkedscene="scene_longhomatrai2" />
+		<hotspot name="spot2" style="muiten" ath="104.130" atv="12.031" linkedscene="scene_longhomatrai4" />
+		<hotspot name="spot3" style="muiten" ath="125.019" atv="13.150" linkedscene="scene_longhomatrai5" />
+		<hotspot name="spot4" style="vitri" ath="-103.642" atv="-0.248" linkedscene="scene_daptranmatrai1" custom_title="Đập tràn Ma Trai" custom_thumb="tours/hoMaTrai/panos/DaptranMatrai1.tiles/thumb.jpg"/>
+		<hotspot name="spot5" style="vitri" ath="-51.431" atv="0.166" linkedscene="scene_homatrai1" custom_title="Hồ Ma Trai" custom_thumb="tours/hoMaTrai/panos/HoMaTrai1.tiles/thumb.jpg"/>
+	</scene>
+
+	<scene name="scene_LonghoMaTrai4" title="Lòng hồ Ma Trai 4" thumburl="panos/LonghoMaTrai4.tiles/thumb.jpg" lat="11.831557310478281" lng="109.0744976750244" heading="0.0">
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/LonghoMaTrai4.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/LonghoMaTrai4.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/LonghoMaTrai4.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/LonghoMaTrai4.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/LonghoMaTrai4.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="-106.974" atv="29.634" linkedscene="scene_longhomatrai5" />
+		<hotspot name="spot2" style="muiten" ath="1.569" atv="17.761" linkedscene="scene_longhomatrai3" />
+	</scene>
+
+	<scene name="scene_LonghoMaTrai5" title="Lòng hồ Ma Trai 5" thumburl="panos/LonghoMaTrai5.tiles/thumb.jpg" lat="11.831626847689469" lng="109.07463976828303" heading="0.0">
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/LonghoMaTrai5.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/LonghoMaTrai5.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/LonghoMaTrai5.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/LonghoMaTrai5.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/LonghoMaTrai5.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="muiten" ath="95.841" atv="17.645" linkedscene="scene_longhomatrai4" />
+		<hotspot name="spot2" style="muiten" ath="22.212" atv="15.620" linkedscene="scene_longhomatrai3" />
+		<hotspot name="spot3" style="vitri" ath="-41.463" atv="-2.088" linkedscene="scene_daptranmatrai1" custom_title="Đập tràn Ma Trai" custom_thumb="tours/hoMaTrai/panos/DaptranMaTrai1.tiles/thumb.jpg"/>
+	</scene>
+</krpano>

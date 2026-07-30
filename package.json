@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "clean-css": "^5.3.3",
+    "exif-parser": "^0.1.12",
+    "terser": "^5.47.1"
+  },
+  "name": "conghai360",
+  "version": "1.0.0",
+  "description": "",
+  "main": "scratch_rename.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

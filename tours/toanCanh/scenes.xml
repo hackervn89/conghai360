@@ -1,0 +1,71 @@
+<krpano>
+
+	<scene name="scene_toancanhconghai" title="Toàn cảnh xã Công Hải" onstart="" thumburl="panos/toancanhconghai.tiles/thumb.jpg" lat="11.781682" lng="109.073644" heading="0.0">
+		<view hlookat="24.404" vlookat="26.694" fovtype="MFOV" fov="100" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/toancanhconghai.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="6144" tiledimageheight="6144"><cube url="panos/toancanhconghai.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="3072" tiledimageheight="3072"><cube url="panos/toancanhconghai.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1536" tiledimageheight="1536"><cube url="panos/toancanhconghai.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="768" tiledimageheight="768"><cube url="panos/toancanhconghai.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="tc_spot1" style="vitri" ath="6.366" atv="14.709" linkedscene="scene_1-cong_chinh" custom_title="Chùa Long Cát" custom_thumb="tours/chuaLongCat/panos/1-cong_chinh.tiles/thumb.jpg" />
+		<hotspot name="tc_spot2" style="tructhang" ath="-138.417" atv="4.325" linkedscene="scene_toancanhSongTrau1" custom_title="Hồ Sông Trâu" custom_thumb="tours/hoSongTrau/panos/toancanhSongTrau1.tiles/thumb.jpg" />
+		<hotspot name="tc_spot3" style="vitri" ath="129.578" atv="60.614" linkedscene="scene_toancanhtrusoUBND" custom_title="UBND xã Công Hải" custom_thumb="tours/toanCanh/panos/toancanhtrusoUBND.tiles/thumb.jpg"/>
+		
+		<!-- Hotspots for Toàn cảnh Công Hải -->
+		<hotspot name="tc_spot4" style="vitri" ath="-147.545" atv="10.812" linkedscene="scene_cauvuotcaotoc" custom_title="Cầu vượt Cao tốc" custom_thumb="tours/toanCanh/panos/cauvuotcaotoc.tiles/thumb.jpg"/>
+	</scene>
+
+	<scene name="scene_toancanhtrusoDanguy" title="Toàn cảnh trụ sở Đảng uỷ xã" onstart="" thumburl="panos/toancanhtrusoDanguy.tiles/thumb.jpg" lat="11.836559" lng="109.051182" heading="0.0">
+		<view hlookat="11.433" vlookat="3.967" fovtype="MFOV" fov="100" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/toancanhtrusoDanguy.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="6144" tiledimageheight="6144"><cube url="panos/toancanhtrusoDanguy.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="3072" tiledimageheight="3072"><cube url="panos/toancanhtrusoDanguy.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1536" tiledimageheight="1536"><cube url="panos/toancanhtrusoDanguy.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="768" tiledimageheight="768"><cube url="panos/toancanhtrusoDanguy.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="Link_toancanhconghai" style="tructhang" ath="12.418" atv="-0.176" linkedscene="scene_toancanhconghai" custom_title="Toàn cảnh xã Công Hải" custom_thumb="tours/toanCanh/panos/toancanhconghai.tiles/thumb.jpg" />
+		<hotspot name="spot5" style="vitri" ath="28.574" atv="2.829" linkedscene="scene_longhoSongTrau6" custom_title="Lòng hồ" custom_thumb="tours/hoSongTrau/panos/longhoSongTrau6.tiles/thumb.jpg"/>
+		<hotspot name="spot1" style="vitri" ath="33.765" atv="4.038" linkedscene="scene_venho" custom_title="Ven hồ" custom_thumb="tours/hoSongTrau/panos/venho.tiles/thumb.jpg"/>
+		<hotspot name="tc_spot1" style="vitri" ath="144.421" atv="15.646" linkedscene="scene_HoBaTri1" custom_title="Hồ Ba Tri" custom_thumb="tours/hoBaTri/panos/HoBaTri1.tiles/thumb.jpg"/>
+		<hotspot name="tc_spot2" style="vitri" ath="176.570" atv="13.015" linkedscene="scene_DaptranhoBaTri" custom_title="Đập tràn Hồ Ba Tri" custom_thumb="tours/hoBaTri/panos/DaptranhoBaTri.tiles/thumb.jpg"/>
+		<hotspot name="cauSongTrau" style="vitri" ath="-58.526" atv="17.935" linkedscene="scene_CauSongTrau1" custom_title="Đập tràn Đầu Suối B" custom_thumb="tours/hoMaTrai/panos/CauSongTrau1.tiles/thumb.jpg"/>
+		<hotspot name="hoMaTrai" style="vitri" ath="-38.298" atv="2.877" linkedscene="scene_hoMaTrai1" custom_title="Hồ Ma Trai" custom_thumb="tours/hoMaTrai/panos/hoMaTrai1.tiles/thumb.jpg"/>
+	</scene>
+
+	<scene name="scene_toancanhtrusoUBND" title="Toàn cảnh trụ sở UBND xã" onstart="" thumburl="panos/toancanhtrusoUBND.tiles/thumb.jpg" lat="11.781356" lng="109.072723" heading="0.0">
+		<view hlookat="-21.891" vlookat="30.581" fovtype="MFOV" fov="100" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/toancanhtrusoUBND.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="6144" tiledimageheight="6144"><cube url="panos/toancanhtrusoUBND.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="3072" tiledimageheight="3072"><cube url="panos/toancanhtrusoUBND.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1536" tiledimageheight="1536"><cube url="panos/toancanhtrusoUBND.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="768" tiledimageheight="768"><cube url="panos/toancanhtrusoUBND.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>		
+		<hotspot name="Link_toancanhconghai" style="tructhang" ath="171.198" atv="-7.948" linkedscene="scene_toancanhconghai" custom_title="Toàn cảnh xã Công Hải" custom_thumb="tours/toanCanh/panos/toancanhconghai.tiles/thumb.jpg" />
+		
+		<!-- Hotspot vào Bảo Tàng Số 3D (Cửa chính UBND) -->
+		<hotspot name="hotspot_museum" style="thongtin" ath="-42.372" atv="32.430"
+		         custom_title="Bảo Tàng Số Công Hải"
+		         onclick="js(enterMuseum());" />
+		<hotspot name="tc_spot1" style="tructhang" ath="-107.571" atv="2.373" linkedscene="scene_1-cong_chinh" custom_title="Chùa Long Cát" custom_thumb="tours/chuaLongCat/panos/1-cong_chinh.tiles/thumb.jpg" />
+		<hotspot name="tc_spot2" style="tructhang" ath="95.728" atv="-3.343" linkedscene="scene_toancanhSongTrau1" custom_title="Hồ Sông Trâu" custom_thumb="tours/hoSongTrau/panos/toancanhSongTrau1.tiles/thumb.jpg" />
+	</scene>
+
+	<scene name="scene_cauvuotcaotoc" title="cauvuotcaotoc" onstart="" thumburl="panos/cauvuotcaotoc.tiles/thumb.jpg" lat="0.00000000" lng="0.00000000" heading="0.0">
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<preview url="panos/cauvuotcaotoc.tiles/preview.jpg" />
+		<image type="CUBE" prealign="0|0.0|0" multires="true" tilesize="512">
+			<level tiledimagewidth="4864" tiledimageheight="4864"><cube url="panos/cauvuotcaotoc.tiles/%s/l4/%0v/l4_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="2560" tiledimageheight="2560"><cube url="panos/cauvuotcaotoc.tiles/%s/l3/%0v/l3_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="1280" tiledimageheight="1280"><cube url="panos/cauvuotcaotoc.tiles/%s/l2/%0v/l2_%s_%0v_%0h.jpg" /></level>
+			<level tiledimagewidth="640" tiledimageheight="640"><cube url="panos/cauvuotcaotoc.tiles/%s/l1/%0v/l1_%s_%0v_%0h.jpg" /></level>
+		</image>
+		<hotspot name="spot1" style="tructhang" ath="-151.382" atv="-2.943" linkedscene="scene_toancanhSongTrau1" custom_title="Toàn cảnh Hồ Sông Trâu" custom_thumb="tours/hoSongTrau/panos/toancanhSongTrau1.tiles/thumb.jpg"/>
+		<hotspot name="spot3" style="tructhang" ath="1.332" atv="-5.490" linkedscene="scene_toancanhconghai" custom_title="Toàn cảnh xã Công Hải" custom_thumb="tours/toanCanh/panos/toancanhconghai.tiles/thumb.jpg"/>
+	</scene>
+
+
+</krpano>
