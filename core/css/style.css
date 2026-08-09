@@ -1266,41 +1266,7 @@ html {
     border-top-color: rgba(10, 15, 30, 0.85) !important;
 }
 
-/* ---- Center Crosshair (Dev Tool) ---- */
-.dev-crosshair {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 9999;
-}
 
-.dev-crosshair::before,
-.dev-crosshair::after {
-    content: '';
-    position: absolute;
-    background: rgba(255, 0, 0, 0.8);
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
-}
-
-.dev-crosshair::before {
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 2px;
-    transform: translateY(-50%);
-}
-
-.dev-crosshair::after {
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    transform: translateX(-50%);
-}
 
 @media (max-width: 1024px) {
     #map-panel {

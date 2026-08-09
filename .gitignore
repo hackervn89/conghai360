@@ -1,5 +1,7 @@
 # Dependencies
 node_modules/
+**/node_modules/
+_dev/_uploads_temp/
 
 # Raw heavy assets & 3D models (files >100MB / non-web assets)
 Source Gốc/

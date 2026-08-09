@@ -1,5 +1,5 @@
 # PROJECT MAP — Công Hải 360
-> Cập nhật: 2026-05-12
+> Cập nhật: 2026-08-09
 > Mục đích: Tham chiếu nhanh khi bắt đầu phiên làm việc mới. KHÔNG CẦN đọc lại toàn bộ code.
 > 🌐 **LIVE:** https://360.conghaiso.vn | Server: Ubuntu `/var/www/360.conghaiso.vn/public_html`
 
@@ -29,17 +29,19 @@
 ### KrPano Engine
 | File | Dòng | Vai trò |
 |------|------|---------|
-| `tour.xml` | ~382 | Master XML. Skin settings, Hotspot styles (muiten/vitri/tructhang/thongtin), VR Menu, Autorotate, Scene includes (5 địa điểm) |
-| `tours/toanCanh/scenes.xml` | 64 | 4 scenes toàn cảnh drone: toancanhconghai, trusoDanguy, trusoUBND, cauvuotcaotoc |
-| `tours/chuaLongCat/scenes.xml` | - | 13 scenes Chùa Long Cát |
-| `tours/hoSongTrau/scenes.xml` | 202 | 11 scenes: HoSongTrau1-2, toancanhSongTrau1-2, longho2-7, venho |
-| `tours/hoBaTri/scenes.xml` | - | 3 scenes: DaptranhoBaTri, HoBaTri1, LonghoBaTri1 |
-| `tours/hoMaTrai/scenes.xml` | - | 4 scenes: CauSongTrau1, DaptranMaTrai1, HoMaTrai1, LonghoMaTrai1 |
+| `tour.xml` | ~506 | Master XML. Skin settings, Hotspot styles (muiten/vitri/tructhang/thongtin), VR Menu, Autorotate, Scene includes (5 địa điểm) |
+| `tours/toanCanh/scenes.xml` | 72 | 4 scenes toàn cảnh drone: toancanhconghai, trusoDanguy, trusoUBND, cauvuotcaotoc |
+| `tours/chuaLongCat/scenes.xml` | 187 | 13 scenes Chùa Long Cát: cong_chinh, san_truoc, sanh_chinh, hoavien, santrai, sanphai... |
+| `tours/hoSongTrau/scenes.xml` | 201 | 11 scenes: HoSongTrau1-2, toancanhSongTrau1-2, longho2-7, venho |
+| `tours/hoBaTri/scenes.xml` | 100 | 7 scenes: DaptranhoBaTri, HoBaTri1-3, LonghoBaTri1-3 |
+| `tours/hoMaTrai/scenes.xml` | 170 | 13 scenes: CauSongTrau1-2, HoMaTrai1-3, DaptranMaTrai1-3, LonghoMaTrai1-5 |
 
-### Tiện ích
-| File | Vai trò |
+### Tiện ích & Dev Editor
+| File / Thư mục | Vai trò |
 |------|---------|
-| `sync.js` | Script đồng bộ hotspot từ bản nháp → dự án chính |
+| `_dev/` | Trình biên tập Visual Tour Editor & Server Node.js (`npm run editor` → `http://localhost:3636/editor.html`) |
+| `tours/locations.json` | Bảng ánh xạ tên hiển thị tiếng Việt cho 5 thư mục Địa điểm |
+| `tours/infos.json` | Dữ liệu quản lý các bài viết thuyết minh (Info Modal) |
 | `core/data/conghai-boundary.json` | GeoJSON ranh giới xã Công Hải (hiển thị trên minimap) |
 
 ---
@@ -89,11 +91,28 @@
 │  tour.xml (Master)                          │  ← Lớp Cấu hình
 │  ├── Hotspot styles (muiten, vitri,         │
 │  │   tructhang, thongtin)                   │
-│  ├── VR Menu (3 hotspot: vr_item_1/2/3)     │
+│  ├── VR Menu (5 hotspot: vr_item_1..5)      │
 │  └── includes → scenes.xml (×5 địa điểm)   │
 ├─────────────────────────────────────────────┤
 │  engine/tour.js + plugins/                  │  ← Lớp Engine KrPano
 │  (KHÔNG CHỈNH SỬA — binary engine)         │
+└─────────────────────────────────────────────┘
+```
+
+---
+
+## 🛠️ VISUAL TOUR EDITOR SYSTEM (`_dev/`)
+
+```
+┌─────────────────────────────────────────────┐
+│  npm run editor  (Chạy server cổng 3636)    │
+│  http://localhost:3636/editor.html          │
+├─────────────────────────────────────────────┤
+│  • Visual Hotspot Creator (Kéo thả trực quan)│
+│  • Auto-tile ảnh 360° qua krpanotools64.exe │
+│  • Save View, Save Prealign, Save Hotspots  │
+│  • Quản lý Locations & Info Manager Modal   │
+│  💡 Khi bàn giao: Xóa thư mục _dev/ là xong │
 └─────────────────────────────────────────────┘
 ```
 
@@ -112,47 +131,35 @@
 ## 📋 TOURDATA HIỆN TẠI (app.js dòng 1-65)
 | Key | Label | Scenes trong app.js | Scenes trong XML | Chênh lệch |
 |-----|-------|---------------------|------------------|------------|
-| `toanCanh` | Toàn cảnh Công Hải | 4 | 4 | ✅ |
+| `toanCanh` | Toàn cảnh xã Công Hải | 4 | 4 | ✅ |
 | `chuaLongCat` | Chùa Long Cát | 13 | 13 | ✅ |
 | `hoSongTrau` | Hồ Sông Trâu | 6 | 11 | ⚠️ Thiếu 5 |
-| `hoBaTri` | Hồ Ba Tri | 3 | 3 | ✅ |
-| `hoMaTrai` | Hồ Ma Trai | 4 | 4 | ✅ |
-
+| `hoBaTri` | Hồ Ba Tri | 3 | 7 | ⚠️ Thiếu 4 |
+| `hoMaTrai` | Hồ Ma Trai | 4 | 13 | ⚠️ Thiếu 9 |
 
 ---
 
-## 🔴 BUGS CONFIRMED (đọc trực tiếp từ code — 2026-05-12)
+## 🔴 BUGS CONFIRMED (đọc trực tiếp từ code — 2026-08-09)
 
 ### BUG #1 — CRITICAL: 5 scene lòng hồ thiếu trong `tourData` (app.js:33-44)
 Sidebar & Map không hiển thị longhoSongTrau2/3/4/5/7. Hotspot vẫn hoạt động qua XML.
 
 ### BUG #2 — CRITICAL: Hotspot nằm sai trong thẻ `<image>` (hoSongTrau/scenes.xml:60-61)
 Trong `scene_toancanhSongTrau2`, hotspot `info_hosongtrau` bị đặt BÊN TRONG thẻ `<image>` thay vì sau nó. KrPano có thể bỏ qua hotspot này.
-```xml
-<!-- SAI: -->
-<image type="CUBE" ...>
-    ...
-    <hotspot name="info_hosongtrau" ... />  ← Nằm trong <image>!
-</image>
-```
-
 
 ### BUG #6 — MINOR: scene_venho và scene_cauvuotcaotoc lat/lng = 0,0
 Map sẽ không hiển thị marker đúng vị trí cho 2 scene này.
 
-### BUG #7 — MINOR: Nội dung text không nhất quán (app.js:710, 756-757)
-- `info_chualongcat` vẫn ghi "tỉnh Ninh Thuận" (chưa cập nhật)
-- `info_hosongtrau` line 756: "tỉnh Khánh Hoà" nhưng line 740 vẫn dùng ngữ cảnh Ninh Thuận
-
 ---
 
 ## ⚠️ LƯU Ý KỸ THUẬT QUAN TRỌNG
-1. **Scene name CASE-SENSITIVE**: `scene_toancanhconghai` ≠ `scene_toancanhCongHai`
+1. **Case-Insensitive API Lookup**: Editor đã hỗ trợ so khớp không phân biệt hoa/thường cho tất cả scene.
 2. **Hotspot KHÔNG được đặt trong `<image>`** — phải là sibling của `<image>`
 3. **Smart preload đã tắt vĩnh viễn**: KrPano 1.19 có bug tự chuyển scene
 4. **Leaflet minimap**: lazy init — chỉ load khi người dùng mở panel
 5. **Tween Chain**: Mọi animation dùng tween chain thay delayedcall để tránh memory leak
-6. **VR Menu**: 3 hotspot keep="true" trong tour.xml, cần scene name chính xác
+6. **VR Menu**: 5 hotspot thumbnail + labels trong tour.xml
+7. **Bàn giao sản phẩm**: Chỉ cần xóa thư mục `_dev/` khi deploy sản phẩm tĩnh lên hosting.
 
 ---
 
@@ -166,12 +173,10 @@ Map sẽ không hiển thị marker đúng vị trí cho 2 scene này.
 | **SSL** | Certbot / Let's Encrypt |
 | **Cache** | 30 ngày cho jpg/png/svg/xml/js/css |
 
-**Khi deploy, chỉ upload file thay đổi — KHÔNG cần upload lại `panos/`**
-
 ---
 
 ## 📌 CẤU HÌNH SEO & DOMAIN (index.html — ĐÃ CẬP NHẬT)
 - Canonical: `https://360.conghaiso.vn/` ✅
 - OG URL: `https://360.conghaiso.vn/` ✅
 - JSON-LD image: `https://360.conghaiso.vn/core/assets/og-preview.png` ✅
-- OG image: còn dùng relative path `core/assets/og-preview.png` → nên là absolute URL
+- Visual Tour Editor Server: `npm run editor` → Port `3636` ✅

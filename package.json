@@ -7,11 +7,12 @@
   "name": "conghai360",
   "version": "1.0.0",
   "description": "",
-  "main": "scratch_rename.js",
+  "main": "index.html",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
+    "editor": "node _dev/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

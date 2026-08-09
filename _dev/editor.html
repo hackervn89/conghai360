@@ -1,0 +1,3579 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Hotspot Creator - Công Hải 360</title>
+    
+    <!-- CSS & Fonts -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #FFD700; /* Vàng Gold chủ đạo */
+            --primary-hover: #FFC800;
+            --bg-dark: #0a0f1e;
+            --panel-bg: rgba(13, 27, 46, 0.75);
+            --panel-border: rgba(255, 255, 255, 0.1);
+            --text-light: #f3f4f6;
+            --text-muted: #9ca3af;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        /* App Layout */
+        #app-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Custom Gold Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Full Screen 360 Viewport */
+        #viewport-container {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Floating Overlay Panels */
+        .sidebar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 320px;
+            height: 100vh;
+            background: rgba(13, 27, 46, 0.88);
+            border-right: 1px solid var(--panel-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 20;
+            transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            transform: translateX(0);
+            opacity: 1;
+            box-shadow: 12px 0 36px rgba(0, 0, 0, 0.45);
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: auto;
+            width: 360px;
+            height: 100vh;
+            background: rgba(13, 27, 46, 0.88);
+            border-left: 1px solid var(--panel-border);
+            border-right: none;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 20;
+            transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            transform: translateX(0);
+            opacity: 1;
+            box-shadow: -12px 0 36px rgba(0, 0, 0, 0.45);
+        }
+
+        .sidebar-right.collapsed {
+            transform: translateX(100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .panel-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--panel-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .panel-close-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: var(--text-muted);
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            line-height: 1;
+        }
+
+        .panel-close-btn:hover {
+            background: rgba(239, 68, 68, 0.25);
+            color: #f87171;
+            transform: scale(1.1);
+        }
+
+        .panel-header h2 {
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--primary);
+        }
+
+        /* Left Panel - Scenes */
+        .search-box {
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--panel-border);
+            flex-shrink: 0;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: var(--radius);
+            border: 1px solid var(--panel-border);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 13px;
+        }
+
+        .search-box input:focus {
+            outline: 1px solid var(--primary);
+        }
+
+        .scene-list {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+            padding: 10px;
+        }
+
+        .scene-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .scene-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .scene-item.active {
+            background: rgba(255, 215, 0, 0.15);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .scene-thumb {
+            width: 60px;
+            height: 40px;
+            border-radius: 6px;
+            object-fit: cover;
+            margin-right: 10px;
+            background: #1e293b;
+            flex-shrink: 0;
+        }
+
+        .scene-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .scene-name {
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .scene-id {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        .btn-rename-scene {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 13px;
+            padding: 6px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: var(--transition);
+            opacity: 0.6;
+        }
+
+        .btn-rename-scene:hover {
+            color: var(--primary);
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Location Folder Tree Structure */
+        .location-folder.drag-over {
+            border: 2px dashed var(--primary) !important;
+            background: rgba(255, 215, 0, 0.15) !important;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .scene-item.dragging {
+            opacity: 0.35;
+            border: 1px dashed var(--primary) !important;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .scene-drag-handle {
+            cursor: grab;
+            padding: 4px 6px;
+            color: var(--text-muted);
+            opacity: 0.4;
+            transition: var(--transition);
+        }
+
+        .scene-item:hover .scene-drag-handle {
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        .location-folder {
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .location-folder-header {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            user-select: none;
+            transition: var(--transition);
+            gap: 8px;
+        }
+
+        .location-folder-header:hover {
+            background: rgba(255, 255, 255, 0.09);
+        }
+
+        .location-folder-title {
+            flex: 1;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            white-space: normal;
+            word-break: break-word;
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .location-badge {
+            font-size: 10px;
+            background: rgba(255, 215, 0, 0.2);
+            color: var(--primary);
+            padding: 1px 6px;
+            border-radius: 10px;
+            font-weight: normal;
+        }
+
+        .location-scenes-list {
+            padding: 4px;
+            border-left: 2px solid rgba(255, 215, 0, 0.3);
+            margin-left: 8px;
+        }
+
+        /* Central Viewport */
+        #viewport-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #pano {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Central Editor Controls */
+        .editor-top-bar {
+            position: absolute;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(10, 15, 30, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            padding: 6px 12px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .top-bar-btn {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #e2e8f0;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+
+        .top-bar-btn:hover {
+            background: rgba(255, 255, 255, 0.16);
+            border-color: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+        }
+
+        .top-bar-btn.active {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.22), rgba(255, 180, 0, 0.32));
+            border-color: #FFD700;
+            color: #FFD700;
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.25);
+        }
+
+        .top-bar-btn.btn-info-accent {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .top-bar-btn.btn-info-accent:hover {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+        }
+        /* Right Panel - Properties & Action */
+        .properties-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: #000;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .btn-action:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-action:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            border: 1px solid var(--panel-border);
+            margin-bottom: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.35);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            color: white;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .form-group select optgroup {
+            background: #0d1b2e;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 12px;
+            padding: 6px 0;
+        }
+
+        .form-group select option {
+            background: #111827;
+            color: #f3f4f6;
+            font-weight: 400;
+            font-size: 13px;
+            padding: 4px 8px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        /* Hotspot Item list in active scene */
+        .hotspot-list-section {
+            margin-top: 20px;
+            border-top: 1px solid var(--panel-border);
+            padding-top: 20px;
+        }
+
+        .hotspot-list-header {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        .hotspots-wrapper {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        /* Default View Card Styling */
+        .view-config-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius);
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+
+        .view-card-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .view-coords-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .view-coord-box span {
+            display: block;
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .view-coord-box strong {
+            font-size: 13px;
+            font-family: monospace;
+            color: white;
+        }
+
+        /* View Params Editable Grid */
+        .view-params-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .view-param-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            padding: 8px 6px;
+            text-align: center;
+        }
+
+        .view-param-box label {
+            display: block;
+            font-size: 9px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .view-param-box input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 4px;
+            color: white;
+            font-size: 12px;
+            font-family: monospace;
+            padding: 4px 2px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .view-param-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 6px rgba(255, 215, 0, 0.25);
+        }
+
+        .view-section-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 10px 0 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .view-section-label i {
+            font-size: 10px;
+            color: var(--primary);
+        }
+
+        .btn-view-save {
+            background: #2563eb !important;
+            color: white !important;
+            margin-bottom: 6px !important;
+            font-size: 13px !important;
+        }
+
+        .btn-view-save:hover {
+            background: #1d4ed8 !important;
+        }
+
+        .hotspot-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .hotspot-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .hotspot-item.active {
+            border-color: var(--primary);
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .hotspot-item-title {
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 150px;
+        }
+
+        .hotspot-item-style {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+            font-family: monospace;
+        }
+
+        /* Modal Overlay Shared Style */
+        .modal-overlay, .upload-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 999999 !important;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Hide KrPano fatal error bar in editor mode */
+        #pano div[style*="background-color"],
+        #pano div[style*="border"],
+        #pano table {
+            opacity: 0.2 !important;
+            pointer-events: none !important;
+        }
+
+        .modal-card {
+            background: #111827;
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius);
+            width: 700px;
+            max-width: 90%;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--panel-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .modal-body {
+            flex: 1;
+            padding: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: white;
+        }
+
+        .xml-output {
+            flex: 1;
+            width: 100%;
+            background: #030712;
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+            color: #10b981;
+            font-family: 'Fira Code', Consolas, Monaco, monospace;
+            font-size: 12px;
+            resize: none;
+            overflow-y: auto;
+            white-space: pre;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--panel-border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Notification Toast */
+        #toast {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #10b981;
+            color: #000;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            z-index: 2000;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Hide krpano error text overlay */
+        #pano div, #pano span {
+            font-family: inherit;
+        }
+        
+        #toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        /* Upload Drop Zone */
+        .upload-zone {
+            margin: 10px;
+            padding: 20px 10px;
+            border: 2px dashed rgba(255, 215, 0, 0.3);
+            border-radius: var(--radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .upload-zone:hover, .upload-zone.drag-over {
+            border-color: var(--primary);
+            background: rgba(255, 215, 0, 0.05);
+            color: var(--primary);
+        }
+
+        .upload-zone i {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary);
+            opacity: 0.6;
+        }
+
+        .upload-zone:hover i {
+            opacity: 1;
+        }
+
+        /* Save Button Accent */
+        .btn-save {
+            background: #10b981 !important;
+            color: white !important;
+        }
+
+        .btn-save:hover {
+            background: #059669 !important;
+        }
+
+        /* Upload Modal */
+        .upload-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .upload-modal {
+            background: #111827;
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius);
+            width: 480px;
+            max-width: 90%;
+            padding: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .upload-modal h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .upload-progress {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .upload-progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), #10b981);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .upload-status {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        .upload-icon-spinner {
+            animation: spin 1.5s linear infinite;
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Scene name input in upload modal */
+        .upload-modal .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .upload-modal .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .upload-modal .form-group input {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            color: white;
+            font-size: 13px;
+        }
+
+        .upload-modal .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        .richbtn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            transition: background 0.15s;
+        }
+        .richbtn:hover {
+            background: rgba(255,215,0,0.2);
+            border-color: rgba(255,215,0,0.5);
+            color: #FFD700;
+        }
+        .wysiwyg-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .wysiwyg-btn:hover {
+            background: rgba(255,215,0,0.25);
+            border-color: #FFD700;
+            color: #FFD700;
+        }
+        .wysiwyg-color-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: transform 0.15s, border-color 0.15s;
+        }
+        .wysiwyg-color-dot:hover {
+            transform: scale(1.3);
+            border-color: #ffffff;
+        }
+        #info-field-wysiwyg:focus {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 16px rgba(59, 130, 246, 0.25);
+        }
+        #info-field-wysiwyg[contenteditable]:empty:before {
+            content: attr(placeholder);
+            color: #94a3b8;
+            font-style: italic;
+        }
+        #info-field-wysiwyg h3 {
+            font-size: 16px;
+            color: #1e3a8a;
+            margin: 12px 0 6px 0;
+            font-weight: 700;
+        }
+        #info-field-wysiwyg p {
+            margin-bottom: 8px;
+        }
+        #info-field-wysiwyg ul, #info-field-wysiwyg ol {
+            padding-left: 20px;
+            margin-bottom: 8px;
+        }
+        .info-list-item {
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            margin-bottom: 4px;
+            transition: all 0.15s;
+        }
+        .info-list-item:hover {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(255,255,255,0.1);
+        }
+        .info-list-item.active {
+            background: rgba(255,215,0,0.12);
+            border-color: rgba(255,215,0,0.3);
+        }
+        .info-list-item .info-item-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #f3f4f6;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .info-list-item .info-item-id {
+            font-size: 10px;
+            color: #6b7280;
+            font-family: monospace;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app-container">
+        
+        <!-- Left Panel: Scene Manager -->
+        <div class="sidebar" id="left-sidebar">
+            <div class="panel-header">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-images" style="color:var(--primary);"></i>
+                    <h2>Cảnh Panorama</h2>
+                </div>
+                <button id="btn-close-left-sidebar" class="panel-close-btn" title="Ẩn bảng Cảnh Panorama">&times;</button>
+            </div>
+            <!-- Upload Drop Zone -->
+            <div class="upload-zone" id="upload-zone">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <div>Kéo thả ảnh 360° vào đây (Chọn được nhiều file)</div>
+                <div style="font-size: 10px; margin-top: 4px; opacity: 0.6;">hoặc bấm để chọn 1 hoặc nhiều file</div>
+                <input type="file" id="upload-input" accept=".jpg,.jpeg,.png,.tif,.tiff" multiple style="display:none;">
+            </div>
+            <div class="search-box">
+                <input type="text" id="scene-search" placeholder="Tìm kiếm cảnh...">
+            </div>
+            <div class="scene-list" id="scene-list-container">
+                <!-- Loaded dynamically by JS -->
+            </div>
+        </div>
+
+        <!-- Central Viewport: KrPano Frame -->
+        <div id="viewport-container">
+            <div class="editor-top-bar">
+                <button id="btn-toggle-left-sidebar" class="top-bar-btn active" title="Ẩn/Hiện Cảnh Panorama">
+                    <i class="fa-solid fa-images"></i> Cảnh Panorama
+                </button>
+                <button id="btn-toggle-right-sidebar" class="top-bar-btn active" title="Ẩn/Hiện Cấu Hình Hotspot">
+                    <i class="fa-solid fa-sliders"></i> Cấu Hình Hotspot
+                </button>
+                <div style="width:1px; height:18px; background:rgba(255,255,255,0.15); margin:0 2px;"></div>
+                <button id="btn-open-info-manager" class="top-bar-btn btn-info-accent" title="Mở Quản lý Thuyết minh">
+                    <i class="fa-solid fa-book-open"></i> Quản lý Thuyết minh
+                </button>
+            </div>
+            <div id="pano-wrapper" style="position: relative; flex: 1; width: 100%; height: 100%; overflow: hidden;">
+                <div id="pano" style="width: 100%; height: 100%;"></div>
+                <!-- Polygon Drawing Mode Banner -->
+                <div id="poly-drawing-banner" style="display: none; position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 100; background: rgba(16, 185, 129, 0.92); color: #fff; padding: 8px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; backdrop-filter: blur(8px); box-shadow: 0 4px 16px rgba(0,0,0,0.4); display: none; align-items: center; gap: 12px;">
+                    <i class="fa-solid fa-draw-polygon"></i>
+                    <span>Chế độ vẽ đa giác — Click để chấm đỉnh, <b>Space</b> hoặc <b>Double-click</b> để hoàn tất, <b>Esc</b> để hủy</span>
+                    <button id="btn-finish-polygon" style="background: #fff; color: #059669; border: none; padding: 4px 12px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 12px;">✓ Xong</button>
+                    <button id="btn-cancel-polygon" style="background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.4); padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 12px;">✕ Hủy</button>
+                </div>
+                <!-- Guideline Overlay for leveling horizon -->
+                <div id="horizon-grid-overlay" style="display: none; position: absolute; inset: 0; pointer-events: none; z-index: 50; border: 1px dashed rgba(0, 230, 255, 0.4);">
+                    <!-- Center Horizontal Line -->
+                    <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: #00e6ff; box-shadow: 0 0 8px #00e6ff; transform: translateY(-50%);"></div>
+                    <!-- Center Vertical Line -->
+                    <div style="position: absolute; left: 50%; top: 0; height: 100%; width: 2px; background: #00e6ff; box-shadow: 0 0 8px #00e6ff; transform: translateX(-50%);"></div>
+                    <!-- Quarter Horizontal Guide 1 -->
+                    <div style="position: absolute; top: 25%; left: 0; width: 100%; height: 1px; background: rgba(255, 255, 255, 0.3);"></div>
+                    <!-- Quarter Horizontal Guide 2 -->
+                    <div style="position: absolute; top: 75%; left: 0; width: 100%; height: 1px; background: rgba(255, 255, 255, 0.3);"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Manager Modal -->
+        <div id="info-manager-modal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); align-items:center; justify-content:center;">
+            <div style="background:#0d1b2e; border:1px solid rgba(255,215,0,0.3); border-radius:16px; width:92vw; max-width:1200px; height:90vh; display:grid; grid-template-columns:300px 1fr; overflow:hidden; box-shadow:0 24px 64px rgba(0,0,0,0.7);">
+                
+                <!-- Left: List Panel -->
+                <div style="border-right:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; background:rgba(0,0,0,0.3);">
+                    <div style="padding:20px 16px 12px; border-bottom:1px solid rgba(255,255,255,0.08);">
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                            <i class="fa-solid fa-book-open" style="color:#FFD700;"></i>
+                            <span style="font-weight:700; font-size:14px; color:#FFD700;">DANH SÁCH THUYẾT MINH</span>
+                        </div>
+                        <button id="btn-info-new" style="width:100%; background:linear-gradient(135deg,#1d4ed8,#2563eb); border:none; color:white; padding:8px; border-radius:8px; cursor:pointer; font-size:12px; font-weight:600;">
+                            <i class="fa-solid fa-plus"></i> Tạo bài viết mới
+                        </button>
+                        <input type="text" id="info-search" placeholder="Tìm kiếm bài viết..." style="margin-top:8px; width:100%; padding:6px 10px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); border-radius:8px; color:white; font-size:12px;">
+                    </div>
+                    <div id="info-list-container" style="flex:1; overflow-y:auto; padding:8px;"></div>
+                </div>
+
+                <!-- Right: Editor Panel -->
+                <div style="display:flex; flex-direction:column; height:100%; overflow:hidden;">
+                    <div style="padding:16px 20px; border-bottom:1px solid rgba(255,255,255,0.08); display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-weight:700; font-size:14px; color:white;"><i class="fa-solid fa-pen-to-square" style="color:#FFD700;"></i> <span id="info-editor-title-label">Chưa chọn bài viết</span></span>
+                        <button id="btn-close-info-manager" style="background:none; border:none; color:#9ca3af; cursor:pointer; font-size:20px; padding:4px;">&times;</button>
+                    </div>
+
+                    <div style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column;">
+                        <div id="info-empty-state" style="flex:1; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:12px; color:#6b7280; min-height:400px;">
+                            <i class="fa-solid fa-book" style="font-size:48px; opacity:0.3;"></i>
+                            <p style="font-size:14px;">Chọn một bài viết hoặc tạo mới để bắt đầu soạn thảo</p>
+                        </div>
+
+                        <div id="info-form" style="display:none; flex-direction:column; gap:14px; height:100%;">
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                <div>
+                                    <label style="font-size:11px; color:#9ca3af; display:block; margin-bottom:4px;">MÃ ID (infoid)</label>
+                                    <input type="text" id="info-field-id" placeholder="vd: info_lang_gom_lichsu" style="width:100%; padding:9px 12px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:white; font-size:13px; font-family:monospace;">
+                                </div>
+                                <div>
+                                    <label style="font-size:11px; color:#9ca3af; display:block; margin-bottom:4px;">PHỤ ĐỀ / TRÍCH DẪN (tùy chọn)</label>
+                                    <input type="text" id="info-field-subtitle" placeholder="vd: Di sản văn hóa phi vật thể UNESCO" style="width:100%; padding:9px 12px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:white; font-size:13px;">
+                                </div>
+                            </div>
+                            <div>
+                                <label style="font-size:11px; color:#9ca3af; display:block; margin-bottom:4px;">TIÊU ĐỀ CHÍNH</label>
+                                <input type="text" id="info-field-title" placeholder="vd: Nghệ thuật làm Gốm Bàu Trúc" style="width:100%; padding:9px 12px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:white; font-size:14px; font-weight:600;">
+                            </div>
+
+                            <!-- Single Large WYSIWYG Visual Editor -->
+                            <div style="flex:1; display:flex; flex-direction:column; min-height:360px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.06); padding:8px 12px; border:1px solid rgba(255,255,255,0.15); border-bottom:none; border-radius:10px 10px 0 0;">
+                                    <label style="font-size:12px; font-weight:700; color:#FFD700; display:flex; align-items:center; gap:6px;">
+                                        <i class="fa-solid fa-feather"></i> NỘI DUNG BÀI VIẾT (Soạn thảo trực tiếp)
+                                    </label>
+                                    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                                        <button class="wysiwyg-btn" data-cmd="bold" title="In đậm (Ctrl+B)"><b>B</b></button>
+                                        <button class="wysiwyg-btn" data-cmd="italic" title="In nghiêng (Ctrl+I)"><i>I</i></button>
+                                        <button class="wysiwyg-btn" data-cmd="underline" title="Gạch chân (Ctrl+U)"><u>U</u></button>
+                                        <span style="border-left:1px solid rgba(255,255,255,0.2); margin:0 2px;"></span>
+                                        <button class="wysiwyg-btn" data-cmd="formatBlock" data-val="h3" title="Tiêu đề H3"><b>H3</b></button>
+                                        <button class="wysiwyg-btn" data-cmd="formatBlock" data-val="p" title="Đoạn văn">¶</button>
+                                        <span style="border-left:1px solid rgba(255,255,255,0.2); margin:0 2px;"></span>
+                                        <button class="wysiwyg-btn" data-cmd="insertUnorderedList" title="Danh sách chấm">• Danh sách</button>
+                                        <button class="wysiwyg-btn" data-cmd="insertOrderedList" title="Danh sách số">1. Số</button>
+                                        <span style="border-left:1px solid rgba(255,255,255,0.2); margin:0 2px;"></span>
+                                        <div style="display:flex; align-items:center; gap:4px; background:rgba(0,0,0,0.2); padding:2px 6px; border-radius:6px;" title="Chọn màu chữ">
+                                            <button class="wysiwyg-color-dot" data-color="#1e293b" style="background:#1e293b;" title="Màu Đen tối"></button>
+                                            <button class="wysiwyg-color-dot" data-color="#b45309" style="background:#b45309;" title="Màu Vàng nâu"></button>
+                                            <button class="wysiwyg-color-dot" data-color="#dc2626" style="background:#dc2626;" title="Màu Đỏ"></button>
+                                            <button class="wysiwyg-color-dot" data-color="#16a34a" style="background:#16a34a;" title="Màu Xanh lá"></button>
+                                            <button class="wysiwyg-color-dot" data-color="#2563eb" style="background:#2563eb;" title="Màu Xanh dương"></button>
+                                            <button class="wysiwyg-color-dot" data-color="#ea580c" style="background:#ea580c;" title="Màu Cam"></button>
+                                            <input type="color" id="wysiwyg-custom-color" title="Chọn màu tùy chỉnh" style="width:20px; height:20px; border:none; padding:0; background:none; cursor:pointer;">
+                                        </div>
+                                        <span style="border-left:1px solid rgba(255,255,255,0.2); margin:0 2px;"></span>
+                                        <button class="wysiwyg-btn" data-cmd="removeFormat" title="Xóa định dạng"><i class="fa-solid fa-eraser"></i></button>
+                                    </div>
+                                </div>
+                                <div id="info-field-wysiwyg" contenteditable="true" style="flex:1; min-height:340px; padding:16px; background:#ffffff; border:1px solid rgba(255,255,255,0.2); border-radius:0 0 10px 10px; color:#1e293b; font-size:14px; line-height:1.8; overflow-y:auto; outline:none;" placeholder="Bấm vào đây để bắt đầu gõ nội dung bài thuyết minh..."></div>
+                            </div>
+
+                            <div style="display:flex; gap:10px; margin-top:8px;">
+                                <button id="btn-info-save" style="flex:1; background:linear-gradient(135deg,#16a34a,#22c55e); border:none; color:white; padding:12px; border-radius:10px; font-weight:700; cursor:pointer; font-size:14px;">
+                                    <i class="fa-solid fa-floppy-disk"></i> LƯU BÀI VIẾT VÀO TOUR
+                                </button>
+                                <button id="btn-info-delete" style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#f87171; padding:12px 18px; border-radius:10px; cursor:pointer; font-size:14px;" title="Xóa bài viết này">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Hotspot Inspector -->
+        <div class="sidebar sidebar-right" id="right-sidebar">
+            <div class="panel-header">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-sliders" style="color:var(--primary);"></i>
+                    <h2>Cấu Hình Hotspot</h2>
+                </div>
+                <button id="btn-close-right-sidebar" class="panel-close-btn" title="Ẩn bảng Cấu Hình Hotspot">&times;</button>
+            </div>
+            
+            <div class="properties-container">
+                <!-- Default View Settings Section -->
+                <div class="view-config-card">
+                    <div class="view-card-title">
+                        <i class="fa-solid fa-camera"></i> KHUNG NHÌN MẶC ĐỊNH (VIEW)
+                    </div>
+                    <div class="view-coords-grid">
+                        <div class="view-coord-box">
+                            <span>hlookat</span>
+                            <strong id="val-hlookat">0.0°</strong>
+                        </div>
+                        <div class="view-coord-box">
+                            <span>vlookat</span>
+                            <strong id="val-vlookat">0.0°</strong>
+                        </div>
+                        <div class="view-coord-box">
+                            <span>fov</span>
+                            <strong id="val-fov">100.0°</strong>
+                        </div>
+                    </div>
+
+                    <div class="view-section-label">
+                        <i class="fa-solid fa-magnifying-glass-plus"></i> GIỚI HẠN ZOOM
+                    </div>
+                    <div class="view-params-grid" style="grid-template-columns: 1fr 1fr;">
+                        <div class="view-param-box">
+                            <label>FOV Min</label>
+                            <input type="number" id="input-fovmin" value="60" min="20" max="120" step="1" title="Giá trị nhỏ = zoom sâu hơn">
+                        </div>
+                        <div class="view-param-box">
+                            <label>FOV Max</label>
+                            <input type="number" id="input-fovmax" value="95" min="60" max="179" step="1" title="Giá trị lớn = nhìn rộng hơn">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px;">
+                        <button id="btn-set-fovmin" class="btn-action btn-secondary" style="font-size: 10px; margin-bottom: 0; padding: 5px 4px;" title="Dùng độ zoom hiện tại làm giới hạn zoom sâu nhất">
+                            <i class="fa-solid fa-bullseye"></i> Đặt FOV Min
+                        </button>
+                        <button id="btn-set-fovmax" class="btn-action btn-secondary" style="font-size: 10px; margin-bottom: 0; padding: 5px 4px;" title="Dùng độ zoom hiện tại làm giới hạn nhìn xa nhất">
+                            <i class="fa-solid fa-expand"></i> Đặt FOV Max
+                        </button>
+                    </div>
+
+                    <button id="btn-save-view" class="btn-action btn-view-save">
+                        <i class="fa-solid fa-camera"></i> LƯU GÓC NHÌN MẶC ĐỊNH
+                    </button>
+                    <button id="btn-reset-view" class="btn-action btn-secondary" style="font-size: 11px; margin-bottom: 0; padding: 6px 10px;">
+                        <i class="fa-solid fa-rotate-left"></i> VỀ GÓC NHÌN BAN ĐẦU
+                    </button>
+                </div>
+
+                <!-- Horizon Leveling (Prealign) Panel -->
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px; margin-bottom: 12px;">
+                    <div class="view-section-label" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span><i class="fa-solid fa-compass-drafting" style="color: #00e6ff;"></i> CÂN BẰNG CHÂN TRỜI</span>
+                        <button id="btn-toggle-grid" class="btn-action btn-secondary" style="margin: 0; padding: 2px 8px; font-size: 10px;" title="Bật/tắt lưới căn chân trời">
+                            <i class="fa-solid fa-border-all"></i> Lưới căn
+                        </button>
+                    </div>
+
+                    <!-- Sliders for Roll, Pitch, Yaw -->
+                    <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 2px; color: #ccc;">
+                                <span>Nghiêng trái/phải (Roll)</span>
+                                <strong id="val-roll" style="color: #00e6ff;">0.0°</strong>
+                            </div>
+                            <input type="range" id="slider-roll" min="-15" max="15" step="0.1" value="0" style="width: 100%; cursor: pointer;">
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 2px; color: #ccc;">
+                                <span>Ngẩng/Cúi (Pitch)</span>
+                                <strong id="val-pitch" style="color: #00e6ff;">0.0°</strong>
+                            </div>
+                            <input type="range" id="slider-pitch" min="-15" max="15" step="0.1" value="0" style="width: 100%; cursor: pointer;">
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 2px; color: #ccc;">
+                                <span>Xoay hướng (Yaw)</span>
+                                <strong id="val-yaw" style="color: #ccc;">0.0°</strong>
+                            </div>
+                            <input type="range" id="slider-yaw" min="-180" max="180" step="1" value="0" style="width: 100%; cursor: pointer;">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                        <button id="btn-reset-prealign" class="btn-action btn-secondary" style="font-size: 10px; margin-bottom: 0; padding: 6px 4px;">
+                            <i class="fa-solid fa-rotate-left"></i> Reset (0°)
+                        </button>
+                        <button id="btn-save-prealign" class="btn-action btn-view-save" style="font-size: 10px; margin-bottom: 0; padding: 6px 4px; background: linear-gradient(135deg, #0284c7, #0369a1);">
+                            <i class="fa-solid fa-floppy-disk"></i> LƯU ĐỘ NGHIÊNG
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick action: Add Hotspot -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                    <button id="btn-add-hotspot" class="btn-action" style="margin-bottom: 0; font-size: 11px; padding: 8px 6px;">
+                        <i class="fa-solid fa-circle-plus"></i> Mới Hotspot
+                    </button>
+                    <button id="btn-draw-polygon" class="btn-action" style="margin-bottom: 0; font-size: 11px; padding: 8px 6px; background: linear-gradient(135deg, #059669, #10b981);">
+                        <i class="fa-solid fa-draw-polygon"></i> Vẽ Đa Giác (Sàn)
+                    </button>
+                </div>
+
+                <!-- Hotspot Editor Panel (Hidden when no hotspot selected) -->
+                <div id="property-editor" style="display: none;">
+                    <div style="font-size: 11px; color: var(--primary); font-weight: bold; margin-bottom: 12px; font-family: monospace;" id="lbl-hs-id">hs_xxxx</div>
+                    
+                    <div class="form-group">
+                        <label for="hs-style">Loại Hotspot (Style)</label>
+                        <select id="hs-style">
+                            <option value="muiten">Mũi tên (Di chuyển mặt đất)</option>
+                            <option value="vitri">Ghim vị trí (Hạ cánh từ trên cao)</option>
+                            <option value="tructhang">Trực thăng (Bay lên cao)</option>
+                            <option value="thongtin">Thông tin (Mở thuyết minh)</option>
+                            <option value="poly_ground_nav">Đa giác sàn (Polygon)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hs-title">Tiêu đề Tooltip (custom_title)</label>
+                        <input type="text" id="hs-title" placeholder="Ví dụ: Đi vào tháp">
+                    </div>
+
+                    <!-- Toggle Tooltip Elements: Title & Thumb -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="hs-show-title" style="font-size: 11px;">Hiển thị Tên</label>
+                            <select id="hs-show-title" style="font-size: 12px; padding: 6px;">
+                                <option value="true">Có (Hiện)</option>
+                                <option value="false">Không (Ẩn)</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="hs-show-thumb" style="font-size: 11px;">Hiển thị Ảnh (Thumb)</label>
+                            <select id="hs-show-thumb" style="font-size: 12px; padding: 6px;">
+                                <option value="true">Có (Hiện)</option>
+                                <option value="false">Không (Ẩn)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Destination Scene (Only for link scenes: muiten, vitri, tructhang) -->
+                    <div class="form-group" id="group-linkedscene">
+                        <label for="hs-linkedscene">Đến Cảnh (linkedscene)</label>
+                        <select id="hs-linkedscene">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <!-- Info ID (Only for thongtin style) -->
+                    <div class="form-group" id="group-infoid" style="display: none;">
+                        <label for="hs-infoid">Bài viết thuyết minh (infoid)</label>
+                        <div style="display:flex; gap:6px;">
+                            <select id="hs-infoid" style="flex:1;">
+                                <option value="">-- Chọn bài viết --</option>
+                                <!-- Populated dynamically -->
+                            </select>
+                            <button id="btn-quick-new-info" title="Tạo bài viết mới" style="background:linear-gradient(135deg,#1d4ed8,#2563eb); border:none; color:white; padding:6px 10px; border-radius:8px; cursor:pointer; font-size:12px; white-space:nowrap;">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hotspot Scale / Size Control -->
+                    <div class="form-group" id="group-scale">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <label for="hs-scale" style="margin-bottom: 0;">Kích thước (Scale)</label>
+                            <span id="lbl-scale-val" style="font-size: 11px; font-weight: bold; color: var(--primary);">0.50x</span>
+                        </div>
+                        <input type="range" id="hs-scale" min="0.20" max="1.50" step="0.05" value="0.50" style="width: 100%;">
+                    </div>
+
+                    <!-- Readonly coordinates -->
+                    <div class="form-group">
+                        <label>Tọa độ Spherical</label>
+                        <div class="form-row">
+                            <div>
+                                <span style="font-size: 10px; color: var(--text-muted);">ath</span>
+                                <input type="text" id="hs-ath" readonly style="font-family: monospace;">
+                            </div>
+                            <div>
+                                <span style="font-size: 10px; color: var(--text-muted);">atv</span>
+                                <input type="text" id="hs-atv" readonly style="font-family: monospace;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Polygon-specific controls (hidden for non-polygon) -->
+                    <div id="group-polygon-config" style="display: none;">
+                        <div class="form-group">
+                            <label>Số đỉnh đa giác</label>
+                            <div style="font-size: 13px; font-weight: bold; color: #10b981;" id="lbl-poly-vertex-count">0 đỉnh</div>
+                        </div>
+                    </div>
+
+                    <button id="btn-delete-hotspot" class="btn-action btn-danger" style="margin-top: 10px;">
+                        <i class="fa-solid fa-trash-can"></i> XÓA HOTSPOT
+                    </button>
+                </div>
+
+                <div id="no-selected-msg" style="text-align: center; padding: 40px 10px; color: var(--text-muted); font-size: 13px;">
+                    <i class="fa-solid fa-arrow-pointer" style="font-size: 24px; margin-bottom: 12px; display: block;"></i>
+                    Chọn một hotspot trong danh sách bên dưới hoặc trên màn hình 360 để chỉnh sửa.
+                </div>
+
+                <!-- Hotspots List in this Scene -->
+                <div class="hotspot-list-section">
+                    <div class="hotspot-list-header">Hotspots trong cảnh này</div>
+                    <div class="hotspots-wrapper" id="scene-hotspots-container">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sticky Fixed Footer: Save Hotspots to File -->
+            <div class="panel-footer" style="padding: 14px 16px; background: rgba(15, 23, 42, 0.95); border-top: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); flex-shrink: 0;">
+                <button id="btn-save-hotspots" class="btn-action btn-save" style="margin-bottom: 0; width: 100%; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);">
+                    <i class="fa-solid fa-floppy-disk"></i> LƯU HOTSPOTS VÀO FILE
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- Upload Progress Modal -->
+    <div class="upload-modal-overlay" id="upload-modal">
+        <div class="upload-modal" style="max-width: 580px; max-height: 85vh; display: flex; flex-direction: column;">
+            <div id="upload-step-form" style="display: flex; flex-direction: column; overflow: hidden;">
+                <h3><i class="fa-solid fa-cloud-arrow-up"></i> Upload Panorama 360° (Phân loại Địa điểm)</h3>
+                
+                <!-- Location Group Selection -->
+                <div class="form-group" style="margin-bottom: 12px; background: rgba(255,215,0,0.08); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,215,0,0.2);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                        <label for="upload-location-select" style="font-weight: bold; color: var(--primary);"><i class="fa-solid fa-folder-tree"></i> Chọn Thư mục Địa điểm / Di tích</label>
+                        <button type="button" id="btn-create-location" style="background: var(--primary); color: #000; border: none; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer;">
+                            <i class="fa-solid fa-plus"></i> Tạo Địa Điểm Mới
+                        </button>
+                    </div>
+                    <select id="upload-location-select" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--panel-border); background: #000; color: #fff; font-size: 13px;">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+
+                <div id="upload-file-preview" style="font-size: 12px; color: var(--primary); margin-bottom: 10px; font-weight: bold;"></div>
+                
+                <div id="upload-files-container" style="max-height: 280px; overflow-y: auto; margin-bottom: 15px; border: 1px solid var(--panel-border); border-radius: 8px; padding: 10px; background: rgba(0,0,0,0.2);">
+                    <!-- Multi files inputs dynamically rendered -->
+                </div>
+
+                <button class="btn-action" id="btn-confirm-upload">
+                    <i class="fa-solid fa-rocket"></i> BẮT ĐẦU TẠO TILES VÀO ĐỊA ĐIỂM
+                </button>
+                <button class="btn-action btn-secondary" id="btn-cancel-upload" style="margin-bottom: 0;">
+                    HỦY
+                </button>
+            </div>
+            <div id="upload-step-progress" style="display: none;">
+                <i class="fa-solid fa-gear upload-icon-spinner"></i>
+                <h3>Đang tạo Multi-Resolution Tiles...</h3>
+                <div class="upload-progress">
+                    <div class="upload-progress-fill" id="upload-progress-bar"></div>
+                </div>
+                <div class="upload-status" id="upload-status-text">Đang xử lý ảnh...</div>
+            </div>
+            <div id="upload-step-done" style="display: none;">
+                <i class="fa-solid fa-circle-check" style="font-size: 48px; color: #10b981; margin-bottom: 15px;"></i>
+                <h3 style="color: #10b981;">Hoàn tất!</h3>
+                <div class="upload-status" id="upload-done-text">Tất cả các scene mới đã sẵn sàng.</div>
+                <button class="btn-action" id="btn-upload-done" style="margin-top: 20px; margin-bottom: 0;">
+                    <i class="fa-solid fa-check"></i> TẢI LẠI EDITOR
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast">
+        <i class="fa-solid fa-check-double"></i> <span id="toast-msg">Đã copy!</span>
+    </div>
+
+    <!-- Embedding KrPano Core -->
+    <script src="engine/tour.js"></script>
+
+    <script>
+        let krpanoObj = null;
+        let allScenes = [];
+        let currentSceneId = '';
+        let sceneHotspots = []; // Local changes tracker
+        let selectedHotspotName = '';
+        let isDirty = false; // Track unsaved changes
+
+        // Warn before leaving with unsaved changes
+        window.addEventListener('beforeunload', (e) => {
+            if (isDirty) {
+                e.preventDefault();
+                e.returnValue = 'Bạn có thay đổi chưa xuất XML. Rời trang sẽ mất dữ liệu!';
+            }
+        });
+
+        function markDirty() {
+            isDirty = true;
+        }
+
+        // Dom elements
+        const sceneListContainer = document.getElementById('scene-list-container');
+        const searchInput = document.getElementById('scene-search');
+        const hotspotsContainer = document.getElementById('scene-hotspots-container');
+        const propertyEditor = document.getElementById('property-editor');
+        const noSelectedMsg = document.getElementById('no-selected-msg');
+        
+        // Form controls
+        const inputHsId = document.getElementById('lbl-hs-id');
+        const selectHsStyle = document.getElementById('hs-style');
+        const inputHsTitle = document.getElementById('hs-title');
+        const selectHsShowTitle = document.getElementById('hs-show-title');
+        const selectHsShowThumb = document.getElementById('hs-show-thumb');
+        const selectHsLinked = document.getElementById('hs-linkedscene');
+        const inputHsInfo = document.getElementById('hs-infoid');
+        const inputHsAth = document.getElementById('hs-ath');
+        const inputHsAtv = document.getElementById('hs-atv');
+        const inputHsScale = document.getElementById('hs-scale');
+        const lblScaleVal = document.getElementById('lbl-scale-val');
+        const groupScale = document.getElementById('group-scale');
+        const groupLinkedScene = document.getElementById('group-linkedscene');
+        const groupInfoId = document.getElementById('group-infoid');
+
+        // Startup
+        document.addEventListener("DOMContentLoaded", () => {
+            embedpano({
+                swf: "engine/tour.swf",
+                xml: "tour.xml?v=" + Date.now(),
+                target: "pano",
+                html5: "auto",
+                mobilescale: 1.0,
+                showerrors: false,
+                consolelog: true,
+                passQueryParameters: true,
+                onready: (krpano) => {
+                    krpanoObj = krpano;
+                    injectEditorXML();
+                }
+            });
+
+            initEventListeners();
+            initKeyboardShortcuts();
+        });
+
+        // 1. Inject drag actions and click handlers dynamically into KrPano XML
+        function injectEditorXML() {
+            const dragActionXml = '<krpano><action name="draghotspot">' +
+                'spheretoscreen(ath, atv, hotspotxy[get(name)].x, hotspotxy[get(name)].y);' +
+                'sub(drag_adjustx, mouse.stagex, hotspotxy[get(name)].x);' +
+                'sub(drag_adjusty, mouse.stagey, hotspotxy[get(name)].y);' +
+                'asyncloop(pressed,' +
+                '  sub(dx, mouse.stagex, drag_adjustx);' +
+                '  sub(dy, mouse.stagey, drag_adjusty);' +
+                '  screentosphere(dx, dy, ath, atv);' +
+                '  js(onHotspotDrag(get(name), get(ath), get(atv)));' +
+                ');' +
+                '</action></krpano>';
+            krpanoObj.call("loadxml('" + dragActionXml + "', null, MERGE);");
+
+            // Overrides hotspot clicks inside editor mode
+            const hotspotHookXml = '<krpano>' +
+                '<action name="arrow_hotspot_click">js(onHotspotSelected(get(name)));</action>' +
+                '<action name="fly_transition_click">js(onHotspotSelected(get(name)));</action>' +
+                '<action name="skin_hotspotstyle_click">js(onHotspotSelected(get(name)));</action>' +
+                '</krpano>';
+            krpanoObj.call("loadxml('" + hotspotHookXml + "', null, MERGE);");
+
+            // Listen for scene load completes
+            krpanoObj.set("events.onnewscene", "js(onSceneChange());");
+
+            // Delay scene detection briefly for KrPano parsing
+            setTimeout(detectScenesAndData, 500);
+        }
+
+        const collapsedLocations = {};
+
+        function toggleLocationFolder(locId) {
+            collapsedLocations[locId] = !collapsedLocations[locId];
+            renderSceneList(searchInput.value);
+        }
+
+        // 2. Query KrPano's built-in array of scenes with polling & API fallback
+        async function detectScenesAndData() {
+            if (!krpanoObj) return;
+
+            let sceneCount = krpanoObj.get("scene.count");
+            
+            // Retry polling if KrPano XML parsing is still in progress
+            let retries = 0;
+            while ((!sceneCount || sceneCount === 0) && retries < 15) {
+                await new Promise(r => setTimeout(r, 200));
+                sceneCount = krpanoObj.get("scene.count");
+                retries++;
+            }
+
+            allScenes = [];
+
+            // Query server API for scenes & locations metadata
+            let apiScenesMap = {};
+            let apiScenesMapLower = {};
+            let locationsMap = {};
+            try {
+                const [scRes, locRes] = await Promise.all([
+                    fetch('/api/scenes'),
+                    fetch('/api/locations')
+                ]);
+                const scData = await scRes.json();
+                const locData = await locRes.json();
+
+                if (scData.success && scData.scenes) {
+                    scData.scenes.forEach(sc => {
+                        apiScenesMap[sc.name] = sc;
+                        if (sc.name) {
+                            apiScenesMapLower[sc.name.toLowerCase()] = sc;
+                        }
+                    });
+                }
+                if (locData.success && locData.locations) {
+                    locData.locations.forEach(loc => {
+                        locationsMap[loc.id] = loc.name;
+                    });
+                }
+            } catch (e) {
+                console.warn('API scenes/locations fetch info:', e);
+            }
+            
+            for (let i = 0; i < sceneCount; i++) {
+                const name = krpanoObj.get(`scene[${i}].name`);
+                const title = krpanoObj.get(`scene[${i}].title`) || name;
+                let thumb = krpanoObj.get(`scene[${i}].thumburl`) || '';
+                
+                let locationId = 'default';
+                let locationName = 'Cảnh Mặc Định';
+
+                const apiSc = apiScenesMap[name] || (name ? apiScenesMapLower[name.toLowerCase()] : null);
+                if (apiSc && apiSc.sourceFile) {
+                    const folderMatch = apiSc.sourceFile.match(/^tours\/([^\/]+)\/scenes\.xml$/);
+                    if (folderMatch) {
+                        locationId = folderMatch[1];
+                        locationName = locationsMap[locationId] || locationId.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                    }
+                    if (thumb && !thumb.startsWith('http') && !thumb.startsWith('/')) {
+                        if (!thumb.startsWith('tours/')) {
+                            thumb = `tours/${locationId}/${thumb}`;
+                        }
+                    }
+                } else {
+                    // Smart fallback: match thumburl or name against known location folders
+                    if (thumb && thumb.includes('tours/')) {
+                        const m = thumb.match(/tours\/([^\/]+)\//);
+                        if (m && locationsMap[m[1]]) {
+                            locationId = m[1];
+                            locationName = locationsMap[locationId];
+                        }
+                    }
+                    if (locationId === 'default' && name) {
+                        const nameLower = name.toLowerCase();
+                        for (const [locId, locName] of Object.entries(locationsMap)) {
+                            if (nameLower.includes(locId.toLowerCase())) {
+                                locationId = locId;
+                                locationName = locName;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (thumb && !thumb.startsWith('tours/') && !thumb.startsWith('/') && !thumb.startsWith('http')) {
+                        const sceneFolder = locationId !== 'default' ? locationId : name.replace(/^scene_/, '');
+                        thumb = `tours/${sceneFolder}/${thumb}`;
+                    }
+                }
+
+                allScenes.push({ id: name, title, thumb, locationId, locationName });
+            }
+
+            // Populate linked scene dropdown grouped by Location using <optgroup>
+            selectHsLinked.innerHTML = '<option value="">-- Chọn scene liên kết --</option>';
+
+            const locationGroupsForSelect = {};
+            allScenes.forEach(sc => {
+                const locId = sc.locationId || 'default';
+                if (!locationGroupsForSelect[locId]) {
+                    locationGroupsForSelect[locId] = {
+                        id: locId,
+                        name: sc.locationName || locId,
+                        scenes: []
+                    };
+                }
+                locationGroupsForSelect[locId].scenes.push(sc);
+            });
+
+            Object.values(locationGroupsForSelect).forEach(group => {
+                const optGroup = document.createElement('optgroup');
+                optGroup.label = `📍 ${group.name.toUpperCase()}`;
+
+                group.scenes.forEach(sc => {
+                    const opt = document.createElement('option');
+                    opt.value = sc.id;
+                    opt.textContent = `  • ${sc.title} (${sc.id})`;
+                    optGroup.appendChild(opt);
+                });
+
+                selectHsLinked.appendChild(optGroup);
+            });
+
+            renderSceneList();
+            if (!krpanoObj.get("xml.scene") && allScenes.length > 0) {
+                krpanoObj.call(`loadscene('${allScenes[0].id}', null, MERGE)`);
+            } else {
+                onSceneChange();
+            }
+        }
+
+        let draggedSceneId = null;
+
+        function handleSceneDragStart(e, sceneId) {
+            draggedSceneId = sceneId;
+            e.dataTransfer.setData('text/plain', sceneId);
+            e.dataTransfer.effectAllowed = 'move';
+            e.currentTarget.classList.add('dragging');
+        }
+
+        function handleSceneDragEnd(e) {
+            e.currentTarget.classList.remove('dragging');
+            document.querySelectorAll('.location-folder').forEach(f => f.classList.remove('drag-over'));
+        }
+
+        function handleLocationDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            const folder = e.currentTarget.closest('.location-folder');
+            if (folder) folder.classList.add('drag-over');
+        }
+
+        function handleLocationDragLeave(e) {
+            const folder = e.currentTarget.closest('.location-folder');
+            if (folder) folder.classList.remove('drag-over');
+        }
+
+        async function handleLocationDrop(e, targetLocationId) {
+            e.preventDefault();
+            const folder = e.currentTarget.closest('.location-folder');
+            if (folder) folder.classList.remove('drag-over');
+
+            const sceneId = draggedSceneId || e.dataTransfer.getData('text/plain');
+            if (!sceneId || !targetLocationId) return;
+
+            const sc = allScenes.find(s => s.id === sceneId);
+            if (!sc) return;
+
+            if (sc.locationId === targetLocationId) {
+                showToast('ℹ️ Cảnh đã ở sẵn trong Địa điểm này');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/scenes/move-location', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sceneId, targetLocationId })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(`✅ Đã di chuyển cảnh "${sc.title || sceneId}" sang Địa điểm mới!`);
+                    await detectScenesAndData();
+                } else {
+                    showToast(`❌ Lỗi di chuyển: ${data.error}`);
+                }
+            } catch (err) {
+                showToast(`❌ Lỗi kết nối server: ${err.message}`);
+            }
+        }
+
+        // 3. Render scene list in left sidebar as a hierarchical location tree
+        function renderSceneList(filter = '') {
+            sceneListContainer.innerHTML = '';
+            const filtered = allScenes.filter(sc => 
+                sc.title.toLowerCase().includes(filter.toLowerCase()) || 
+                sc.id.toLowerCase().includes(filter.toLowerCase()) ||
+                (sc.locationName && sc.locationName.toLowerCase().includes(filter.toLowerCase()))
+            );
+
+            if (filtered.length === 0) {
+                sceneListContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 13px;">Chưa có cảnh nào</div>';
+                return;
+            }
+
+            // Group scenes by locationId
+            const locationGroups = {};
+            filtered.forEach(sc => {
+                const locId = sc.locationId || 'default';
+                if (!locationGroups[locId]) {
+                    locationGroups[locId] = {
+                        id: locId,
+                        name: sc.locationName || locId,
+                        scenes: []
+                    };
+                }
+                locationGroups[locId].scenes.push(sc);
+            });
+
+            Object.values(locationGroups).forEach(group => {
+                const folderEl = document.createElement('div');
+                folderEl.className = 'location-folder';
+                
+                // Attach drop target handlers to Location folder
+                folderEl.addEventListener('dragover', handleLocationDragOver);
+                folderEl.addEventListener('dragleave', handleLocationDragLeave);
+                folderEl.addEventListener('drop', (e) => handleLocationDrop(e, group.id));
+
+                const isCurrentGroup = group.scenes.some(s => s.id === currentSceneId);
+                const isCollapsed = collapsedLocations[group.id] === true && !isCurrentGroup;
+
+                folderEl.innerHTML = `
+                    <div class="location-folder-header" onclick="toggleLocationFolder('${group.id}')">
+                        <i class="fa-solid ${isCollapsed ? 'fa-chevron-right' : 'fa-chevron-down'}" style="font-size: 10px; color: var(--text-muted);"></i>
+                        <i class="fa-solid ${isCollapsed ? 'fa-folder' : 'fa-folder-open'}" style="color: var(--primary); font-size: 14px;"></i>
+                        <div class="location-folder-title">
+                            <span>${group.name}</span>
+                            <span class="location-badge">${group.scenes.length} cảnh</span>
+                        </div>
+                        <button class="btn-rename-scene" title="Đổi tên Địa Điểm" onclick="event.stopPropagation(); promptRenameLocation('${group.id}', '${group.name.replace(/'/g, "\\'")}');">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                    </div>
+                    <div class="location-scenes-list" style="display: ${isCollapsed ? 'none' : 'block'};"></div>
+                `;
+
+                const scenesContainer = folderEl.querySelector('.location-scenes-list');
+
+                group.scenes.forEach(sc => {
+                    const el = document.createElement('div');
+                    el.className = `scene-item ${sc.id === currentSceneId ? 'active' : ''}`;
+                    el.setAttribute('draggable', 'true');
+                    el.addEventListener('dragstart', (e) => handleSceneDragStart(e, sc.id));
+                    el.addEventListener('dragend', handleSceneDragEnd);
+
+                    const safeTitle = sc.title ? sc.title.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+                    const safeId = sc.id ? sc.id.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+                    el.innerHTML = `
+                        <i class="fa-solid fa-grip-vertical scene-drag-handle" title="Kéo thả để di chuyển sang Địa điểm khác"></i>
+                        <img class="scene-thumb" src="${sc.thumb}" onerror="this.src='core/assets/og-preview.png'">
+                        <div class="scene-info">
+                            <div class="scene-name" title="${safeTitle}">${safeTitle}</div>
+                            <div class="scene-id">${safeId}</div>
+                        </div>
+                        <div style="display:flex; gap:2px;">
+                            <button class="btn-rename-scene" title="Chuyển sang Địa điểm khác" style="color: #3b82f6;" onclick="event.stopPropagation(); promptMoveSceneLocation('${sc.id}', '${safeTitle.replace(/'/g, "\\'")}');">
+                                <i class="fa-solid fa-right-left"></i>
+                            </button>
+                            <button class="btn-rename-scene" title="Đổi tên cảnh" onclick="event.stopPropagation(); promptRenameScene('${sc.id}', '${safeTitle.replace(/'/g, "\\'")}');">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button class="btn-rename-scene" title="Xóa cảnh này" style="color: #ef4444;" onclick="event.stopPropagation(); confirmDeleteScene('${sc.id}', '${safeTitle.replace(/'/g, "\\'")}');">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    `;
+                    el.addEventListener('click', () => {
+                        if (currentSceneId === sc.id) return;
+                        krpanoObj.call(`loadscene('${sc.id}', null, MERGE, BLEND(0.4))`);
+                    });
+                    scenesContainer.appendChild(el);
+                });
+
+                sceneListContainer.appendChild(folderEl);
+            });
+        }
+
+        // Move scene to another location
+        async function promptMoveSceneLocation(sceneId, title) {
+            let locations = [];
+            try {
+                const res = await fetch('/api/locations');
+                const data = await res.json();
+                if (data.success && data.locations) {
+                    locations = data.locations;
+                }
+            } catch (e) {}
+
+            if (locations.length === 0) {
+                showToast('❌ Không tìm thấy danh sách địa điểm!');
+                return;
+            }
+
+            const currentSc = allScenes.find(s => s.id === sceneId);
+            const currentLocId = currentSc ? currentSc.locationId : '';
+
+            let choicesText = locations.map((loc, idx) => `${idx + 1}. ${loc.name} (${loc.id}) ${loc.id === currentLocId ? '[Hiện tại]' : ''}`).join('\n');
+            choicesText += `\n${locations.length + 1}. + Tạo Địa Điểm Mới...`;
+
+            const choiceInput = prompt(`CHUYỂN CẢNH "${title}" SANG ĐỊA ĐIỂM KHÁC:\n\nChọn số thứ tự địa điểm đích:\n${choicesText}`, '1');
+            if (!choiceInput) return;
+
+            const choiceNum = parseInt(choiceInput.trim(), 10);
+            let targetLocationId = '';
+
+            if (choiceNum > 0 && choiceNum <= locations.length) {
+                targetLocationId = locations[choiceNum - 1].id;
+            } else if (choiceNum === locations.length + 1) {
+                const newLocName = prompt('Nhập tên Địa Điểm Mới:', 'Địa Điểm Mới');
+                if (!newLocName || !newLocName.trim()) return;
+                targetLocationId = newLocName.trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_\-]/g, '');
+            } else {
+                showToast('❌ Lựa chọn không hợp lệ!');
+                return;
+            }
+
+            if (targetLocationId === currentLocId) {
+                showToast('ℹ️ Cảnh đã ở sẵn trong Địa điểm này');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/scenes/move-location', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sceneId, targetLocationId })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(`✅ ${data.message}`);
+                    await detectScenesAndData();
+                } else {
+                    showToast(`❌ Lỗi: ${data.error}`);
+                }
+            } catch (err) {
+                showToast(`❌ Lỗi kết nối server: ${err.message}`);
+            }
+        }
+
+        // Rename location title
+        async function promptRenameLocation(locationId, oldName) {
+            const newName = prompt(`Nhập tên hiển thị mới cho Địa Điểm "${oldName}":`, oldName);
+            if (!newName || newName.trim() === '' || newName.trim() === oldName) return;
+
+            const trimmedName = newName.trim();
+            try {
+                const res = await fetch('/api/locations/rename', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ locationId, newName: trimmedName })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(`✅ ${data.message}`);
+                    await detectScenesAndData();
+                } else {
+                    showToast(`❌ Lỗi: ${data.error}`);
+                }
+            } catch (err) {
+                showToast(`❌ Lỗi kết nối server: ${err.message}`);
+            }
+        }
+
+        // Rename scene title
+        async function promptRenameScene(sceneId, oldTitle) {
+            const newTitle = prompt(`Nhập tên tiêu đề mới cho cảnh "${oldTitle}":`, oldTitle);
+            if (!newTitle || newTitle.trim() === '' || newTitle.trim() === oldTitle) return;
+
+            const trimmedTitle = newTitle.trim();
+            try {
+                const res = await fetch('/api/scenes/rename', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sceneId, newTitle: trimmedTitle })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(`✅ ${data.message}`);
+                    const sc = allScenes.find(s => s.id === sceneId);
+                    if (sc) sc.title = trimmedTitle;
+                    if (krpanoObj) {
+                        krpanoObj.set(`scene[${sceneId}].title`, trimmedTitle);
+                    }
+                    renderSceneList(searchInput.value);
+                } else {
+                    showToast(`❌ Lỗi: ${data.error}`);
+                }
+            } catch (err) {
+                showToast(`❌ Lỗi kết nối server: ${err.message}`);
+            }
+        }
+
+        // Delete scene
+        async function confirmDeleteScene(sceneId, title) {
+            if (!confirm(`Bạn có chắc chắn muốn XÓA cảnh "${title}" (${sceneId}) khỏi file XML và đĩa cứng?`)) return;
+
+            try {
+                const res = await fetch('/api/scenes/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sceneId })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(`🗑️ ${data.message}`);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 800);
+                } else {
+                    showToast(`❌ Lỗi xóa cảnh: ${data.error}`);
+                }
+            } catch (err) {
+                showToast(`❌ Lỗi kết nối server: ${err.message}`);
+            }
+        }
+
+        // 4. Triggered when scene changes in KrPano
+        window.onSceneChange = function() {
+            currentSceneId = krpanoObj.get("xml.scene");
+            
+            // Sync Left Sidebar active scene highlight
+            document.querySelectorAll('.scene-item').forEach(item => {
+                const id = item.querySelector('.scene-id').textContent;
+                item.classList.toggle('active', id === currentSceneId);
+            });
+
+            // Sync View parameters inputs with current scene's stored view settings
+            if (krpanoObj) {
+                const fmin = Math.round(Number(krpanoObj.get('view.fovmin') || 60));
+                const fmax = Math.round(Number(krpanoObj.get('view.fovmax') || 120));
+                const mpz = Number(krpanoObj.get('view.maxpixelzoom') || 1.0).toFixed(1);
+
+                const elFmin = document.getElementById('input-fovmin');
+                const elFmax = document.getElementById('input-fovmax');
+
+                if (elFmin) elFmin.value = fmin;
+                if (elFmax) elFmax.value = fmax;
+
+                // Sync Prealign parameters sliders with current scene's stored prealign settings
+                const prealignVal = krpanoObj.get('image.prealign') || '0|0|0';
+                const pParts = prealignVal.split('|').map(v => parseFloat(v) || 0);
+
+                const sliderPitch = document.getElementById('slider-pitch');
+                const sliderYaw = document.getElementById('slider-yaw');
+                const sliderRoll = document.getElementById('slider-roll');
+                const valPitch = document.getElementById('val-pitch');
+                const valYaw = document.getElementById('val-yaw');
+                const valRoll = document.getElementById('val-roll');
+
+                if (sliderPitch) sliderPitch.value = pParts[0] || 0;
+                if (sliderYaw) sliderYaw.value = pParts[1] || 0;
+                if (sliderRoll) sliderRoll.value = pParts[2] || 0;
+
+                if (valPitch) valPitch.textContent = `${(pParts[0] || 0).toFixed(1)}°`;
+                if (valYaw) valYaw.textContent = `${(pParts[1] || 0).toFixed(1)}°`;
+                if (valRoll) valRoll.textContent = `${(pParts[2] || 0).toFixed(1)}°`;
+            }
+
+            // Extract scene hotspots currently present in KrPano
+            loadSceneHotspots();
+            deselectHotspot();
+            renderHotspotList();
+        };
+
+        // Parse custom hotspots already loaded in the active XML scene
+        function loadSceneHotspots() {
+            sceneHotspots = [];
+            clearVertexHandles();
+            const count = krpanoObj.get("hotspot.count");
+            
+            for (let i = 0; i < count; i++) {
+                const name = krpanoObj.get(`hotspot[${i}].name`);
+                const style = krpanoObj.get(`hotspot[${i}].style`);
+                const hsType = krpanoObj.get(`hotspot[${i}].type`);
+                
+                // Track only our target custom style hotspots
+                if (['muiten', 'vitri', 'tructhang', 'thongtin', 'poly_ground_nav'].includes(style)) {
+                    const ath = Number(krpanoObj.get(`hotspot[${i}].ath`) || 0).toFixed(4);
+                    const atv = Number(krpanoObj.get(`hotspot[${i}].atv`) || 0).toFixed(4);
+                    const rawScale = krpanoObj.get(`hotspot[${i}].scale`);
+                    const hsScale = rawScale !== null && rawScale !== undefined ? Number(rawScale).toFixed(2) : '0.50';
+                    
+                    const stVal = krpanoObj.get(`hotspot[${i}].show_title`);
+                    const smVal = krpanoObj.get(`hotspot[${i}].show_thumb`);
+
+                    const hsData = {
+                        name: name,
+                        style: style,
+                        scale: hsScale,
+                        ath: ath,
+                        atv: atv,
+                        linkedscene: krpanoObj.get(`hotspot[${i}].linkedscene`) || '',
+                        custom_title: krpanoObj.get(`hotspot[${i}].custom_title`) || krpanoObj.get(`hotspot[${i}].tooltip`) || '',
+                        infoid: krpanoObj.get(`hotspot[${i}].infoid`) || '',
+                        show_title: stVal === 'false' || stVal === false ? 'false' : 'true',
+                        show_thumb: smVal === 'false' || smVal === false ? 'false' : 'true'
+                    };
+
+                    // Parse polygon points
+                    if (style === 'poly_ground_nav' || hsType === 'polygon') {
+                        hsData.type = 'polygon';
+                        hsData.fillcolor = krpanoObj.get(`hotspot[${i}].fillcolor`) || '0x0072ff';
+                        hsData.fillalpha = Number(krpanoObj.get(`hotspot[${i}].fillalpha`) || 0.3);
+                        hsData.bordercolor = krpanoObj.get(`hotspot[${i}].bordercolor`) || '0xffffff';
+                        hsData.borderalpha = Number(krpanoObj.get(`hotspot[${i}].borderalpha`) || 0.8);
+                        hsData.borderwidth = Number(krpanoObj.get(`hotspot[${i}].borderwidth`) || 2.0);
+                        
+                        const pointCount = krpanoObj.get(`hotspot[${i}].point.count`) || 0;
+                        hsData.points = [];
+                        for (let pi = 0; pi < pointCount; pi++) {
+                            hsData.points.push({
+                                ath: Number(krpanoObj.get(`hotspot[${i}].point[${pi}].ath`) || 0).toFixed(4),
+                                atv: Number(krpanoObj.get(`hotspot[${i}].point[${pi}].atv`) || 0).toFixed(4)
+                            });
+                        }
+
+                        // Override onclick for editor mode
+                        krpanoObj.set(`hotspot[${name}].onclick`, `js(onHotspotSelected(get(name)))`);
+                    } else {
+                        // Enable dragging in KrPano dynamically
+                        krpanoObj.set(`hotspot[${name}].ondown`, 'draghotspot();');
+                        krpanoObj.set(`hotspot[${name}].onclick`, `js(onHotspotSelected(get(name)))`);
+                    }
+
+                    sceneHotspots.push(hsData);
+                }
+            }
+        }
+
+        // 5. Render list of hotspots in right sidebar
+        function renderHotspotList() {
+            hotspotsContainer.innerHTML = '';
+            if (sceneHotspots.length === 0) {
+                hotspotsContainer.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center; padding:10px;">Không có hotspot nào trong cảnh.</div>';
+                return;
+            }
+
+            sceneHotspots.forEach(hs => {
+                const el = document.createElement('div');
+                el.className = `hotspot-item ${selectedHotspotName === hs.name ? 'active' : ''}`;
+                el.dataset.hsName = hs.name;
+                const safeHsTitle = (hs.custom_title || hs.name).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const safeHsStyle = hs.style.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                el.innerHTML = `
+                    <div class="hotspot-item-title">${safeHsTitle}</div>
+                    <div class="hotspot-item-style">${safeHsStyle}</div>
+                `;
+                el.addEventListener('click', () => {
+                    onHotspotSelected(hs.name);
+                    
+                    // Rotate camera to look at the selected hotspot
+                    if (krpanoObj) {
+                        krpanoObj.call(`lookto(${hs.ath}, ${hs.atv}, 90, smooth(100,50,20))`);
+                    }
+                });
+                hotspotsContainer.appendChild(el);
+            });
+        }
+
+        // 6. Sidebar Panel Toggle Logic
+        function toggleLeftSidebar(show) {
+            const sidebar = document.getElementById('left-sidebar');
+            const btn = document.getElementById('btn-toggle-left-sidebar');
+            if (!sidebar) return;
+
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            const shouldShow = (typeof show === 'boolean') ? show : isCollapsed;
+
+            sidebar.classList.toggle('collapsed', !shouldShow);
+            if (btn) btn.classList.toggle('active', shouldShow);
+
+            setTimeout(() => {
+                if (krpanoObj && typeof krpanoObj.call === 'function') {
+                    krpanoObj.call("updatescreen();");
+                }
+            }, 360);
+        }
+
+        function toggleRightSidebar(show) {
+            const sidebar = document.getElementById('right-sidebar');
+            const btn = document.getElementById('btn-toggle-right-sidebar');
+            if (!sidebar) return;
+
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            const shouldShow = (typeof show === 'boolean') ? show : isCollapsed;
+
+            sidebar.classList.toggle('collapsed', !shouldShow);
+            if (btn) btn.classList.toggle('active', shouldShow);
+
+            setTimeout(() => {
+                if (krpanoObj && typeof krpanoObj.call === 'function') {
+                    krpanoObj.call("updatescreen();");
+                }
+            }, 360);
+        }
+
+        // 7. Selected hotspot callback (from screen clicks or sidebar list)
+        window.onHotspotSelected = function(name) {
+            selectedHotspotName = name;
+            const hs = sceneHotspots.find(h => h.name === name);
+            if (!hs) return;
+
+            // Auto-open Right Panel when a hotspot is selected
+            toggleRightSidebar(true);
+
+            // Highlight selected hotspot in sidebar list (toggle class instead of full re-render)
+            document.querySelectorAll('.hotspot-item').forEach(item => {
+                const itemName = item.dataset.hsName;
+                item.classList.toggle('active', itemName === name);
+            });
+
+            // Populate property values
+            inputHsId.textContent = hs.name;
+            selectHsStyle.value = hs.style;
+            inputHsTitle.value = hs.custom_title;
+            selectHsShowTitle.value = hs.show_title || 'true';
+            selectHsShowThumb.value = hs.show_thumb || 'true';
+            selectHsLinked.value = hs.linkedscene;
+            inputHsInfo.value = hs.infoid || '';
+            inputHsAth.value = hs.ath;
+            inputHsAtv.value = hs.atv;
+
+            const hsScale = hs.scale ? Number(hs.scale).toFixed(2) : '0.50';
+            if (inputHsScale) inputHsScale.value = hsScale;
+            if (lblScaleVal) lblScaleVal.textContent = `${hsScale}x`;
+
+            // Polygon-specific fields
+            if (hs.style === 'poly_ground_nav' && hs.points) {
+                renderVertexHandles(hs);
+            } else {
+                clearVertexHandles();
+            }
+
+            // Toggle conditional fields
+            toggleConditionalFields(hs.style);
+
+            // Display form
+            noSelectedMsg.style.display = 'none';
+            propertyEditor.style.display = 'block';
+
+            // Show a visual feedback border on the selected hotspot inside KrPano (glow scale)
+            sceneHotspots.forEach(h => {
+                krpanoObj.set(`hotspot[${h.name}].alpha`, h.name === name ? 1.0 : 0.6);
+            });
+        };
+
+        function deselectHotspot() {
+            selectedHotspotName = '';
+            propertyEditor.style.display = 'none';
+            noSelectedMsg.style.display = 'block';
+            clearVertexHandles();
+
+            if (krpanoObj) {
+                sceneHotspots.forEach(h => {
+                    krpanoObj.set(`hotspot[${h.name}].alpha`, 0.9);
+                });
+            }
+        }
+
+        // 7. Realtime coordinates dragging callback from KrPano
+        window.onHotspotDrag = function(name, ath, atv) {
+            const hs = sceneHotspots.find(h => h.name === name);
+            if (hs) {
+                hs.ath = Number(ath).toFixed(4);
+                hs.atv = Number(atv).toFixed(4);
+                
+                // If it is the currently selected hotspot in the form, update inputs
+                if (selectedHotspotName === name) {
+                    inputHsAth.value = hs.ath;
+                    inputHsAtv.value = hs.atv;
+                }
+                markDirty();
+            }
+
+            // Vertex handle drag: update polygon point position in real-time
+            if (name && name.startsWith('hs_vhandle_')) {
+                const parts = name.split('_');
+                const vidx = parseInt(parts[parts.length - 1]);
+                const polyName = parts.slice(2, parts.length - 1).join('_');
+                const polyHs = sceneHotspots.find(h => h.name === polyName);
+                if (polyHs && polyHs.points && polyHs.points[vidx]) {
+                    polyHs.points[vidx].ath = Number(ath).toFixed(4);
+                    polyHs.points[vidx].atv = Number(atv).toFixed(4);
+                    // Sync polygon hotspot point in KrPano
+                    krpanoObj.set(`hotspot[${polyName}].point[${vidx}].ath`, ath);
+                    krpanoObj.set(`hotspot[${polyName}].point[${vidx}].atv`, atv);
+                    markDirty();
+                }
+            }
+        };
+
+        // ================================================================
+        // POLYGON DRAWING MODULE
+        // ================================================================
+        let isDrawingPolygon = false;
+        let drawingPoints = [];
+        const VERTEX_DOT_SVG = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"><circle cx="7" cy="7" r="5" fill="#f59e0b" stroke="#ffffff" stroke-width="1.5"/></svg>');
+
+        function startPolygonDrawing() {
+            isDrawingPolygon = true;
+            drawingPoints = [];
+            const banner = document.getElementById('poly-drawing-banner');
+            if (banner) banner.style.display = 'flex';
+            deselectHotspot();
+            showToast('🔷 Bấm vào mặt đất để chấm các đỉnh đa giác...');
+        }
+
+        function cancelPolygonDrawing(shouldShowToast = true) {
+            isDrawingPolygon = false;
+            drawingPoints = [];
+            if (krpanoObj) {
+                krpanoObj.call('removehotspot(hs_poly_draft);');
+                clearDraftPointMarkers();
+            }
+            const banner = document.getElementById('poly-drawing-banner');
+            if (banner) banner.style.display = 'none';
+            if (shouldShowToast) showToast('Đã hủy vẽ đa giác.');
+        }
+
+        function clearDraftPointMarkers() {
+            for (let i = 0; i < 100; i++) {
+                krpanoObj.call(`removehotspot(hs_draft_pt_${i});`);
+            }
+        }
+
+        function addDraftPointMarker(ath, atv, idx) {
+            const name = `hs_draft_pt_${idx}`;
+            krpanoObj.call(`addhotspot(${name});`);
+            krpanoObj.set(`hotspot[${name}].url`, VERTEX_DOT_SVG);
+            krpanoObj.set(`hotspot[${name}].scale`, 0.45);
+            krpanoObj.set(`hotspot[${name}].ath`, ath);
+            krpanoObj.set(`hotspot[${name}].atv`, atv);
+            krpanoObj.set(`hotspot[${name}].distorted`, true);
+            krpanoObj.set(`hotspot[${name}].renderer`, 'webgl');
+            krpanoObj.set(`hotspot[${name}].zorder`, 999);
+            krpanoObj.set(`hotspot[${name}].enabled`, false);
+        }
+
+        function renderDraftPolygon() {
+            if (drawingPoints.length < 2) return;
+            krpanoObj.call('removehotspot(hs_poly_draft);');
+            krpanoObj.call('addhotspot(hs_poly_draft);');
+            krpanoObj.set('hotspot[hs_poly_draft].type', 'polygon');
+            krpanoObj.set('hotspot[hs_poly_draft].fillcolor', '0x10b981');
+            krpanoObj.set('hotspot[hs_poly_draft].fillalpha', 0.2);
+            krpanoObj.set('hotspot[hs_poly_draft].bordercolor', '0x10b981');
+            krpanoObj.set('hotspot[hs_poly_draft].borderalpha', 0.8);
+            krpanoObj.set('hotspot[hs_poly_draft].borderwidth', 2);
+            krpanoObj.set('hotspot[hs_poly_draft].enabled', false);
+            drawingPoints.forEach((p, idx) => {
+                krpanoObj.set(`hotspot[hs_poly_draft].point[${idx}].ath`, p.ath);
+                krpanoObj.set(`hotspot[hs_poly_draft].point[${idx}].atv`, p.atv);
+            });
+        }
+
+        function finishPolygonDrawing() {
+            if (drawingPoints.length < 3) {
+                showToast('⚠️ Cần ít nhất 3 đỉnh để tạo đa giác!');
+                return;
+            }
+            const name = `hs_poly_${Date.now().toString().slice(-6)}`;
+            const newHs = {
+                name: name,
+                style: 'poly_ground_nav',
+                type: 'polygon',
+                linkedscene: '',
+                custom_title: '',
+                fillcolor: '0x0072ff',
+                fillalpha: 0.3,
+                bordercolor: '0xffffff',
+                borderalpha: 0.8,
+                borderwidth: 2.0,
+                points: drawingPoints.map(p => ({ ath: p.ath, atv: p.atv })),
+                show_title: 'true',
+                show_thumb: 'true'
+            };
+            sceneHotspots.push(newHs);
+            markDirty();
+            cancelPolygonDrawing(false);
+            renderPolygonInKrpano(newHs);
+            renderHotspotList();
+            onHotspotSelected(name);
+            showToast('✅ Đã tạo vùng đa giác! Hãy chọn scene liên kết.');
+        }
+
+        function renderPolygonInKrpano(hs) {
+            if (!krpanoObj) return;
+            krpanoObj.call(`removehotspot(${hs.name});`);
+
+            let fillAlpha = hs.fillalpha !== undefined ? hs.fillalpha : 0.3;
+            let borderAlpha = hs.borderalpha !== undefined ? hs.borderalpha : 0.8;
+
+            krpanoObj.call(`addhotspot(${hs.name});`);
+            krpanoObj.set(`hotspot[${hs.name}].type`, 'polygon');
+            krpanoObj.call(`hotspot[${hs.name}].loadstyle(${hs.style || 'poly_ground_nav'});`);
+            krpanoObj.set(`hotspot[${hs.name}].fillcolor`, hs.fillcolor || '0x0072ff');
+            krpanoObj.set(`hotspot[${hs.name}].fillalpha`, fillAlpha);
+            krpanoObj.set(`hotspot[${hs.name}].bordercolor`, hs.bordercolor || '0xffffff');
+            krpanoObj.set(`hotspot[${hs.name}].borderalpha`, borderAlpha);
+            krpanoObj.set(`hotspot[${hs.name}].borderwidth`, hs.borderwidth || 2.0);
+            krpanoObj.set(`hotspot[${hs.name}].custom_title`, hs.custom_title || '');
+            krpanoObj.set(`hotspot[${hs.name}].linkedscene`, hs.linkedscene || '');
+            krpanoObj.set(`hotspot[${hs.name}].capture`, false);
+            krpanoObj.set(`hotspot[${hs.name}].onclick`, 'js(onHotspotSelected(get(name)))');
+
+            (hs.points || []).forEach((p, idx) => {
+                krpanoObj.set(`hotspot[${hs.name}].point[${idx}].ath`, p.ath);
+                krpanoObj.set(`hotspot[${hs.name}].point[${idx}].atv`, p.atv);
+            });
+        }
+
+        function renderVertexHandles(hs) {
+            clearVertexHandles();
+            if (!hs || hs.style !== 'poly_ground_nav' || !Array.isArray(hs.points)) return;
+
+            hs.points.forEach((p, idx) => {
+                const handleName = `hs_vhandle_${hs.name}_${idx}`;
+                krpanoObj.call(`addhotspot(${handleName});`);
+                krpanoObj.set(`hotspot[${handleName}].url`, VERTEX_DOT_SVG);
+                krpanoObj.set(`hotspot[${handleName}].scale`, 0.5);
+                krpanoObj.set(`hotspot[${handleName}].ath`, p.ath);
+                krpanoObj.set(`hotspot[${handleName}].atv`, p.atv);
+                krpanoObj.set(`hotspot[${handleName}].distorted`, true);
+                krpanoObj.set(`hotspot[${handleName}].capture`, true);
+                krpanoObj.set(`hotspot[${handleName}].renderer`, 'webgl');
+                krpanoObj.set(`hotspot[${handleName}].ondown`, 'draghotspot();');
+                krpanoObj.set(`hotspot[${handleName}].zorder`, 999);
+            });
+
+            const vertexCountEl = document.getElementById('lbl-poly-vertex-count');
+            if (vertexCountEl) vertexCountEl.textContent = `${hs.points.length} đỉnh`;
+        }
+
+        function clearVertexHandles() {
+            if (!krpanoObj) return;
+            const count = krpanoObj.get('hotspot.count') || 0;
+            const toRemove = [];
+            for (let i = 0; i < count; i++) {
+                const n = krpanoObj.get(`hotspot[${i}].name`);
+                if (n && n.startsWith('hs_vhandle_')) toRemove.push(n);
+            }
+            toRemove.forEach(n => krpanoObj.call(`removehotspot(${n});`));
+        }
+
+        // Attach click listener on pano div for polygon drawing (using mousedown/mouseup delta)
+        document.addEventListener('DOMContentLoaded', () => {
+            const panoEl = document.getElementById('pano');
+            if (!panoEl) return;
+            let downX = 0, downY = 0;
+
+            panoEl.addEventListener('mousedown', (e) => {
+                downX = e.clientX;
+                downY = e.clientY;
+            });
+
+            panoEl.addEventListener('mouseup', (e) => {
+                if (!isDrawingPolygon || !krpanoObj) return;
+                const dist = Math.sqrt(Math.pow(e.clientX - downX, 2) + Math.pow(e.clientY - downY, 2));
+                if (dist > 6) return; // This was a drag, not a click
+
+                const mx = krpanoObj.get('mouse.stagex');
+                const my = krpanoObj.get('mouse.stagey');
+                const coords = krpanoObj.screentosphere(mx, my);
+                if (!coords) return;
+                const ath = Number(coords.x).toFixed(4);
+                const atv = Number(coords.y).toFixed(4);
+
+                drawingPoints.push({ ath, atv });
+                addDraftPointMarker(ath, atv, drawingPoints.length - 1);
+                renderDraftPolygon();
+            });
+
+            panoEl.addEventListener('dblclick', (e) => {
+                if (isDrawingPolygon && drawingPoints.length >= 3) {
+                    e.preventDefault();
+                    finishPolygonDrawing();
+                }
+            });
+        });
+
+        // Toggle UI fields depending on selected hotspot type
+        function toggleConditionalFields(style) {
+            const polyConfig = document.getElementById('group-polygon-config');
+
+            if (style === 'thongtin') {
+                groupLinkedScene.style.display = 'none';
+                groupInfoId.style.display = 'block';
+                if (groupScale) groupScale.style.display = 'block';
+                if (polyConfig) polyConfig.style.display = 'none';
+            } else if (style === 'poly_ground_nav') {
+                groupLinkedScene.style.display = 'block';
+                groupInfoId.style.display = 'none';
+                if (groupScale) groupScale.style.display = 'none';
+                if (polyConfig) polyConfig.style.display = 'block';
+            } else {
+                groupLinkedScene.style.display = 'block';
+                groupInfoId.style.display = 'none';
+                if (groupScale) groupScale.style.display = 'block';
+                if (polyConfig) polyConfig.style.display = 'none';
+            }
+        }
+
+        // Initialize event listeners for controls
+        function initEventListeners() {
+            // Panel Toggle Buttons (Top menu bar & Panel headers)
+            document.getElementById('btn-toggle-left-sidebar')?.addEventListener('click', () => toggleLeftSidebar());
+            document.getElementById('btn-close-left-sidebar')?.addEventListener('click', () => toggleLeftSidebar(false));
+            document.getElementById('btn-toggle-right-sidebar')?.addEventListener('click', () => toggleRightSidebar());
+            document.getElementById('btn-close-right-sidebar')?.addEventListener('click', () => toggleRightSidebar(false));
+
+            // Search scene
+            searchInput.addEventListener('input', (e) => {
+                renderSceneList(e.target.value);
+            });
+
+            // Polygon Drawing Buttons
+            document.getElementById('btn-draw-polygon')?.addEventListener('click', () => startPolygonDrawing());
+            document.getElementById('btn-finish-polygon')?.addEventListener('click', () => finishPolygonDrawing());
+            document.getElementById('btn-cancel-polygon')?.addEventListener('click', () => cancelPolygonDrawing());
+
+            // Hotspot Scale / Size live update
+            inputHsScale?.addEventListener('input', (e) => {
+                const val = parseFloat(e.target.value).toFixed(2);
+                if (lblScaleVal) lblScaleVal.textContent = `${val}x`;
+                const hs = sceneHotspots.find(h => h.name === selectedHotspotName);
+                if (hs) {
+                    hs.scale = val;
+                    if (krpanoObj) {
+                        krpanoObj.set(`hotspot[${hs.name}].scale`, val);
+                        krpanoObj.set(`hotspot[${hs.name}].base_scale`, val);
+                    }
+                    markDirty();
+                }
+            });
+
+
+
+            // Action: Add Hotspot in Center View
+            document.getElementById('btn-add-hotspot').addEventListener('click', () => {
+                if (!krpanoObj) return;
+
+                // Center view coordinates
+                const ath = Number(krpanoObj.get("view.hlookat")).toFixed(4);
+                const atv = Number(krpanoObj.get("view.vlookat")).toFixed(4);
+                const name = `hs_new_${Date.now().toString().slice(-6)}`;
+                
+                const newHs = {
+                    name: name,
+                    style: 'muiten',
+                    ath: ath,
+                    atv: atv,
+                    linkedscene: '',
+                    custom_title: 'Mũi tên di chuyển mới',
+                    infoid: '',
+                    show_title: 'true',
+                    show_thumb: 'true'
+                };
+
+                // Add to array
+                sceneHotspots.push(newHs);
+                markDirty();
+
+                // Add inside KrPano sphere
+                krpanoObj.call(`addhotspot(${name})`);
+                krpanoObj.call(`hotspot[${name}].loadstyle(${newHs.style})`);
+                krpanoObj.set(`hotspot[${name}].renderer`, 'webgl');
+                krpanoObj.set(`hotspot[${name}].ath`, ath);
+                krpanoObj.set(`hotspot[${name}].atv`, atv);
+                krpanoObj.set(`hotspot[${name}].ondown`, 'draghotspot();');
+                krpanoObj.set(`hotspot[${name}].onclick`, `js(onHotspotSelected(get(name)))`);
+                krpanoObj.set(`hotspot[${name}].custom_title`, newHs.custom_title);
+
+                renderHotspotList();
+                onHotspotSelected(name);
+                showToast('Đã thêm Hotspot! Hãy kéo thả nó.');
+            });
+
+            // Real-time properties sync (Inputs change -> KrPano update)
+            selectHsStyle.addEventListener('change', (e) => {
+                const style = e.target.value;
+                const hs = sceneHotspots.find(h => h.name === selectedHotspotName);
+                if (hs) {
+                    hs.style = style;
+                    krpanoObj.call(`hotspot[${hs.name}].loadstyle(${style})`);
+                    krpanoObj.set(`hotspot[${hs.name}].renderer`, 'webgl');
+                    krpanoObj.set(`hotspot[${hs.name}].distorted`, true);
+                    if (style === 'muiten') {
+                        krpanoObj.set(`hotspot[${hs.name}].rx`, 80);
+                    } else {
+                        krpanoObj.set(`hotspot[${hs.name}].rx`, 0);
+                        krpanoObj.set(`hotspot[${hs.name}].scale`, 0.5);
+                    }
+                    krpanoObj.set(`hotspot[${hs.name}].ondown`, 'draghotspot();');
+                    krpanoObj.set(`hotspot[${hs.name}].onclick`, `js(onHotspotSelected(get(name)))`);
+                    toggleConditionalFields(style);
+                    renderHotspotList();
+                    markDirty();
+                }
+            });
+
+            inputHsTitle.addEventListener('input', (e) => {
+                const title = e.target.value;
+                const hs = sceneHotspots.find(h => h.name === selectedHotspotName);
+                if (hs) {
+                    hs.custom_title = title;
+                    krpanoObj.set(`hotspot[${hs.name}].custom_title`, title);
+                    renderHotspotList();
+                    markDirty();
+                }
+            });
+
+            selectHsShowTitle.addEventListener('change', (e) => {
+                const val = e.target.value;
+                const hs = sceneHotspots.find(h => h.name === selectedHotspotName);
+                if (hs) {
+                    hs.show_title = val;
+                    krpanoObj.set(`hotspot[${hs.name}].show_title`, val);
+                    markDirty();
+                }
+            });
+
+            selectHsShowThumb.addEventListener('change', (e) => {
+                const val = e.target.value;
+                const hs = sceneHotspots.find(h => h.name === selectedHotspotName);
+                if (hs) {
+                    hs.show_thumb = val;
+                    krpanoObj.set(`hotspot[${hs.name}].show_thumb`, val);
+                    markDirty();
+                }
+            });
+
+            selectHsLinked.addEventListener('change', (e) => {
+                const val = e.target.value;
+                const hs = sceneHotspots.find(h => h.name === selectedHotspotName);
+                if (hs) {
+                    hs.linkedscene = val;
+                    krpanoObj.set(`hotspot[${hs.name}].linkedscene`, val);
+
+                    // Auto-fill hotspot title from target scene title if current title is default/empty
+                    if (val && krpanoObj) {
+                        const targetTitle = krpanoObj.get(`scene[${val}].title`);
+                        if (targetTitle && (!hs.custom_title || hs.custom_title === 'Mũi tên di chuyển mới' || hs.custom_title === 'Ghim vị trí mới')) {
+                            hs.custom_title = targetTitle;
+                            inputHsTitle.value = targetTitle;
+                            krpanoObj.set(`hotspot[${hs.name}].custom_title`, targetTitle);
+                            renderHotspotList();
+                        }
+                    }
+                    markDirty();
+                }
+            });
+
+            inputHsInfo.addEventListener('change', (e) => {
+                const val = e.target.value;
+                const hs = sceneHotspots.find(h => h.name === selectedHotspotName);
+                if (hs) {
+                    hs.infoid = val;
+                    krpanoObj.set(`hotspot[${hs.name}].infoid`, val);
+                    markDirty();
+                }
+            });
+
+            // Delete Hotspot
+            document.getElementById('btn-delete-hotspot').addEventListener('click', async () => {
+                if (!selectedHotspotName) return;
+
+                const targetHsName = selectedHotspotName;
+
+                // Delete inside KrPano canvas
+                krpanoObj.call(`removehotspot(${targetHsName})`);
+
+                // Remove from local tracker
+                sceneHotspots = sceneHotspots.filter(h => h.name !== targetHsName);
+                
+                deselectHotspot();
+                renderHotspotList();
+                
+                // Instantly save to XML file so main tour syncs immediately!
+                await saveHotspotsToServer();
+                showToast('🗑️ Đã xóa và đồng bộ Hotspot sang Tour!');
+            });
+
+            // Save Hotspots to File button
+            document.getElementById('btn-save-hotspots').addEventListener('click', () => {
+                saveHotspotsToServer();
+            });
+
+            // Save Default View button
+            document.getElementById('btn-save-view').addEventListener('click', () => {
+                saveCurrentViewAsDefault();
+            });
+
+            // Reset to Default View button
+            document.getElementById('btn-reset-view').addEventListener('click', () => {
+                if (krpanoObj) {
+                    krpanoObj.call('lookat(get(view.hlookat), get(view.vlookat), get(view.fov));');
+                    showToast('🔄 Đã làm mới góc nhìn!');
+                }
+            });
+
+            // Live apply fovmin/fovmax/maxpixelzoom when user types or changes input
+            const inputFovMin = document.getElementById('input-fovmin');
+            const inputFovMax = document.getElementById('input-fovmax');
+            const inputMaxPixelZoom = document.getElementById('input-maxpixelzoom');
+
+            inputFovMin.addEventListener('input', () => {
+                if (krpanoObj && inputFovMin.value) {
+                    krpanoObj.set('view.fovmin', Number(inputFovMin.value));
+                }
+            });
+
+            inputFovMax.addEventListener('input', () => {
+                if (krpanoObj && inputFovMax.value) {
+                    krpanoObj.set('view.fovmax', Number(inputFovMax.value));
+                }
+            });
+
+            // Quick Set FOV Min / Max to Current Zoom level
+            document.getElementById('btn-set-fovmin').addEventListener('click', () => {
+                if (krpanoObj) {
+                    const currentFov = Math.round(Number(krpanoObj.get('view.fov') || 60));
+                    inputFovMin.value = currentFov;
+                    krpanoObj.set('view.fovmin', currentFov);
+                    showToast(`🎯 Đã gán FOV Min = ${currentFov}° (Giới hạn zoom sâu nhất)`);
+                }
+            });
+
+            document.getElementById('btn-set-fovmax').addEventListener('click', () => {
+                if (krpanoObj) {
+                    const currentFov = Math.round(Number(krpanoObj.get('view.fov') || 120));
+                    inputFovMax.value = currentFov;
+                    krpanoObj.set('view.fovmax', currentFov);
+                    showToast(`🎯 Đã gán FOV Max = ${currentFov}° (Giới hạn zoom xa nhất)`);
+                }
+            });
+
+            // Horizon Leveling (Prealign) Live Controls
+            const sliderRoll = document.getElementById('slider-roll');
+            const sliderPitch = document.getElementById('slider-pitch');
+            const sliderYaw = document.getElementById('slider-yaw');
+            const valRoll = document.getElementById('val-roll');
+            const valPitch = document.getElementById('val-pitch');
+            const valYaw = document.getElementById('val-yaw');
+
+            function applyLivePrealign() {
+                if (!krpanoObj) return;
+                const p = parseFloat(sliderPitch.value || 0).toFixed(1);
+                const y = parseFloat(sliderYaw.value || 0).toFixed(1);
+                const r = parseFloat(sliderRoll.value || 0).toFixed(1);
+
+                if (valPitch) valPitch.textContent = `${p}°`;
+                if (valYaw) valYaw.textContent = `${y}°`;
+                if (valRoll) valRoll.textContent = `${r}°`;
+
+                const prealignStr = `${p}|${y}|${r}`;
+                krpanoObj.set('image.prealign', prealignStr);
+                try {
+                    krpanoObj.call('updateobject(true, true); updatescreen();');
+                } catch (e) {}
+            }
+
+            if (sliderRoll) sliderRoll.addEventListener('input', applyLivePrealign);
+            if (sliderPitch) sliderPitch.addEventListener('input', applyLivePrealign);
+            if (sliderYaw) sliderYaw.addEventListener('input', applyLivePrealign);
+
+            // Toggle Grid Guidelines Overlay
+            const btnToggleGrid = document.getElementById('btn-toggle-grid');
+            if (btnToggleGrid) {
+                btnToggleGrid.addEventListener('click', () => {
+                    const grid = document.getElementById('horizon-grid-overlay');
+                    if (grid) {
+                        if (grid.style.display === 'none' || !grid.style.display) {
+                            grid.style.display = 'block';
+                            showToast('📐 Đã bật lưới căn chân trời');
+                        } else {
+                            grid.style.display = 'none';
+                            showToast('📐 Đã tắt lưới căn chân trời');
+                        }
+                    }
+                });
+            }
+
+            // Reset Prealign to 0°
+            const btnResetPrealign = document.getElementById('btn-reset-prealign');
+            if (btnResetPrealign) {
+                btnResetPrealign.addEventListener('click', () => {
+                    if (sliderPitch) sliderPitch.value = 0;
+                    if (sliderYaw) sliderYaw.value = 0;
+                    if (sliderRoll) sliderRoll.value = 0;
+                    applyLivePrealign();
+                    showToast('🔄 Đã reset độ nghiêng về 0°');
+                });
+            }
+
+            // Save Prealign to Server XML
+            const btnSavePrealign = document.getElementById('btn-save-prealign');
+            if (btnSavePrealign) {
+                btnSavePrealign.addEventListener('click', async () => {
+                    if (!currentSceneId) {
+                        showToast('⚠️ Chưa chọn cảnh nào!');
+                        return;
+                    }
+
+                    const pitch = sliderPitch ? sliderPitch.value : 0;
+                    const yaw = sliderYaw ? sliderYaw.value : 0;
+                    const roll = sliderRoll ? sliderRoll.value : 0;
+
+                    try {
+                        const res = await fetch('/api/scenes/prealign', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                sceneId: currentSceneId,
+                                pitch,
+                                yaw,
+                                roll
+                            })
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                            showToast(`✅ Đã lưu độ nghiêng: Roll=${roll}°, Pitch=${pitch}°`);
+                        } else {
+                            showToast(`❌ Lỗi lưu độ nghiêng: ${data.error}`);
+                        }
+                    } catch (err) {
+                        showToast(`❌ Lỗi kết nối server: ${err.message}`);
+                    }
+                });
+            }
+
+            // Start live view coordinate tracker
+            setInterval(() => {
+                if (krpanoObj) {
+                    const h = Number(krpanoObj.get("view.hlookat") || 0).toFixed(1);
+                    const v = Number(krpanoObj.get("view.vlookat") || 0).toFixed(1);
+                    const f = Number(krpanoObj.get("view.fov") || 100).toFixed(1);
+
+                    const elH = document.getElementById('val-hlookat');
+                    const elV = document.getElementById('val-vlookat');
+                    const elF = document.getElementById('val-fov');
+
+                    if (elH) elH.textContent = `${h}°`;
+                    if (elV) elV.textContent = `${v}°`;
+                    if (elF) elF.textContent = `${f}°`;
+                }
+            }, 200);
+        }
+
+        // Save Current View as Default to Server
+        async function saveCurrentViewAsDefault() {
+            if (!krpanoObj || !currentSceneId) {
+                showToast('⚠️ Không có cảnh nào đang mở!');
+                return;
+            }
+
+            const hlookat = Number(krpanoObj.get("view.hlookat") || 0).toFixed(1);
+            const vlookat = Number(krpanoObj.get("view.vlookat") || 0).toFixed(1);
+            const fov = Number(krpanoObj.get("view.fov") || 100).toFixed(1);
+            
+            // READ DIRECTLY FROM DOM INPUTS SO USER SELECTION IS ALWAYS SAVED ACCURATELY!
+            const fovmin = document.getElementById('input-fovmin').value || '60';
+            const fovmax = document.getElementById('input-fovmax').value || '95';
+
+            try {
+                const res = await fetch('/api/scenes/view', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        sceneId: currentSceneId,
+                        hlookat,
+                        vlookat,
+                        fov,
+                        fovmin,
+                        fovmax
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(`✅ Đã lưu View: fov=${fov}°, fovmin=${fovmin}°, fovmax=${fovmax}°`);
+                } else {
+                    showToast(`❌ Lỗi lưu view: ${data.error}`);
+                }
+            } catch (err) {
+                showToast(`❌ Lỗi kết nối server: ${err.message}`);
+            }
+        }
+
+        // Synchronize saved hotspots into KrPano's internal in-memory scene content
+        function updateKrpanoInMemoryScene(sceneId, hotspots) {
+            if (!krpanoObj || !sceneId) return;
+
+            let hotspotsXml = '';
+            if (hotspots && hotspots.length > 0) {
+                hotspots.forEach(h => {
+                    let showTitleAttr = h.show_title === 'false' ? ' show_title="false"' : '';
+                    let showThumbAttr = h.show_thumb === 'false' ? ' show_thumb="false"' : '';
+
+                    if (h.type === 'polygon' || h.style === 'poly_ground_nav') {
+                        hotspotsXml += `\t<hotspot name="${h.name}" style="poly_ground_nav" linkedscene="${h.linkedscene || ''}" custom_title="${h.custom_title || ''}"${showTitleAttr}${showThumbAttr}>\n`;
+                        if (Array.isArray(h.points)) {
+                            h.points.forEach(p => {
+                                hotspotsXml += `\t\t<point ath="${p.ath}" atv="${p.atv}" />\n`;
+                            });
+                        }
+                        hotspotsXml += `\t</hotspot>\n`;
+                    } else if (h.style === 'thongtin') {
+                        let scaleAttr = h.scale && h.scale !== '0.50' ? ` scale="${h.scale}"` : '';
+                        hotspotsXml += `\t<hotspot name="${h.name}" style="${h.style}"${scaleAttr} ath="${h.ath}" atv="${h.atv}" infoid="${h.infoid || ''}" custom_title="${h.custom_title || ''}"${showTitleAttr}${showThumbAttr} />\n`;
+                    } else {
+                        let scaleAttr = h.scale && h.scale !== '0.50' ? ` scale="${h.scale}"` : '';
+                        hotspotsXml += `\t<hotspot name="${h.name}" style="${h.style}"${scaleAttr} ath="${h.ath}" atv="${h.atv}" linkedscene="${h.linkedscene || ''}" custom_title="${h.custom_title || ''}"${showTitleAttr}${showThumbAttr} />\n`;
+                    }
+                });
+            }
+
+            let content = krpanoObj.get(`scene[${sceneId}].content`) || '';
+            content = content.replace(/<hotspot\b[\s\S]*?<\/hotspot>/gi, '');
+            content = content.replace(/<hotspot\b[^>]*\/>/gi, '');
+            content = content.replace(/<point\b[^>]*\/>/gi, '');
+            content = content.replace(/<\/hotspot>/gi, '');
+            content = content.trimEnd() + '\n' + hotspotsXml;
+            krpanoObj.set(`scene[${sceneId}].content`, content);
+        }
+
+        // Save Hotspots list to Server XML
+        async function saveHotspotsToServer() {
+            if (!currentSceneId) {
+                showToast('⚠️ Chưa chọn cảnh nào!');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/scenes/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        sceneId: currentSceneId,
+                        hotspots: sceneHotspots
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    isDirty = false;
+                    updateKrpanoInMemoryScene(currentSceneId, sceneHotspots);
+                    showToast(`💾 ${data.message}`);
+                } else {
+                    showToast(`❌ Lỗi lưu hotspots: ${data.error}`);
+                }
+            } catch (err) {
+                showToast(`❌ Lỗi kết nối server: ${err.message}`);
+            }
+        }
+
+        // Keyboard shortcuts: Ctrl+S to save hotspots, Space/Esc for polygon drawing
+        function initKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    document.getElementById('btn-save-hotspots').click();
+                } else if (isDrawingPolygon) {
+                    if (e.key === ' ' || e.code === 'Space') {
+                        e.preventDefault();
+                        finishPolygonDrawing();
+                    } else if (e.key === 'Escape' || e.code === 'Escape') {
+                        e.preventDefault();
+                        cancelPolygonDrawing();
+                    }
+                }
+            });
+        }
+
+        // Show toast
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => {
+                t.classList.remove('show');
+            }, 3000);
+        }
+
+        // =============================================================
+        // UPLOAD PANORAMA SYSTEM (Multi-File & Location Support)
+        // =============================================================
+
+        let pendingUploadFiles = [];
+
+        function initUploadSystem() {
+            const uploadZone = document.getElementById('upload-zone');
+            const uploadInput = document.getElementById('upload-input');
+            const uploadModal = document.getElementById('upload-modal');
+
+            // Click to open file picker
+            uploadZone.addEventListener('click', () => {
+                uploadInput.click();
+            });
+
+            // File selected via picker
+            uploadInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                    pendingUploadFiles = Array.from(e.target.files);
+                    openUploadModal(pendingUploadFiles);
+                }
+            });
+
+            // Drag & drop events
+            uploadZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadZone.classList.add('drag-over');
+            });
+
+            uploadZone.addEventListener('dragleave', () => {
+                uploadZone.classList.remove('drag-over');
+            });
+
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadZone.classList.remove('drag-over');
+                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                    pendingUploadFiles = Array.from(e.dataTransfer.files);
+                    openUploadModal(pendingUploadFiles);
+                }
+            });
+
+            // Create new location button inside modal
+            document.getElementById('btn-create-location').addEventListener('click', async () => {
+                const locName = prompt('Nhập tên địa điểm / di tích mới (Ví dụ: Tháp Po Klong Garai, Làng gốm Bàu Trúc):');
+                if (!locName || locName.trim() === '') return;
+
+                try {
+                    const res = await fetch('/api/locations/create', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ locationName: locName.trim() })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        showToast(`✅ ${data.message}`);
+                        await loadLocations(data.locationId);
+                    } else {
+                        showToast(`❌ Lỗi: ${data.error}`);
+                    }
+                } catch (err) {
+                    showToast(`❌ Lỗi kết nối server: ${err.message}`);
+                }
+            });
+
+            // Confirm upload button
+            document.getElementById('btn-confirm-upload').addEventListener('click', () => {
+                if (pendingUploadFiles && pendingUploadFiles.length > 0) {
+                    startBatchUpload(pendingUploadFiles);
+                }
+            });
+
+            // Cancel upload
+            document.getElementById('btn-cancel-upload').addEventListener('click', () => {
+                closeUploadModal();
+            });
+
+            // Done - reload page
+            document.getElementById('btn-upload-done').addEventListener('click', () => {
+                window.location.reload();
+            });
+
+            // Click overlay to close
+            uploadModal.addEventListener('click', (e) => {
+                if (e.target === uploadModal) {
+                    const formStep = document.getElementById('upload-step-form');
+                    if (formStep.style.display !== 'none') {
+                        closeUploadModal();
+                    }
+                }
+            });
+        }
+
+        async function loadLocations(selectId = '') {
+            const locSelect = document.getElementById('upload-location-select');
+            try {
+                const res = await fetch('/api/locations');
+                const data = await res.json();
+                locSelect.innerHTML = '<option value="">-- Chọn hoặc Tạo Thư Mục Địa Điểm Mới --</option>';
+                if (data.success && data.locations) {
+                    data.locations.forEach(loc => {
+                        const opt = document.createElement('option');
+                        opt.value = loc.id;
+                        opt.textContent = `${loc.name} (tours/${loc.id}/)`;
+                        if (loc.id === selectId) opt.selected = true;
+                        locSelect.appendChild(opt);
+                    });
+                }
+            } catch (err) {
+                console.error('Lỗi nạp danh sách địa điểm:', err);
+            }
+        }
+
+        async function openUploadModal(files) {
+            const modal = document.getElementById('upload-modal');
+            const filePreview = document.getElementById('upload-file-preview');
+            const container = document.getElementById('upload-files-container');
+
+            // Reset modal steps & load location options
+            document.getElementById('upload-step-form').style.display = 'flex';
+            document.getElementById('upload-step-progress').style.display = 'none';
+            document.getElementById('upload-step-done').style.display = 'none';
+            await loadLocations();
+
+            // Show total file info
+            let totalMB = 0;
+            files.forEach(f => totalMB += f.size / (1024 * 1024));
+            filePreview.innerHTML = `<i class="fa-solid fa-images"></i> Đã chọn ${files.length} ảnh 360° (Tổng cộng: ${totalMB.toFixed(1)} MB)`;
+
+            // Render form inputs for each file
+            container.innerHTML = '';
+            files.forEach((file, idx) => {
+                const baseName = file.name.replace(/\.[^.]+$/, '')
+                    .toLowerCase()
+                    .replace(/\s+/g, '_')
+                    .replace(/[^a-z0-9_\-]/g, '');
+
+                const defaultTitle = file.name.replace(/\.[^.]+$/, '')
+                    .replace(/_/g, ' ')
+                    .replace(/-/g, ' ')
+                    .replace(/\b\w/g, c => c.toUpperCase());
+
+                const item = document.createElement('div');
+                item.style.cssText = 'background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px; margin-bottom: 10px; border: 1px solid var(--panel-border);';
+                item.innerHTML = `
+                    <div style="font-size: 12px; font-weight: bold; color: var(--primary); margin-bottom: 6px; display: flex; justify-content: space-between;">
+                        <span>${idx + 1}. ${file.name}</span>
+                        <span style="color: var(--text-muted); font-weight: normal;">${(file.size / (1024*1024)).toFixed(1)} MB</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <div>
+                            <label style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 2px;">Tên ID Scene (không dấu)</label>
+                            <input type="text" class="input-multi-scene-name" data-index="${idx}" value="${baseName}" style="width:100%; padding:6px; border-radius:4px; border:1px solid var(--panel-border); background:#000; color:#fff; font-size:12px; font-family:monospace;">
+                        </div>
+                        <div>
+                            <label style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 2px;">Tiêu đề hiển thị (Title)</label>
+                            <input type="text" class="input-multi-scene-title" data-index="${idx}" value="${defaultTitle}" style="width:100%; padding:6px; border-radius:4px; border:1px solid var(--panel-border); background:#000; color:#fff; font-size:12px;">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+
+            modal.style.display = 'flex';
+        }
+
+        function closeUploadModal() {
+            document.getElementById('upload-modal').style.display = 'none';
+            pendingUploadFiles = [];
+            document.getElementById('upload-input').value = '';
+        }
+
+        async function startBatchUpload(files) {
+            let locationId = document.getElementById('upload-location-select').value.trim();
+            if (!locationId) {
+                const locName = prompt('Nhập tên Thư mục Địa điểm / Di tích để GOM TẤT CẢ ÁNH NÀY VÀO (Ví dụ: Khu Làm Gốm Bàu Trúc):', 'Địa Điểm Mới');
+                if (!locName || !locName.trim()) return;
+                
+                try {
+                    const res = await fetch('/api/locations/create', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ locationName: locName.trim() })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        locationId = data.locationId;
+                    } else {
+                        showToast(`❌ Lỗi tạo địa điểm: ${data.error}`);
+                        return;
+                    }
+                } catch (err) {
+                    showToast(`❌ Lỗi kết nối server: ${err.message}`);
+                    return;
+                }
+            }
+
+            const nameInputs = document.querySelectorAll('.input-multi-scene-name');
+            const titleInputs = document.querySelectorAll('.input-multi-scene-title');
+
+            const sceneNames = Array.from(nameInputs).map(inp => inp.value.trim());
+            const sceneTitles = Array.from(titleInputs).map(inp => inp.value.trim());
+
+            // Switch to progress step
+            document.getElementById('upload-step-form').style.display = 'none';
+            document.getElementById('upload-step-progress').style.display = 'block';
+            document.getElementById('upload-progress-bar').style.width = '0%';
+            document.getElementById('upload-status-text').textContent = 'Đang tải danh sách ảnh lên server...';
+
+            try {
+                const formData = new FormData();
+                files.forEach(file => {
+                    formData.append('panoramas', file);
+                });
+                formData.append('locationId', locationId);
+                formData.append('sceneNames', JSON.stringify(sceneNames));
+                formData.append('sceneTitles', JSON.stringify(sceneTitles));
+
+                const response = await fetch('/api/upload-pano-multi', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error(result.error || 'Upload thất bại');
+                }
+
+                document.getElementById('upload-status-text').textContent = `Đang tạo tiles cho ${files.length} ảnh...`;
+                document.getElementById('upload-progress-bar').style.width = '10%';
+
+                await trackBatchTilingProgress(result.batchJobId, files.length);
+
+            } catch (err) {
+                document.getElementById('upload-status-text').textContent = `❌ Lỗi: ${err.message}`;
+                document.getElementById('upload-progress-bar').style.width = '0%';
+                document.getElementById('upload-progress-bar').style.background = '#ef4444';
+
+                setTimeout(() => {
+                    document.getElementById('upload-step-progress').style.display = 'none';
+                    document.getElementById('upload-step-form').style.display = 'flex';
+                }, 3000);
+            }
+        }
+
+        function trackBatchTilingProgress(batchJobId, totalFiles) {
+            return new Promise((resolve, reject) => {
+                const evtSource = new EventSource(`/api/tiling-status/${batchJobId}`);
+                const progressBar = document.getElementById('upload-progress-bar');
+                const statusText = document.getElementById('upload-status-text');
+
+                evtSource.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+
+                    if (data.status === 'processing') {
+                        const cur = data.currentIndex || 1;
+                        const pct = Math.max(10, Math.floor((cur / totalFiles) * 100));
+                        progressBar.style.width = `${pct}%`;
+                        statusText.textContent = `Đang xử lý ảnh ${cur}/${totalFiles}: "${data.currentSceneName}" (${pct}%)...`;
+                    } else if (data.status === 'done') {
+                        evtSource.close();
+                        progressBar.style.width = '100%';
+                        statusText.textContent = 'Hoàn tất tất cả!';
+
+                        setTimeout(() => {
+                            document.getElementById('upload-step-progress').style.display = 'none';
+                            document.getElementById('upload-step-done').style.display = 'block';
+                            document.getElementById('upload-done-text').textContent = 
+                                `Đã tạo xong ${totalFiles} scene 360° mới! Bấm nút bên dưới để tải lại editor.`;
+                        }, 500);
+
+                        resolve();
+                    } else if (data.status === 'error') {
+                        evtSource.close();
+                        statusText.textContent = `❌ Lỗi: ${data.error}`;
+                        progressBar.style.background = '#ef4444';
+                        reject(new Error(data.error));
+                    }
+                };
+
+                evtSource.onerror = () => {
+                    evtSource.close();
+                    statusText.textContent = 'Mất kết nối với server. Hãy kiểm tra terminal.';
+                    reject(new Error('SSE connection lost'));
+                };
+            });
+        }
+
+        // =============================================================
+        // SAVE HOTSPOTS TO FILE SYSTEM
+        // =============================================================
+
+        function initSaveSystem() {
+            document.getElementById('btn-save-hotspots').addEventListener('click', async () => {
+                if (!currentSceneId) {
+                    showToast('Chưa chọn scene nào!');
+                    return;
+                }
+
+                const btn = document.getElementById('btn-save-hotspots');
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG LƯU...';
+                btn.disabled = true;
+
+                try {
+                    const response = await fetch('/api/scenes/save', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            sceneId: currentSceneId,
+                            hotspots: sceneHotspots
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        isDirty = false;
+                        updateKrpanoInMemoryScene(currentSceneId, sceneHotspots);
+                        showToast(`✅ ${result.message}`);
+                    } else {
+                        showToast(`❌ Lỗi: ${result.error}`);
+                    }
+                } catch (err) {
+                    showToast(`❌ Không kết nối được server. Chạy: npm run editor`);
+                    console.error('Save error:', err);
+                } finally {
+                    btn.innerHTML = originalHtml;
+                    btn.disabled = false;
+                }
+            });
+        }
+
+        // =============================================================
+        // INFO MANAGER SYSTEM (tours/infos.json CRUD)
+        // =============================================================
+
+        let allInfos = {};
+        let currentEditingInfoId = null;
+
+        async function loadInfosFromApi() {
+            try {
+                const res = await fetch('/api/infos?v=' + Date.now());
+                const data = await res.json();
+                if (data.success) {
+                    allInfos = data.infos || {};
+                    renderInfoManagerList();
+                    populateInfoDropdown();
+                }
+            } catch (err) {
+                console.error('Lỗi khi tải thông tin thuyết minh:', err);
+            }
+        }
+
+        function populateInfoDropdown() {
+            const selectHsInfo = document.getElementById('hs-infoid');
+            if (!selectHsInfo) return;
+
+            const currentVal = selectHsInfo.value;
+            selectHsInfo.innerHTML = '<option value="">-- Chọn bài viết --</option>';
+
+            Object.keys(allInfos).forEach(id => {
+                const info = allInfos[id];
+                const opt = document.createElement('option');
+                opt.value = id;
+                opt.textContent = `${info.title || id} (${id})`;
+                selectHsInfo.appendChild(opt);
+            });
+
+            selectHsInfo.value = currentVal;
+        }
+
+        function renderInfoManagerList(filterText = '') {
+            const container = document.getElementById('info-list-container');
+            if (!container) return;
+
+            container.innerHTML = '';
+            const query = (filterText || '').toLowerCase().trim();
+
+            const keys = Object.keys(allInfos).filter(id => {
+                const info = allInfos[id] || {};
+                return id.toLowerCase().includes(query) || 
+                       (info.title && info.title.toLowerCase().includes(query)) ||
+                       (info.subtitle && info.subtitle.toLowerCase().includes(query));
+            });
+
+            if (keys.length === 0) {
+                container.innerHTML = '<div style="font-size:12px; color:#6b7280; text-align:center; padding:20px;">Không tìm thấy bài viết nào.</div>';
+                return;
+            }
+
+            keys.forEach(id => {
+                const info = allInfos[id] || {};
+                const item = document.createElement('div');
+                item.className = `info-list-item ${currentEditingInfoId === id ? 'active' : ''}`;
+                item.innerHTML = `
+                    <div class="info-item-title">${info.title || id}</div>
+                    <div class="info-item-id">${id}</div>
+                `;
+                item.addEventListener('click', () => editInfo(id));
+                container.appendChild(item);
+            });
+        }
+
+        function editInfo(id) {
+            currentEditingInfoId = id;
+            const info = allInfos[id] || { id: id, title: '', subtitle: '', content: '' };
+
+            document.getElementById('info-empty-state').style.display = 'none';
+            document.getElementById('info-form').style.display = 'flex';
+
+            document.getElementById('info-editor-title-label').textContent = info.title ? `Sửa: ${info.title}` : `Bài viết: ${id}`;
+            document.getElementById('info-field-id').value = info.id || '';
+            document.getElementById('info-field-id').disabled = !!allInfos[id];
+            document.getElementById('info-field-title').value = info.title || '';
+            document.getElementById('info-field-subtitle').value = info.subtitle || '';
+            document.getElementById('info-field-wysiwyg').innerHTML = info.content || '';
+
+            renderInfoManagerList(document.getElementById('info-search').value);
+        }
+
+        function createNewInfo() {
+            currentEditingInfoId = null;
+            const newId = `info_${Date.now().toString().slice(-6)}`;
+
+            document.getElementById('info-empty-state').style.display = 'none';
+            document.getElementById('info-form').style.display = 'flex';
+
+            document.getElementById('info-editor-title-label').textContent = 'Bài viết mới';
+            document.getElementById('info-field-id').value = newId;
+            document.getElementById('info-field-id').disabled = false;
+            document.getElementById('info-field-title').value = '';
+            document.getElementById('info-field-subtitle').value = '';
+            document.getElementById('info-field-wysiwyg').innerHTML = '';
+
+            renderInfoManagerList(document.getElementById('info-search').value);
+        }
+
+        function initInfoManagerSystem() {
+            const modal = document.getElementById('info-manager-modal');
+            const btnOpen = document.getElementById('btn-open-info-manager');
+            const btnClose = document.getElementById('btn-close-info-manager');
+            const btnNew = document.getElementById('btn-info-new');
+            const btnQuickNew = document.getElementById('btn-quick-new-info');
+            const btnSave = document.getElementById('btn-info-save');
+            const btnDelete = document.getElementById('btn-info-delete');
+            const searchInput = document.getElementById('info-search');
+
+            const openModal = async () => {
+                modal.style.display = 'flex';
+                await loadInfosFromApi();
+            };
+
+            const closeModal = () => {
+                modal.style.display = 'none';
+            };
+
+            if (btnOpen) btnOpen.addEventListener('click', openModal);
+            if (btnQuickNew) btnQuickNew.addEventListener('click', () => {
+                openModal().then(() => createNewInfo());
+            });
+            if (btnClose) btnClose.addEventListener('click', closeModal);
+
+            if (btnNew) btnNew.addEventListener('click', createNewInfo);
+
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => renderInfoManagerList(e.target.value));
+            }
+
+            // WYSIWYG Toolbar Commands
+            document.querySelectorAll('.wysiwyg-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const cmd = btn.dataset.cmd;
+                    const val = btn.dataset.val || null;
+                    document.execCommand(cmd, false, val);
+                    document.getElementById('info-field-wysiwyg').focus();
+                });
+            });
+
+            // Text Color Dots
+            document.querySelectorAll('.wysiwyg-color-dot').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const color = btn.dataset.color;
+                    document.execCommand('foreColor', false, color);
+                    document.getElementById('info-field-wysiwyg').focus();
+                });
+            });
+
+            // Custom Color Picker
+            const customColorPicker = document.getElementById('wysiwyg-custom-color');
+            if (customColorPicker) {
+                customColorPicker.addEventListener('input', (e) => {
+                    document.execCommand('foreColor', false, e.target.value);
+                    document.getElementById('info-field-wysiwyg').focus();
+                });
+            }
+
+            // Save Info
+            if (btnSave) {
+                btnSave.addEventListener('click', async () => {
+                    const id = document.getElementById('info-field-id').value.trim();
+                    const title = document.getElementById('info-field-title').value.trim();
+                    const subtitle = document.getElementById('info-field-subtitle').value.trim();
+                    const content = document.getElementById('info-field-wysiwyg').innerHTML.trim();
+
+                    if (!id) {
+                        showToast('❌ Vui lòng nhập mã ID (infoid)');
+                        return;
+                    }
+                    if (!title) {
+                        showToast('❌ Vui lòng nhập tiêu đề bài viết');
+                        return;
+                    }
+
+                    try {
+                        const res = await fetch('/api/infos/save', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id, title, subtitle, content })
+                        });
+
+                        const data = await res.json();
+                        if (data.success) {
+                            showToast(`✅ ${data.message}`);
+                            await loadInfosFromApi();
+                            editInfo(id);
+                        } else {
+                            showToast(`❌ Lỗi: ${data.error}`);
+                        }
+                    } catch (err) {
+                        showToast(`❌ Lỗi kết nối server: ${err.message}`);
+                    }
+                });
+            }
+
+            // Delete Info
+            if (btnDelete) {
+                btnDelete.addEventListener('click', async () => {
+                    const id = document.getElementById('info-field-id').value.trim();
+                    if (!id || !allInfos[id]) return;
+
+                    if (!confirm(`Bạn có chắc muốn xóa bài viết "${id}"?`)) return;
+
+                    try {
+                        const res = await fetch(`/api/infos/${id}`, { method: 'DELETE' });
+                        const data = await res.json();
+                        if (data.success) {
+                            showToast(`✅ ${data.message}`);
+                            currentEditingInfoId = null;
+                            document.getElementById('info-form').style.display = 'none';
+                            document.getElementById('info-empty-state').style.display = 'flex';
+                            await loadInfosFromApi();
+                        } else {
+                            showToast(`❌ Lỗi: ${data.error}`);
+                        }
+                    } catch (err) {
+                        showToast(`❌ Lỗi kết nối: ${err.message}`);
+                    }
+                });
+            }
+
+            // Load initial infos list into dropdown
+            loadInfosFromApi();
+        }
+
+        // Initialize upload & save systems after DOM ready
+        document.addEventListener('DOMContentLoaded', () => {
+            initUploadSystem();
+            initSaveSystem();
+            initInfoManagerSystem();
+        });
+    </script>
+</body>
+
+</html>
+

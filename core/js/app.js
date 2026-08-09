@@ -140,17 +140,12 @@ function krpanoReady(krpano) {
     // Initial UI sync
     setTimeout(onSceneChange, 500);
 
-    // ── DEV TOOL: Update live coordinates in UI ──
     setInterval(() => {
         if (krpanoObj) {
             let ath = Number(krpanoObj.get("view.hlookat"));
-            let atv = Number(krpanoObj.get("view.vlookat"));
 
             // Normalize ath to -180...180 range
             ath = ((ath + 180) % 360 + 360) % 360 - 180;
-
-            const el = document.getElementById('dev-live-coords');
-            if (el) el.textContent = `ath: ${ath.toFixed(3)}, atv: ${atv.toFixed(3)}`;
 
             // Sync Radar rotation
             if (radarMarker) {
@@ -480,106 +475,8 @@ function initUI() {
             }
         });
     }
-
-
-    // ── DEV TOOL: Copy coordinates via Button ────────────────────────
-    const btnDevCoords = document.getElementById('btn-dev-coords');
-    if (btnDevCoords) {
-        btnDevCoords.addEventListener('click', () => {
-            if (!krpanoObj) return;
-
-            // Native view coordinates ARE the screen center
-            let ath = Number(krpanoObj.get("view.hlookat"));
-            let atv = Number(krpanoObj.get("view.vlookat"));
-
-            // Normalize ath to -180...180 range
-            ath = ((ath + 180) % 360 + 360) % 360 - 180;
-
-            const copyText = `ath="${ath.toFixed(3)}" atv="${atv.toFixed(3)}"`;
-            console.log(`[Dev Tool] ${copyText}`);
-
-            // Success handler for UI feedback
-            const showSuccess = () => {
-                const originalText = btnDevCoords.innerHTML;
-                btnDevCoords.style.background = "#48bb78"; // Green feedback
-                btnDevCoords.innerHTML = "✅ Đã copy tọa độ!";
-                setTimeout(() => {
-                    btnDevCoords.style.background = "";
-                    btnDevCoords.innerHTML = originalText;
-                }, 1500);
-            };
-
-            // Modern Clipboard API (Requires HTTPS or localhost)
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(copyText).then(showSuccess).catch(err => {
-                    fallbackCopyText(copyText, showSuccess);
-                });
-            } else {
-                // Fallback for HTTP / IP addresses
-                fallbackCopyText(copyText, showSuccess);
-            }
-        });
-    }
-
-    // ── DEV TOOL: Copy View via Button ──────────────────────────────
-    const btnDevView = document.getElementById('btn-dev-view');
-    if (btnDevView) {
-        btnDevView.addEventListener('click', () => {
-            if (!krpanoObj) return;
-
-            let hlookat = Number(krpanoObj.get("view.hlookat")).toFixed(3);
-            let vlookat = Number(krpanoObj.get("view.vlookat")).toFixed(3);
-            let fov = Number(krpanoObj.get("view.fov")).toFixed(3);
-
-            const copyText = `hlookat="${hlookat}" vlookat="${vlookat}" fov="${fov}"`;
-            console.log(`[Dev Tool] Copy View: ${copyText}`);
-
-            const showSuccess = () => {
-                const originalText = btnDevView.innerHTML;
-                btnDevView.style.background = "#fff";
-                btnDevView.innerHTML = "✅ Đã copy view!";
-                setTimeout(() => {
-                    btnDevView.style.background = "";
-                    btnDevView.innerHTML = originalText;
-                }, 1500);
-            };
-
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(copyText).then(showSuccess).catch(() => {
-                    fallbackCopyText(copyText, showSuccess);
-                });
-            } else {
-                fallbackCopyText(copyText, showSuccess);
-            }
-        });
-    }
-
-    /**
-     * Fallback copy method for insecure contexts (HTTP over IP)
-     */
-    function fallbackCopyText(text, callback) {
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-
-        // Ensure the textarea is not visible but part of the DOM
-        textArea.style.position = "fixed";
-        textArea.style.left = "-9999px";
-        textArea.style.top = "0";
-        document.body.appendChild(textArea);
-
-        textArea.focus();
-        textArea.select();
-
-        try {
-            const successful = document.execCommand('copy');
-            if (successful && callback) callback();
-        } catch (err) {
-            alert(`Lỗi: Không thể tự động copy. Tọa độ của bạn là:\n${text}`);
-        }
-
-        document.body.removeChild(textArea);
-    }
 }
+
 
 // ── Map Logic ────────────────────────────────────────────────
 function ensureMapInitialized() {
